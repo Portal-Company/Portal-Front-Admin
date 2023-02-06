@@ -22,10 +22,10 @@ const SubHeader = memo((props) => {
           <Col md="12">
             <div className="d-flex justify-content-between flex-wrap">
               <div>
-                <h1>Hello Qompac!</h1>
+                <h1>Hello Portal!</h1>
                 <p>
-                  Experience a simple yet powerful way to build Dashboards with
-                  Qompac UI.
+                  Experimente uma maneira simples, mas poderosa, de criar
+                  painéis com o Portal
                 </p>
               </div>
               <div className="d-flex align-items-center">

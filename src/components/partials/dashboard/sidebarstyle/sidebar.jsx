@@ -1,5 +1,5 @@
 import { useEffect, memo, Fragment } from "react";
-
+import "./style.css";
 //router
 import { Link } from "react-router-dom";
 
@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import VerticalNav from "./vertical-nav";
 import Logo from "../../components/logo";
 
+import LogoApp from "../../../../assets/images/Logo.png";
 //scrollbar
 import Scrollbar from "smooth-scrollbar";
 
@@ -81,10 +82,7 @@ const Sidebar = memo((props) => {
         data-sidebar="responsive"
       >
         <div className="sidebar-header d-flex align-items-center justify-content-start">
-          <Link to="/" className="navbar-brand">
-            <Logo />
-            <h4 className="logo-title">{props.app_name}</h4>
-          </Link>
+          <img src={LogoApp} className="IMGLogo" />
           <div
             className="sidebar-toggle"
             data-toggle="sidebar"
