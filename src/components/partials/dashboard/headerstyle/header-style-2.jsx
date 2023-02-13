@@ -761,13 +761,13 @@ const HeaderStyle2 = memo(() => {
                 </Dropdown.Toggle>
                 <Dropdown.Menu variant="end">
                   <Dropdown.Item to="/dashboard/app/user-profile">
-                    Profile
+                    Perfil da Escola
                   </Dropdown.Item>
                   <Dropdown.Item to="/dashboard/app/user-privacy-setting">
-                    Privacy Setting
+                    Configuração de Privacidade
                   </Dropdown.Item>
                   <hr className="dropdown-divider" />
-                  <Dropdown.Item to="/auth/sign-in">Logout</Dropdown.Item>
+                  <Dropdown.Item to="/auth/sign-in">Sair</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             </ul>

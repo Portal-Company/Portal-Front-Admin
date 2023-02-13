@@ -76,7 +76,7 @@ const HeaderStyle4 = memo(() => {
         <Container fluid className="navbar-inner">
           <Link to="/" className="navbar-brand d-flex align-items-center">
             <Logo color={true} />
-            <h4 className="logo-title text-light ms-3 mb-0">Qompac UI</h4>
+            <h4 className="logo-title text-light ms-3 mb-0">Salias</h4>
           </Link>
           <Navbar.Toggle
             className="p-0 border-0"

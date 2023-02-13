@@ -267,7 +267,7 @@ const Header = memo((props) => {
                           to="/"
                         >
                           {" "}
-                          Dashboard
+                          Principal
                         </Link>
                       </Nav.Item>
 
@@ -284,7 +284,7 @@ const Header = memo((props) => {
                           aria-current="page"
                           to="/analytics"
                         >
-                          Analytics
+                          Salias
                         </Link>
                       </Nav.Item>
                       <Nav.Item as="li">
@@ -399,7 +399,7 @@ const Header = memo((props) => {
                         fill="currentColor"
                       />
                     </svg>
-                    <span className="nav-text ms-2">Pages</span>
+                    <span className="nav-text ms-2">Páginas</span>
                   </Nav.Link>
                   <Collapse in={open2}>
                     <ul
@@ -1630,7 +1630,7 @@ const Header = memo((props) => {
                                 } nav-link`}
                                 to="/icon/dual-tone"
                               >
-                                Dual Tone
+                                Salias
                               </Link>
                             </Nav.Item>
                           </ul>

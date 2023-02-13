@@ -557,7 +557,7 @@ const HeaderStyle3 = memo(() => {
                   </div>
                 </Dropdown.Toggle>
                 <Dropdown.Menu variant="end">
-                  <Dropdown.Item href="#">Profile</Dropdown.Item>
+                  <Dropdown.Item href="#">Perfil</Dropdown.Item>
                   <Dropdown.Item href="#">Privacy Setting</Dropdown.Item>
                   <hr className="dropdown-divider" />
                   <Dropdown.Item href="#">Logout</Dropdown.Item>

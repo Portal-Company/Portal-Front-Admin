@@ -63,7 +63,7 @@ const HorizontalNav = memo(() => {
                   fill="currentColor"
                 />
               </svg>
-              <h4 className="logo-title">Qompac UI</h4>
+              <h4 className="logo-title">Portal</h4>
             </Navbar.Brand>
             <Button className="close float-end"></Button>
           </Offcanvas.Header>
