@@ -2,7 +2,6 @@ import { useEffect } from 'react'
 //router
 import { useSearchParams } from 'react-router-dom'
 import IndexRouters from "./router/index"
-
 //scss
 import "shepherd.js/dist/css/shepherd.css";
 import "flatpickr/dist/flatpickr.css";
