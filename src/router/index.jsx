@@ -184,7 +184,7 @@ const IndexRouters = memo(() => {
       <Route path="/index-horizontal" element={<Horizontal />}></Route>
       <Route path="/index-boxed" element={<Boxed />}></Route>
       <Route path="/" element={<Default />}>
-        <Route path="/" element={<Index />} />
+        <Route path="/" element={<Crypto />} />
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/crypto" element={<Crypto />} />
 
