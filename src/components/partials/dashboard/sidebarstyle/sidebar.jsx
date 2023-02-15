@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 
 //components
 import VerticalNav from "./vertical-nav";
-import Logo from "../../components/logo";
 
 import LogoApp from "../../../../assets/images/Logo.png";
 //scrollbar
