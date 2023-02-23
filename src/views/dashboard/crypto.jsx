@@ -638,7 +638,7 @@ const Crypto = memo((props) => {
                       </clipPath>
                     </defs>
                   </svg>
-                  <h6 className="mb-0">Novas Inscrições</h6>
+                  <h6 className="mb-0">Total de Escolas</h6>
                 </div>
                 <Dropdown>
                   <Dropdown.Toggle
@@ -705,7 +705,7 @@ const Crypto = memo((props) => {
                       fill="#7016d0"
                     />
                   </svg>
-                  <h6 className="mb-0 ms-2">Inscritos</h6>
+                  <h6 className="mb-0 ms-2">Total de Inscritos</h6>
                 </div>
                 <Dropdown>
                   <Dropdown.Toggle
@@ -802,7 +802,7 @@ const Crypto = memo((props) => {
                       </clipPath>
                     </defs>
                   </svg>
-                  <h6 className="mb-0 ms-2">Inscrições Apurados</h6>
+                  <h6 className="mb-0 ms-2">Total de Inscritos Apurados</h6>
                 </div>
                 <Dropdown>
                   <Dropdown.Toggle
@@ -836,7 +836,7 @@ const Crypto = memo((props) => {
               </div>
               <div className="d-flex align-items-center">
                 <div>
-                  <h3> $34.850,10</h3>
+                  <h3> 34.850,10</h3>
                   <small className="text-danger">- 0.8%</small>
                   <small className="ms-2">Alunos</small>
                 </div>
@@ -868,7 +868,7 @@ const Crypto = memo((props) => {
                       fill="white"
                     />
                   </svg>
-                  <h6 className="mb-0 ms-2">Documentação de Falsas</h6>
+                  <h6 className="mb-0 ms-2">Total de Inscritos Rejeitados</h6>
                 </div>
                 <Dropdown>
                   <Dropdown.Toggle
