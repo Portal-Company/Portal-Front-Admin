@@ -3,7 +3,6 @@ import { memo } from "react";
 //React-bootstrap
 import { Row, Col, Container } from "react-bootstrap";
 
-//Router
 import { Link } from "react-router-dom";
 
 //Img
