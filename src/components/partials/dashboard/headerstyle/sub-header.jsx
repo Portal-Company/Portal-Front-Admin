@@ -3,7 +3,6 @@ import { memo } from "react";
 //React-bootstrap
 import { Row, Col, Container } from "react-bootstrap";
 
-//Router
 import { Link } from "react-router-dom";
 
 //Img
@@ -22,11 +21,8 @@ const SubHeader = memo((props) => {
           <Col md="12">
             <div className="d-flex justify-content-between flex-wrap">
               <div>
-                <h1>Hello Portal!</h1>
-                <p>
-                  Experimente uma maneira simples, mas poderosa, de criar
-                  painéis com o Portal
-                </p>
+                <h1>Med</h1>
+                <p>Ministério da Educação</p>
               </div>
               <div className="d-flex align-items-center">
                 <Link to="" className="btn btn-link btn-soft-light">
