@@ -148,6 +148,7 @@ const Default = memo((props) => {
     case "/ui-elements/offcanvas":
     case "/ui-elements/color":
     case "/curso/curso-add":
+    case "/curso/curso-list":
     case "/ui-elements/cards":
     case "/ui-elements/carousel":
     case "/ui-elements/grid":

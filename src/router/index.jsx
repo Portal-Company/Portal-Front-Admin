@@ -32,6 +32,7 @@ const UserProfile = lazy(() => import("../views/dashboard/app/user-profile"));
 const UserAdd = lazy(() => import("../views/dashboard/app/user-add"));
 
 const CursoAdd = lazy(() => import("../views/dashboard/curso/curso-add"));
+const CursoList = lazy(() => import("../views/dashboard/curso/curso-list"));
 
 const UserList = lazy(() => import("../views/dashboard/app/user-list"));
 // const userProfileEdit = lazy(() => import('../views/dashboard/app/user-privacy-setting'))
@@ -193,6 +194,7 @@ const IndexRouters = memo(() => {
 
         {/* Curso */}
         <Route path="/curso/curso-add" element={<CursoAdd />} />
+        <Route path="/curso/curso-list" element={<CursoList />} />
 
         {/* user */}
         <Route path="/app/user-profile" element={<UserProfile />} />
