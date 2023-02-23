@@ -15,7 +15,7 @@ import img1 from "/src/assets/images/shapes/01.png";
 import img2 from "/src/assets/images/shapes/02.png";
 import img3 from "/src/assets/images/shapes/03.png";
 import img4 from "/src/assets/images/shapes/04.png";
-import avatar1 from "/src/assets/images/avatars/01.png";
+import avatar1 from "/src/assets/images/avatars/maka.jpg";
 import avatar2 from "/src/assets/images/avatars/02.png";
 import avatar3 from "/src/assets/images/avatars/03.png";
 import avatar4 from "/src/assets/images/avatars/04.png";
@@ -93,8 +93,9 @@ const SunNav = () => {
         </Button>
       </div>
       <div
-        className={` navbar-collapse ${show1 === true ? "collapse show" : "collapse"
-          }`}
+        className={` navbar-collapse ${
+          show1 === true ? "collapse show" : "collapse"
+        }`}
         id="navbarSupportedContent"
       >
         <ul className="mb-2 navbar-nav ms-auto align-items-center navbar-list mb-lg-0">
@@ -391,10 +392,7 @@ const SunNav = () => {
             </Dropdown.Menu>
           </Dropdown>
           <Dropdown as="li" className="nav-item theme-scheme-dropdown">
-            <Dropdown.Toggle
-              as={CustomToggle}
-              variant="nav-link"
-            >
+            <Dropdown.Toggle as={CustomToggle} variant="nav-link">
               <div className=" rounded-pill">
                 <span className="btn-inner">
                   <svg
@@ -726,52 +724,23 @@ const SunNav = () => {
                 className="theme-color-img img-fluid avatar avatar-50 avatar-rounded"
                 loading="lazy"
               />
-              <img
-                src={avatar_1}
-                alt="User-Profile"
-                className="theme-color-purple-img img-fluid avatar avatar-50 avatar-rounded"
-                loading="lazy"
-              />
-              <img
-                src={avatar_2}
-                alt="User-Profile"
-                className="theme-color-blue-img img-fluid avatar avatar-50 avatar-rounded"
-                loading="lazy"
-              />
-              <img
-                src={avatar_3}
-                alt="User-Profile"
-                className="theme-color-green-img img-fluid avatar avatar-50 avatar-rounded"
-                loading="lazy"
-              />
-              <img
-                src={avatar_4}
-                alt="User-Profile"
-                className="theme-color-yellow-img img-fluid avatar avatar-50 avatar-rounded"
-                loading="lazy"
-              />
-              <img
-                src={avatar_5}
-                alt="User-Profile"
-                className="theme-color-pink-img img-fluid avatar avatar-50 avatar-rounded"
-                loading="lazy"
-              />
+
               <div className="caption ms-3 d-none d-md-block ">
-                <h6 className="mb-0 caption-title">Austin Robertson</h6>
-                <p className="mb-0 caption-sub-title">
-                  Marketing Administrator
-                </p>
+                <h6 className="mb-0 caption-title">
+                  Instituto Politecnico Industrial de Luanda
+                </h6>
+                <p className="mb-0 caption-sub-title">Ensino Médio</p>
               </div>
             </Dropdown.Toggle>
             <Dropdown.Menu variant="end">
               <Dropdown.Item to="/dashboard/app/user-profile">
-                Profile
+                Perfil
               </Dropdown.Item>
               <Dropdown.Item to="/dashboard/app/user-privacy-setting">
-                Privacy Setting
+                Configurações
               </Dropdown.Item>
               <hr className="dropdown-divider" />
-              <Dropdown.Item to="/auth/sign-in">Logout</Dropdown.Item>
+              <Dropdown.Item to="/auth/sign-in">Sair</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         </ul>

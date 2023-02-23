@@ -178,9 +178,9 @@ const VerticalNav = memo(() => {
               <Nav.Item as="li">
                 <Link
                   className={`${
-                    location.pathname === "/app/user-add" ? "active" : ""
+                    location.pathname === "/curso/curso-add" ? "active" : ""
                   } nav-link`}
-                  to="/app/user-add"
+                  to="/curso/curso-add"
                 >
                   <i className="icon">
                     <svg
