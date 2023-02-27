@@ -187,6 +187,8 @@ const Default = memo((props) => {
     case "/plugins/quill-editor":
     case "/plugins/uppy":
     case "/extra/blank-page":
+    case "/formacao/formacao-add":
+    case "/formacao/formacao-list":
       subHeader = <SubHeader />;
       commanclass = "iq-banner default";
       break;
