@@ -3,6 +3,17 @@ import { memo, lazy } from "react";
 //router
 import { Routes, Route } from "react-router-dom";
 
+const CursoAdd = lazy(() => import("../views/dashboard/curso/curso-add"));
+const CursoList = lazy(() => import("../views/dashboard/curso/curso-list"));
+
+///Formação
+const FormacaoAdd = lazy(() =>
+  import("../views/dashboard/formacao/formacao-add")
+);
+const FormacaoList = lazy(() =>
+  import("../views/dashboard/formacao/formacao-list")
+);
+
 //layoutpages
 import Default from "../layouts/dashboard/default";
 import Horizontal from "../layouts/dashboard/horizontal";
@@ -30,9 +41,6 @@ const Index = lazy(() => import("../views/dashboard/index"));
 // User
 const UserProfile = lazy(() => import("../views/dashboard/app/user-profile"));
 const UserAdd = lazy(() => import("../views/dashboard/app/user-add"));
-
-const CursoAdd = lazy(() => import("../views/dashboard/curso/curso-add"));
-const CursoList = lazy(() => import("../views/dashboard/curso/curso-list"));
 
 const UserList = lazy(() => import("../views/dashboard/app/user-list"));
 // const userProfileEdit = lazy(() => import('../views/dashboard/app/user-privacy-setting'))
@@ -195,6 +203,10 @@ const IndexRouters = memo(() => {
         {/* Curso */}
         <Route path="/curso/curso-add" element={<CursoAdd />} />
         <Route path="/curso/curso-list" element={<CursoList />} />
+
+        {/* Formação */}
+        <Route path="/formacao/formacao-add" element={<FormacaoAdd />} />
+        <Route path="/formacao/formacao-list" element={<FormacaoList />} />
 
         {/* user */}
         <Route path="/app/user-profile" element={<UserProfile />} />
