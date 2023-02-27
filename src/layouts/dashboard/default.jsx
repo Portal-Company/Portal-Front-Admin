@@ -147,8 +147,7 @@ const Default = memo((props) => {
     case "/ui-elements/button-group":
     case "/ui-elements/offcanvas":
     case "/ui-elements/color":
-    case "/curso/curso-add":
-    case "/curso/curso-list":
+
     case "/ui-elements/cards":
     case "/ui-elements/carousel":
     case "/ui-elements/grid":
@@ -189,6 +188,10 @@ const Default = memo((props) => {
     case "/extra/blank-page":
     case "/formacao/formacao-add":
     case "/formacao/formacao-list":
+    case "/curso/curso-add":
+    case "/curso/curso-list":
+    case "/funcionario/funcionario-add":
+    case "/funcionario/funcionario-list":
       subHeader = <SubHeader />;
       commanclass = "iq-banner default";
       break;
