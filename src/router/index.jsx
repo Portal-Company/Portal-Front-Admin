@@ -6,6 +6,15 @@ import { Routes, Route } from "react-router-dom";
 const CursoAdd = lazy(() => import("../views/dashboard/curso/curso-add"));
 const CursoList = lazy(() => import("../views/dashboard/curso/curso-list"));
 
+const ConfPerfil = lazy(() =>
+  import("../views/dashboard/perfil-saida/perfil-conf")
+);
+const VerPerfil = lazy(() =>
+  import("../views/dashboard/perfil-saida/perfil-ver")
+);
+
+///Formação
+
 ///Formação
 const FormacaoAdd = lazy(() =>
   import("../views/dashboard/formacao/formacao-add")
@@ -211,6 +220,10 @@ const IndexRouters = memo(() => {
         {/* Curso */}
         <Route path="/curso/curso-add" element={<CursoAdd />} />
         <Route path="/curso/curso-list" element={<CursoList />} />
+
+        {/* Perfil Saída */}
+        <Route path="/perfil-saida/perfil-conf" element={<ConfPerfil />} />
+        <Route path="/perfil-saida/perfil-ver" element={<VerPerfil />} />
 
         {/* Formação */}
         <Route path="/formacao/formacao-add" element={<FormacaoAdd />} />
