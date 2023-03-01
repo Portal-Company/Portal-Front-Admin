@@ -373,10 +373,10 @@ const FuncionarioList = memo(() => {
       img: img7,
       contact: "930964062",
       emailid: "ercabsalias@gmail.com",
-      purchases: "13",
+      purchases: "Masculino",
       statusColor: "warning",
       bgColor: "warning",
-      status: "Não Apurado",
+      status: "Professor",
       actionadd: add,
       actionedit: edit,
       actionremove: remove,
@@ -387,10 +387,10 @@ const FuncionarioList = memo(() => {
       img: img2,
       contact: "930964062",
       emailid: "ercabsalias@gmail.com",
-      purchases: "13",
+      purchases: "Masculino",
       statusColor: "warning",
       bgColor: "warning",
-      status: "Não Apurado",
+      status: "Professor",
       actionadd: add,
       actionedit: edit,
       actionremove: remove,
@@ -401,10 +401,10 @@ const FuncionarioList = memo(() => {
       img: img4,
       contact: "930964062",
       emailid: "marquek@mail.com",
-      purchases: "14",
+      purchases: "Femenino",
       statusColor: "success",
       bgColor: "success",
-      status: "Apurado",
+      status: "Professor",
       actionadd: add,
       actionedit: edit,
       actionremove: remove,
@@ -415,10 +415,10 @@ const FuncionarioList = memo(() => {
       img: img1,
       contact: "930964062",
       emailid: "marquek@mail.com",
-      purchases: "14",
+      purchases: "Femenino",
       statusColor: "success",
       bgColor: "success",
-      status: "Apurado",
+      status: "Professor",
       actionadd: add,
       actionedit: edit,
       actionremove: remove,
@@ -437,8 +437,8 @@ const FuncionarioList = memo(() => {
                       <th scope="col">Nome</th>
                       <th scope="col">Contacto</th>
                       <th scope="col">Email</th>
-                      <th scope="col">Media Final</th>
-                      <th scope="col">Status</th>
+                      <th scope="col">Sexo</th>
+                      <th scope="col">Cargo</th>
                       <th scope="col">Acção</th>
                     </tr>
                   </thead>
@@ -463,13 +463,7 @@ const FuncionarioList = memo(() => {
                           <td className="text-dark">{item.emailid}</td>
 
                           <td className="text-dark">{item.purchases}</td>
-                          <td>
-                            <span
-                              className={`badge  bg-soft-${item.bgColor} p-2 text-${item.statusColor}`}
-                            >
-                              {item.status}
-                            </span>
-                          </td>
+                          <td className="text-dark">{item.status}</td>
                           <td>
                             <div className="d-flex justify-content-evenly">
                               <Button
