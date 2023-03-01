@@ -719,9 +719,11 @@ const VerticalNav = memo(() => {
               <Nav.Item as="li">
                 <Link
                   className={`${
-                    location.pathname === "/app/user-add" ? "active" : ""
+                    location.pathname === "/perfil-saida/perfil-conf"
+                      ? "active"
+                      : ""
                   } nav-link`}
-                  to="/app/user-add"
+                  to="/perfil-saida/perfil-conf"
                 >
                   <i className="icon">
                     <svg
@@ -753,9 +755,11 @@ const VerticalNav = memo(() => {
               <Nav.Item as="li">
                 <Link
                   className={`${
-                    location.pathname === "/app/user-profile" ? "active" : ""
+                    location.pathname === "/perfil-saida/perfil-ver"
+                      ? "active"
+                      : ""
                   } nav-link`}
-                  to="/app/user-profile"
+                  to="/perfil-saida/perfil-ver"
                 >
                   <i className="icon">
                     <svg
