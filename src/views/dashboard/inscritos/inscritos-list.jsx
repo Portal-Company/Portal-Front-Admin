@@ -1,4 +1,4 @@
-import { memo, Fragment } from "react";
+import { memo, Fragment, useState } from "react";
 
 //react-bootstrap
 import { Row, Col, Image } from "react-bootstrap";
@@ -41,17 +41,9 @@ const userlist = [
   },
 ];
 
-/*<div class="form-outline">
-                <input
-                  type="search"
-                  id="form1"
-                  class="form-control"
-                  placeholder="Pequisar"
-                  aria-label="Search"
-                />
-              </div>*/
+const UserList = () => {
+  const [query, setQuery] = useState("");
 
-const UserList = memo(() => {
   return (
     <Fragment>
       <Row>
@@ -60,6 +52,16 @@ const UserList = memo(() => {
             <Card.Header className="d-flex justify-content-between">
               <div className="header-title">
                 <h4 className="card-title">Inscrições</h4>
+              </div>
+              <div class="form-outline">
+                <input
+                  type="search"
+                  id="form1"
+                  class="form-control"
+                  placeholder="Pequisar..."
+                  aria-label="Search"
+                  onChange={(e) => setQuery(e.target.value)}
+                />
               </div>
             </Card.Header>
             <Card.Body className="px-0">
@@ -82,21 +84,25 @@ const UserList = memo(() => {
                     </tr>
                   </thead>
                   <tbody>
-                    {userlist.map((item, idx) => (
-                      <tr key={idx}>
-                        <td>{item.name}</td>
-                        <td>{item.phone}</td>
-                        <td>{item.email}</td>
-                        <td>{item.country}</td>
-                        <td>
-                          <span className={`badge ${item.color}`}>
-                            {item.status}
-                          </span>
-                        </td>
-                        <td>{item.company}</td>
-                        <td>{item.joindate}</td>
-                      </tr>
-                    ))}
+                    {userlist
+                      .filter((user) =>
+                        user.email.toLocaleLowerCase().includes(query)
+                      )
+                      .map((item, idx) => (
+                        <tr key={idx}>
+                          <td>{item.name}</td>
+                          <td>{item.phone}</td>
+                          <td>{item.email}</td>
+                          <td>{item.country}</td>
+                          <td>
+                            <span className={`badge ${item.color}`}>
+                              {item.status}
+                            </span>
+                          </td>
+                          <td>{item.company}</td>
+                          <td>{item.joindate}</td>
+                        </tr>
+                      ))}
                   </tbody>
                 </table>
               </div>
@@ -106,7 +112,7 @@ const UserList = memo(() => {
       </Row>
     </Fragment>
   );
-});
+};
 
 UserList.displayName = "UserList";
 export default UserList;
