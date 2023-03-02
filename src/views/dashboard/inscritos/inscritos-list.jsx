@@ -9,14 +9,6 @@ import { Link } from "react-router-dom";
 //components
 import Card from "../../../components/bootstrap/card";
 
-// img
-import shap1 from "/src/assets/images/shapes/01.png";
-import shap2 from "/src/assets/images/shapes/02.png";
-import shap3 from "/src/assets/images/shapes/03.png";
-import shap4 from "/src/assets/images/shapes/04.png";
-import shap5 from "/src/assets/images/shapes/05.png";
-import shap6 from "/src/assets/images/shapes/06.png";
-
 const userlist = [
   {
     name: "Hans Olo",
