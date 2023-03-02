@@ -75,6 +75,17 @@ const userlist = [
     joindate: "2019/12/01",
     color: "bg-success",
   },
+
+  {
+    name: "Mauricio Costa",
+    phone: "+27 5625 456 589",
+    email: "margearita@gmail.com",
+    country: "17",
+    status: "Apurado",
+
+    joindate: "2019/12/01",
+    color: "bg-success",
+  },
 ];
 
 const UserList = () => {
