@@ -16,7 +16,7 @@ const userlist = [
     email: "hansolo@gmail.com",
     country: "12",
     status: "Rejeitado",
-    company: "Vehement Capital",
+
     joindate: "2019/12/01",
     color: "bg-danger",
   },
@@ -27,7 +27,51 @@ const userlist = [
     email: "margearita@gmail.com",
     country: "17",
     status: "Apurado",
-    company: "Vehement Capital",
+
+    joindate: "2019/12/01",
+    color: "bg-success",
+  },
+
+  {
+    name: "António Pedro Muteka",
+    phone: "+27 5625 456 589",
+    email: "margearita@gmail.com",
+    country: "17",
+    status: "Apurado",
+
+    joindate: "2019/12/01",
+    color: "bg-success",
+  },
+
+  {
+    name: "Ernesto Cabingano Salias",
+    phone: "+91 2586 253 125",
+    email: "hansolo@gmail.com",
+    country: "12",
+    status: "Rejeitado",
+
+    joindate: "2019/12/01",
+    color: "bg-danger",
+  },
+
+  {
+    name: "Luís Carlos Sebastião Baptista",
+    phone: "+91 2586 253 125",
+    email: "hansolo@gmail.com",
+    country: "12",
+    status: "Rejeitado",
+
+    joindate: "2019/12/01",
+    color: "bg-danger",
+  },
+
+  {
+    name: "Domingos Pascol João Matumona",
+    phone: "+27 5625 456 589",
+    email: "margearita@gmail.com",
+    country: "17",
+    status: "Apurado",
+
     joindate: "2019/12/01",
     color: "bg-success",
   },
@@ -71,7 +115,7 @@ const UserList = () => {
                       <th>Email</th>
                       <th>Media</th>
                       <th>Status</th>
-                      <th>Company</th>
+
                       <th>Data da Inscrição</th>
                     </tr>
                   </thead>
@@ -91,7 +135,7 @@ const UserList = () => {
                               {item.status}
                             </span>
                           </td>
-                          <td>{item.company}</td>
+
                           <td>{item.joindate}</td>
                         </tr>
                       ))}
