@@ -124,7 +124,7 @@ const UserList = () => {
                       <th>Name</th>
                       <th>Contact</th>
                       <th>Email</th>
-                      <th>Media</th>
+                      <th>Media Final</th>
                       <th>Status</th>
 
                       <th>Data da Inscrição</th>
@@ -141,6 +141,7 @@ const UserList = () => {
                           <td>{item.phone}</td>
                           <td>{item.email}</td>
                           <td>{item.country}</td>
+
                           <td>
                             <span className={`badge ${item.color}`}>
                               {item.status}
