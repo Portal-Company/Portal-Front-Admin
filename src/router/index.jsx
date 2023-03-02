@@ -14,13 +14,22 @@ const VerPerfil = lazy(() =>
 );
 
 ///Formação
-
-///Formação
 const FormacaoAdd = lazy(() =>
   import("../views/dashboard/formacao/formacao-add")
 );
 const FormacaoList = lazy(() =>
   import("../views/dashboard/formacao/formacao-list")
+);
+
+///Formação
+const InscritosList = lazy(() =>
+  import("../views/dashboard/inscritos/inscritos-list")
+);
+const InscritosAceitesList = lazy(() =>
+  import("../views/dashboard/inscritos/aceites-list")
+);
+const InscritosRejeitoList = lazy(() =>
+  import("../views/dashboard/inscritos/rejeitado-list")
 );
 
 ///Formação
@@ -228,6 +237,17 @@ const IndexRouters = memo(() => {
         {/* Formação */}
         <Route path="/formacao/formacao-add" element={<FormacaoAdd />} />
         <Route path="/formacao/formacao-list" element={<FormacaoList />} />
+
+        {/* Inscritos */}
+        <Route path="/inscritos/inscritos-list" element={<InscritosList />} />
+        <Route
+          path="/inscritos/aceites-list"
+          element={<InscritosAceitesList />}
+        />
+        <Route
+          path="/inscritos/rejeitados-list"
+          element={<InscritosRejeitoList />}
+        />
 
         {/* Formação */}
         <Route
