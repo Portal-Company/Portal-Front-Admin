@@ -9,14 +9,6 @@ import { Link } from "react-router-dom";
 //components
 import Card from "../../../components/bootstrap/card";
 
-// img
-import shap1 from "/src/assets/images/shapes/01.png";
-import shap2 from "/src/assets/images/shapes/02.png";
-import shap3 from "/src/assets/images/shapes/03.png";
-import shap4 from "/src/assets/images/shapes/04.png";
-import shap5 from "/src/assets/images/shapes/05.png";
-import shap6 from "/src/assets/images/shapes/06.png";
-
 const userlist = [
   {
     name: "Hans Olo",
@@ -24,7 +16,7 @@ const userlist = [
     email: "hansolo@gmail.com",
     country: "12",
     status: "Rejeitado",
-    company: "Vehement Capital",
+
     joindate: "2019/12/01",
     color: "bg-danger",
   },
@@ -35,7 +27,62 @@ const userlist = [
     email: "margearita@gmail.com",
     country: "17",
     status: "Apurado",
-    company: "Vehement Capital",
+
+    joindate: "2019/12/01",
+    color: "bg-success",
+  },
+
+  {
+    name: "António Pedro Muteka",
+    phone: "+27 5625 456 589",
+    email: "margearita@gmail.com",
+    country: "17",
+    status: "Apurado",
+
+    joindate: "2019/12/01",
+    color: "bg-success",
+  },
+
+  {
+    name: "Ernesto Cabingano Salias",
+    phone: "+91 2586 253 125",
+    email: "hansolo@gmail.com",
+    country: "12",
+    status: "Rejeitado",
+
+    joindate: "2019/12/01",
+    color: "bg-danger",
+  },
+
+  {
+    name: "Luís Carlos Sebastião Baptista",
+    phone: "+91 2586 253 125",
+    email: "hansolo@gmail.com",
+    country: "12",
+    status: "Rejeitado",
+
+    joindate: "2019/12/01",
+    color: "bg-danger",
+  },
+
+  {
+    name: "Domingos Pascol João Matumona",
+    phone: "+27 5625 456 589",
+    email: "margearita@gmail.com",
+    country: "17",
+    status: "Apurado",
+
+    joindate: "2019/12/01",
+    color: "bg-success",
+  },
+
+  {
+    name: "Mauricio Costa",
+    phone: "+27 5625 456 589",
+    email: "margearita@gmail.com",
+    country: "17",
+    status: "Apurado",
+
     joindate: "2019/12/01",
     color: "bg-success",
   },
@@ -77,9 +124,9 @@ const UserList = () => {
                       <th>Name</th>
                       <th>Contact</th>
                       <th>Email</th>
-                      <th>Media</th>
+                      <th>Media Final</th>
                       <th>Status</th>
-                      <th>Company</th>
+
                       <th>Data da Inscrição</th>
                     </tr>
                   </thead>
@@ -94,12 +141,13 @@ const UserList = () => {
                           <td>{item.phone}</td>
                           <td>{item.email}</td>
                           <td>{item.country}</td>
+
                           <td>
                             <span className={`badge ${item.color}`}>
                               {item.status}
                             </span>
                           </td>
-                          <td>{item.company}</td>
+
                           <td>{item.joindate}</td>
                         </tr>
                       ))}
