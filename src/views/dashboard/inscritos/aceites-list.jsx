@@ -1,26 +1,84 @@
-import { memo, Fragment } from "react";
+import { memo, Fragment, useState } from "react";
 
 //react-bootstrap
 import { Row, Col, Image } from "react-bootstrap";
 
-//components
-import Card from "../../../components/bootstrap/card";
-
 //router
 import { Link } from "react-router-dom";
 
-//progressbar
-import Progress from "../../../components/progress.jsx";
+//components
+import Card from "../../../components/bootstrap/card";
 
-// img
-import shap1 from "/src/assets/images/shapes/01.png";
-import shap2 from "/src/assets/images/shapes/02.png";
-import shap3 from "/src/assets/images/shapes/03.png";
-import shap4 from "/src/assets/images/shapes/04.png";
-import shap5 from "/src/assets/images/shapes/05.png";
-import shap6 from "/src/assets/images/shapes/06.png";
+const userlist = [
+  {
+    name: "Hans Olo",
+    phone: "+91 2586 253 125",
+    email: "hansolo@gmail.com",
+    country: "12",
+    status: "Apurado",
 
-const BootstrapTable = memo(() => {
+    joindate: "2019/12/01",
+    color: "bg-success",
+  },
+
+  {
+    name: "António Pedro Muteka",
+    phone: "+27 5625 456 589",
+    email: "margearita@gmail.com",
+    country: "17",
+    status: "Apurado",
+
+    joindate: "2019/12/01",
+    color: "bg-success",
+  },
+
+  {
+    name: "Ernesto Cabingano Salias",
+    phone: "+91 2586 253 125",
+    email: "hansolo@gmail.com",
+    country: "12",
+    status: "Apurado",
+    joindate: "2019/12/01",
+    color: "bg-success",
+  },
+
+  {
+    name: "Luís Carlos Sebastião Baptista",
+    phone: "+91 2586 253 125",
+    email: "hansolo@gmail.com",
+    country: "12",
+    status: "Apurado",
+
+    joindate: "2019/12/01",
+    color: "bg-success",
+  },
+
+  {
+    name: "Domingos Pascol João Matumona",
+    phone: "+27 5625 456 589",
+    email: "margearita@gmail.com",
+    country: "17",
+    status: "Apurado",
+
+    joindate: "2019/12/01",
+    color: "bg-success",
+  },
+
+  {
+    name: "Mauricio Costa",
+    phone: "+27 5625 456 589",
+    email: "margearita@gmail.com",
+    country: "17",
+    status: "Apurado",
+
+    joindate: "2019/12/01",
+    color: "bg-success",
+  },
+];
+
+const UserList = () => {
+  const [query, setQuery] = useState("");
+
   return (
     <Fragment>
       <Row>
@@ -28,306 +86,192 @@ const BootstrapTable = memo(() => {
           <Card>
             <Card.Header className="d-flex justify-content-between">
               <div className="header-title">
-                <h4 className="card-title">Basic Table</h4>
+                <h4 className="card-title">Inscrições Aceite</h4>
+              </div>
+              <div class="form-outline">
+                <input
+                  type="search"
+                  id="form1"
+                  class="form-control"
+                  placeholder="Pequisar..."
+                  aria-label="Search"
+                  onChange={(e) => setQuery(e.target.value)}
+                />
               </div>
             </Card.Header>
-            <Card.Body className="p-0">
-              <div className="table-responsive mt-4">
+            <Card.Body className="px-0">
+              <div className="table-responsive">
                 <table
-                  id="basic-table"
-                  className="table table-striped mb-0"
+                  id="user-list-table"
+                  className="table table-striped"
                   role="grid"
+                  data-toggle="data-table"
                 >
                   <thead>
-                    <tr>
-                      <th>Companies</th>
-                      <th>Members</th>
-                      <th>Budget</th>
+                    <tr className="ligth">
+                      <th>Name</th>
+                      <th>Contact</th>
+                      <th>Email</th>
+                      <th>Media Final</th>
                       <th>Status</th>
-                      <th>Completion</th>
+                      <th>Data da Inscrição</th>
+                      <th>Acção</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>
-                        <div className="d-flex align-items-center">
-                          <Image
-                            className="rounded img-fluid avatar-40 me-3 bg-soft-primary"
-                            src={shap1}
-                            alt="profile"
-                            loading="lazy"
-                          />
-                          <h6>Soft UI XD Version</h6>
-                        </div>
-                      </td>
-                      <td>
-                        <div className="iq-media-group iq-media-group-1">
-                          <Link to="#" className="iq-media-1">
-                            <div className="icon iq-icon-box-3 rounded-pill">
-                              SP
+                    {userlist
+                      .filter((user) =>
+                        user.email.toLocaleLowerCase().includes(query)
+                      )
+                      .map((item, idx) => (
+                        <tr key={idx}>
+                          <td>{item.name}</td>
+                          <td>{item.phone}</td>
+                          <td>{item.email}</td>
+                          <td>{item.country}</td>
+                          <td>
+                            <span className={`badge ${item.color}`}>
+                              {item.status}
+                            </span>
+                          </td>
+                          <td>{item.joindate}</td>
+                          <td>
+                            <div className="flex align-items-center list-user-action">
+                              <Link
+                                className="btn btn-sm btn-icon btn-success"
+                                data-toggle="tooltip"
+                                data-placement="top"
+                                title=""
+                                data-original-title="Add"
+                                to="#"
+                              >
+                                <span className="btn-inner">
+                                  <svg
+                                    width="32"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      fillRule="evenodd"
+                                      clipRule="evenodd"
+                                      d="M9.87651 15.2063C6.03251 15.2063 2.74951 15.7873 2.74951 18.1153C2.74951 20.4433 6.01251 21.0453 9.87651 21.0453C13.7215 21.0453 17.0035 20.4633 17.0035 18.1363C17.0035 15.8093 13.7415 15.2063 9.87651 15.2063Z"
+                                      stroke="currentColor"
+                                      strokeWidth="1.5"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                    ></path>
+                                    <path
+                                      fillRule="evenodd"
+                                      clipRule="evenodd"
+                                      d="M9.8766 11.886C12.3996 11.886 14.4446 9.841 14.4446 7.318C14.4446 4.795 12.3996 2.75 9.8766 2.75C7.3546 2.75 5.3096 4.795 5.3096 7.318C5.3006 9.832 7.3306 11.877 9.8456 11.886H9.8766Z"
+                                      stroke="currentColor"
+                                      strokeWidth="1.5"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                    ></path>
+                                    <path
+                                      d="M19.2036 8.66919V12.6792"
+                                      stroke="currentColor"
+                                      strokeWidth="1.5"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                    ></path>
+                                    <path
+                                      d="M21.2497 10.6741H17.1597"
+                                      stroke="currentColor"
+                                      strokeWidth="1.5"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                    ></path>
+                                  </svg>
+                                </span>
+                              </Link>{" "}
+                              <Link
+                                className="btn btn-sm btn-icon btn-warning"
+                                data-toggle="tooltip"
+                                data-placement="top"
+                                title=""
+                                data-original-title="Edit"
+                                to="#"
+                              >
+                                <span className="btn-inner">
+                                  <svg
+                                    width="20"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="M11.4925 2.78906H7.75349C4.67849 2.78906 2.75049 4.96606 2.75049 8.04806V16.3621C2.75049 19.4441 4.66949 21.6211 7.75349 21.6211H16.5775C19.6625 21.6211 21.5815 19.4441 21.5815 16.3621V12.3341"
+                                      stroke="currentColor"
+                                      strokeWidth="1.5"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                    ></path>
+                                    <path
+                                      fillRule="evenodd"
+                                      clipRule="evenodd"
+                                      d="M8.82812 10.921L16.3011 3.44799C17.2321 2.51799 18.7411 2.51799 19.6721 3.44799L20.8891 4.66499C21.8201 5.59599 21.8201 7.10599 20.8891 8.03599L13.3801 15.545C12.9731 15.952 12.4211 16.181 11.8451 16.181H8.09912L8.19312 12.401C8.20712 11.845 8.43412 11.315 8.82812 10.921Z"
+                                      stroke="currentColor"
+                                      strokeWidth="1.5"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                    ></path>
+                                    <path
+                                      d="M15.1655 4.60254L19.7315 9.16854"
+                                      stroke="currentColor"
+                                      strokeWidth="1.5"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                    ></path>
+                                  </svg>
+                                </span>
+                              </Link>{" "}
+                              <Link
+                                className="btn btn-sm btn-icon btn-danger"
+                                data-toggle="tooltip"
+                                data-placement="top"
+                                title=""
+                                data-original-title="Delete"
+                                to="#"
+                              >
+                                <span className="btn-inner">
+                                  <svg
+                                    width="20"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    stroke="currentColor"
+                                  >
+                                    <path
+                                      d="M19.3248 9.46826C19.3248 9.46826 18.7818 16.2033 18.4668 19.0403C18.3168 20.3953 17.4798 21.1893 16.1088 21.2143C13.4998 21.2613 10.8878 21.2643 8.27979 21.2093C6.96079 21.1823 6.13779 20.3783 5.99079 19.0473C5.67379 16.1853 5.13379 9.46826 5.13379 9.46826"
+                                      stroke="currentColor"
+                                      strokeWidth="1.5"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                    ></path>
+                                    <path
+                                      d="M20.708 6.23975H3.75"
+                                      stroke="currentColor"
+                                      strokeWidth="1.5"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                    ></path>
+                                    <path
+                                      d="M17.4406 6.23973C16.6556 6.23973 15.9796 5.68473 15.8256 4.91573L15.5826 3.69973C15.4326 3.13873 14.9246 2.75073 14.3456 2.75073H10.1126C9.53358 2.75073 9.02558 3.13873 8.87558 3.69973L8.63258 4.91573C8.47858 5.68473 7.80258 6.23973 7.01758 6.23973"
+                                      stroke="currentColor"
+                                      strokeWidth="1.5"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                    ></path>
+                                  </svg>
+                                </span>
+                              </Link>{" "}
                             </div>
-                          </Link>
-                          <Link to="#" className="iq-media-1">
-                            <div className="icon iq-icon-box-3 rounded-pill">
-                              PP
-                            </div>
-                          </Link>
-                          <Link to="#" className="iq-media-1">
-                            <div className="icon iq-icon-box-3 rounded-pill">
-                              MM
-                            </div>
-                          </Link>
-                        </div>
-                      </td>
-                      <td>$14000</td>
-                      <td>
-                        <div className="text-info">Pending</div>
-                      </td>
-                      <td>
-                        <div className="d-flex align-items-center mb-2">
-                          <h6>60%</h6>
-                        </div>
-                        <Progress
-                          softcolors="info"
-                          color="info"
-                          className="shadow-none w-100"
-                          value={60}
-                          minvalue={0}
-                          maxvalue={100}
-                          style={{ height: "6px" }}
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div className="d-flex align-items-center">
-                          <img
-                            className="rounded img-fluid avatar-40 me-3 bg-soft-primary"
-                            src={shap2}
-                            alt="profile"
-                            loading="lazy"
-                          />
-                          <h6>Add Progress Track</h6>
-                        </div>
-                      </td>
-                      <td>
-                        <div className="iq-media-group iq-media-group-1">
-                          <Link to="#" className="iq-media-1">
-                            <div className="icon iq-icon-box-3 rounded-pill">
-                              SP
-                            </div>
-                          </Link>
-                          <Link to="#" className="iq-media-1">
-                            <div className="icon iq-icon-box-3 rounded-pill">
-                              PP
-                            </div>
-                          </Link>
-                        </div>
-                      </td>
-                      <td>$3000</td>
-                      <td>
-                        <div className="text-danger">Pending</div>
-                      </td>
-                      <td>
-                        <div className="d-flex align-items-center mb-2">
-                          <h6>10%</h6>
-                        </div>
-                        <Progress
-                          softcolors="danger"
-                          color="danger"
-                          className="shadow-none w-100"
-                          value={10}
-                          minvalue={0}
-                          maxvalue={100}
-                          style={{ height: "6px" }}
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div className="d-flex align-items-center">
-                          <img
-                            className="rounded img-fluid avatar-40 me-3 bg-soft-primary"
-                            src={shap3}
-                            alt="profile"
-                            loading="lazy"
-                          />
-                          <h6>Fix Platform Errors</h6>
-                        </div>
-                      </td>
-                      <td>
-                        <div className="iq-media-group iq-media-group-1">
-                          <Link to="#" className="iq-media-1">
-                            <div className="icon iq-icon-box-3 rounded-pill">
-                              SP
-                            </div>
-                          </Link>
-                          <Link to="#" className="iq-media-1">
-                            <div className="icon iq-icon-box-3 rounded-pill">
-                              PP
-                            </div>
-                          </Link>
-                        </div>
-                      </td>
-                      <td>Not set</td>
-                      <td>
-                        <div className="text-success">Completed</div>
-                      </td>
-                      <td>
-                        <div className="d-flex align-items-center mb-2">
-                          <h6>100%</h6>
-                        </div>
-                        <Progress
-                          softcolors="success"
-                          color="success"
-                          className="shadow-none w-100"
-                          value={10}
-                          minvalue={0}
-                          maxvalue={100}
-                          style={{ height: "6px" }}
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div className="d-flex align-items-center">
-                          <img
-                            className="rounded img-fluid avatar-40 me-3 bg-soft-primary"
-                            src={shap4}
-                            alt="profile"
-                            loading="lazy"
-                          />
-                          <h6>Launch Our Mobile App</h6>
-                        </div>
-                      </td>
-                      <td>
-                        <div className="iq-media-group iq-media-group-1">
-                          <Link to="#" className="iq-media-1">
-                            <div className="icon iq-icon-box-3 rounded-pill">
-                              SP
-                            </div>
-                          </Link>
-                          <Link to="#" className="iq-media-1">
-                            <div className="icon iq-icon-box-3 rounded-pill">
-                              PP
-                            </div>
-                          </Link>
-                          <Link to="#" className="iq-media-1">
-                            <div className="icon iq-icon-box-3 rounded-pill">
-                              AP
-                            </div>
-                          </Link>
-                          <Link to="#" className="iq-media-1">
-                            <div className="icon iq-icon-box-3 rounded-pill">
-                              DP
-                            </div>
-                          </Link>
-                        </div>
-                      </td>
-                      <td>$20500</td>
-                      <td>
-                        <div className="text-success">Completed</div>
-                      </td>
-                      <td>
-                        <div className="d-flex align-items-center mb-2">
-                          <h6>100%</h6>
-                        </div>
-                        <Progress
-                          softcolors="success"
-                          color="success"
-                          className="shadow-none w-100"
-                          value={100}
-                          minvalue={0}
-                          maxvalue={100}
-                          style={{ height: "6px" }}
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div className="d-flex align-items-center">
-                          <img
-                            className="rounded img-fluid avatar-40 me-3 bg-soft-primary"
-                            src={shap5}
-                            alt="profile"
-                            loading="lazy"
-                          />
-                          <h6>Add the New Pricing Page</h6>
-                        </div>
-                      </td>
-                      <td>
-                        <div className="iq-media-group iq-media-group-1">
-                          <Link to="#" className="iq-media-1">
-                            <div className="icon iq-icon-box-3 rounded-pill">
-                              SP
-                            </div>
-                          </Link>
-                        </div>
-                      </td>
-                      <td>$500</td>
-                      <td>
-                        <div className="text-primary">On Schedule</div>
-                      </td>
-                      <td>
-                        <div className="d-flex align-items-center mb-2">
-                          <h6>25%</h6>
-                        </div>
-                        <Progress
-                          softcolors="primary"
-                          color="primary"
-                          className="shadow-none w-100"
-                          value={25}
-                          minvalue={0}
-                          maxvalue={100}
-                          style={{ height: "6px" }}
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div className="d-flex align-items-center">
-                          <img
-                            className="rounded img-fluid avatar-40 me-3 bg-soft-primary"
-                            src={shap6}
-                            alt="profile"
-                            loading="lazy"
-                          />
-                          <h6>Redesign New Online Shop</h6>
-                        </div>
-                      </td>
-                      <td>
-                        <div className="iq-media-group iq-media-group-1">
-                          <Link to="#" className="iq-media-1">
-                            <div className="icon iq-icon-box-3 rounded-pill">
-                              SP
-                            </div>
-                          </Link>
-                          <Link to="#" className="iq-media-1">
-                            <div className="icon iq-icon-box-3 rounded-pill">
-                              PP
-                            </div>
-                          </Link>
-                        </div>
-                      </td>
-                      <td>$2000</td>
-                      <td>
-                        <div className="text-warning">Completed</div>
-                      </td>
-                      <td>
-                        <div className="d-flex align-items-center mb-2">
-                          <h6>40%</h6>
-                        </div>
-                        <Progress
-                          softcolors="warning"
-                          color="warning"
-                          className="shadow-none w-100"
-                          value={40}
-                          minvalue={0}
-                          maxvalue={100}
-                          style={{ height: "6px" }}
-                        />
-                      </td>
-                    </tr>
+                          </td>
+                        </tr>
+                      ))}
                   </tbody>
                 </table>
               </div>
@@ -337,7 +281,7 @@ const BootstrapTable = memo(() => {
       </Row>
     </Fragment>
   );
-});
+};
 
-BootstrapTable.displayName = "BootstrapTable";
-export default BootstrapTable;
+UserList.displayName = "UserList";
+export default UserList;
