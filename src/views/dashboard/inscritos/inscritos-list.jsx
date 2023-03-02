@@ -82,7 +82,6 @@ const userlist = [
     email: "margearita@gmail.com",
     country: "17",
     status: "Apurado",
-
     joindate: "2019/12/01",
     color: "bg-success",
   },

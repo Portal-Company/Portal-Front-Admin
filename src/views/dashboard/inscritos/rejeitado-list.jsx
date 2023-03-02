@@ -69,7 +69,7 @@ const userlist = [
     phone: "+27 5625 456 589",
     email: "margearita@gmail.com",
     country: "17",
-    status: "Apurado",
+    status: "Rejeitado",
 
     joindate: "2019/12/01",
     color: "bg-danger",
