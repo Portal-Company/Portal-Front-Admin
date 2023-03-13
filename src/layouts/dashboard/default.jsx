@@ -1,4 +1,4 @@
-import { useEffect, memo, Fragment, useContext, Suspense } from "react";
+import { useEffect, memo, Fragment, useContext, Suspense, useState } from "react";
 import { useLocation, Outlet } from "react-router-dom";
 
 //react-shepherd
@@ -23,9 +23,13 @@ import Loader from "../../components/Loader";
 
 // Import selectors & action from setting store
 import * as SettingSelector from "../../store/setting/selectors";
+import useSWR from "swr"
 
 // Redux Selector / Action
 import { useSelector } from "react-redux";
+import { getUserInfo } from "../../views/dashboard/auth/services";
+import { api } from "../../services";
+import useFetch from "../../hooks";
 
 const Tour = () => {
   const tour = useContext(ShepherdTourContext);
@@ -204,6 +208,14 @@ const Default = memo((props) => {
       break;
   }
 
+  const [user, setUser] = useState(getUserInfo())
+
+  console.log(user);
+
+  const { data } = useFetch(`/user/list/${user?.sub}`)
+
+  console.log(data, "usuario loggado");
+  
   return (
     <Fragment>
       <ShepherdTour steps={newSteps} tourOptions={tourOptions}>

@@ -1,8 +1,6 @@
 import { memo, lazy } from "react";
-
 //router
-import { Routes, Route } from "react-router-dom";
-
+import { Routes, Route} from "react-router-dom";
 const CursoAdd = lazy(() => import("../views/dashboard/curso/curso-add"));
 const CursoList = lazy(() => import("../views/dashboard/curso/curso-list"));
 
@@ -49,7 +47,6 @@ import Simple from "../layouts/dashboard/simple";
 
 import AccountDeactive from "../views/dashboard/auth/account-deactivate";
 import TwoFactor from "../views/dashboard/auth/two-factor";
-
 // auth
 const ConfirmMail = lazy(() => import("../views/dashboard/auth/confirm-mail"));
 const LockScreen = lazy(() => import("../views/dashboard/auth/lock-screen"));
@@ -200,7 +197,9 @@ const Analytics = lazy(() => import("../views/dashboard/analytics"));
 const Crypto = lazy(() => import("../views/dashboard/crypto"));
 
 const IndexRouters = memo(() => {
+
   return (
+    <>
     <Routes>
       <Route path="/errors" element={<Simple />}>
         {/* error */}
@@ -370,11 +369,11 @@ const IndexRouters = memo(() => {
         <Route path="/plugins/todo" element={<Todo />}></Route>
         <Route path="/plugins/image-copper" element={<Imagecopper />}></Route>
         <Route path="/plugins/quill-editor" element={<Quilleditor />}></Route>
-
         {/*admin*/}
-        <Route path="/admin/admin" element={<Admin />} />
+        <Route path="/admin/admin" element={<Admin/>} />
       </Route>
     </Routes>
+    </>
   );
 });
 

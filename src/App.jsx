@@ -1,6 +1,5 @@
-import { useEffect } from 'react'
 //router
-import { useSearchParams } from 'react-router-dom'
+import {  useSearchParams } from 'react-router-dom'
 import IndexRouters from "./router/index"
 //scss
 import "shepherd.js/dist/css/shepherd.css";
@@ -13,12 +12,16 @@ import "./assets/scss/custom.scss"
 import "./assets/custom/scss/custom.scss"
 import 'swiper/css';
 import 'swiper/css/navigation';
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // Redux Selector / Action
 import { useDispatch } from 'react-redux';
 
 // import state selectors
 import { setSetting, theme_scheme, sidebar_color, page_layout, sidebar_type, sidebar_menu_style, theme_color, theme_scheme_direction } from './store/setting/actions'
+import { UserContextProvider } from './context';
+import { getUserInfo } from './views/dashboard/auth/services';
+
 
 function App() {
 
@@ -73,11 +76,16 @@ function App() {
 
     default:
       break
-
   }
+
+
+
   return (
     <div className="App">
-      <IndexRouters />
+      <UserContextProvider>
+        <IndexRouters />
+      </UserContextProvider>
+      <ToastContainer/>
     </div>
   );
 }

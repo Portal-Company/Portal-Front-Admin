@@ -1,4 +1,4 @@
-import { useState, Fragment } from "react";
+import { useState, Fragment, useContext } from "react";
 
 // react-bootstrap
 import { Nav, Dropdown, Image, Button } from "react-bootstrap";
@@ -24,6 +24,7 @@ import avatar_2 from "/src/assets/images/avatars/avtar_2.png";
 import avatar_3 from "/src/assets/images/avatars/avtar_3.png";
 import avatar_4 from "/src/assets/images/avatars/avtar_4.png";
 import avatar_5 from "/src/assets/images/avatars/avtar_5.png";
+import useSWR from "swr"
 
 // Redux Selector / Action
 import { useDispatch } from "react-redux";
@@ -34,8 +35,21 @@ import {
   theme_scheme,
   theme_scheme_direction,
 } from "../../../../store/setting/actions";
+import { api } from "../../../../services";
+import { getUserInfo } from "../../../../views/dashboard/auth/services";
+import useFetch from "../../../../hooks";
 
 const SunNav = () => {
+  // console.log(user?.Escola?.logo);
+  // const { data } = useSWR("/file", getImage(user?.Escola?.logo))
+
+  // console.log(data);
+
+  // async function getImage(id){
+  //   const data = await api.get(`/file/${id}`)
+  //   return data.data
+  // }
+
   const dispatch = useDispatch();
   dispatch(setSetting());
   const [show, setShow] = useState(false);
@@ -73,6 +87,16 @@ const SunNav = () => {
       }
     }
   };
+
+  const user = getUserInfo()
+  // console.log(user);
+  const { data: userData } = useFetch(`/user/list/${user?.sub}`)
+  const { data: FileData } = useFetch(`/file/${userData?.Escola?.logo}`)
+
+
+  console.log(userData, "usuario loggado");
+  
+
   return (
     <Fragment>
       <div className="d-flex align-items-center">
@@ -652,18 +676,20 @@ const SunNav = () => {
               as={CustomToggle}
               variant="py-0  d-flex align-items-center nav-link"
             >
-              <img
-                src={avatar1}
-                alt="User-Profile"
-                className="theme-color-img img-fluid avatar avatar-50 avatar-rounded"
-                loading="lazy"
-              />
-
+              {FileData ? (
+                  <img
+                  src={FileData?.link}
+                  alt="User-Profile"
+                  className="theme-color-img img-fluid avatar avatar-50 avatar-rounded"
+                  loading="lazy"
+                />
+              ) : null}
+            
               <div className="caption ms-3 d-none d-md-block ">
                 <h6 className="mb-0 caption-title">
-                  Instituto Politecnico Industrial de Luanda
+                  {userData?.Escola?.nome}
                 </h6>
-                <p className="mb-0 caption-sub-title">Ensino Médio</p>
+                <p className="mb-0 caption-sub-title">{userData?.Escola?.Categoria?.nome}</p>
               </div>
             </Dropdown.Toggle>
             <Dropdown.Menu variant="end">

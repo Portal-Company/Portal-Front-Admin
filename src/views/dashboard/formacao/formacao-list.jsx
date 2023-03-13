@@ -1,13 +1,15 @@
-import { memo, Fragment } from "react";
+import { memo, Fragment, useContext, useState } from "react";
 
 //react-bootstrap
 import { Row, Col, Image } from "react-bootstrap";
-
+import { api } from "../../../services";
 //router
-import { Link } from "react-router-dom";
+import { Link, useNavigate  } from "react-router-dom";
 
 //components
 import Card from "../../../components/bootstrap/card";
+import { UserContext } from "../../../context";
+import useSWR, { mutate } from "swr"
 
 // img
 import shap1 from "/src/assets/images/shapes/01.png";
@@ -16,38 +18,38 @@ import shap3 from "/src/assets/images/shapes/03.png";
 import shap4 from "/src/assets/images/shapes/04.png";
 import shap5 from "/src/assets/images/shapes/05.png";
 import shap6 from "/src/assets/images/shapes/06.png";
-
-const userlist = [
-  {
-    name: "Técnico de Informática",
-    formacao: "Informática",
-
-    status: "Active",
-
-    color: "bg-primary",
-  },
-
-  {
-    name: "Técnico de Gestão de Informática",
-    formacao: "Informática",
-
-    status: "Active",
-
-    color: "bg-primary",
-  },
-
-  {
-    name: "Máquinas e Motores",
-    formacao: "Mecânica",
-    email: "hansolo@gmail.com",
-
-    status: "Inactive",
-
-    color: "bg-danger",
-  },
-];
+import { toast } from "react-toastify";
+import { getUserInfo } from "../auth/services";
+import useFetch from "../../../hooks";
+import { ModalDelete } from "../../../components/ModalConfirm";
+import { ModalUpdate } from "./components/ModalUpdate";
 
 const UserList = memo(() => {
+  const user = getUserInfo()
+
+  const { data: userData } = useFetch(`/user/list/${user?.sub}`)
+  const { data: Area } = useFetch(`/school/list/${userData?.Escola?.id}/trainingAreas`)
+
+  const [showModal, setShowModal] = useState(false);
+  const [showModalUpdate, setShowModalUpadate] = useState(false);
+
+  function handleChange(){
+    mutate(`/school/list/${userData?.Escola?.id}/trainingAreas`)
+  }
+
+  async function handleDelete(id){
+    try{
+      const data = await api.delete(`trainingArea/delete/${id}`)
+      if(data?.data){
+        toast.success("deletado com sucesso!")
+        handleChange()
+        setShowModal(false)
+      }
+  }catch(err){
+    toast.error("Erro inesperado")
+  }
+  }
+
   return (
     <Fragment>
       <Row>
@@ -55,7 +57,7 @@ const UserList = memo(() => {
           <Card>
             <Card.Header className="d-flex justify-content-between">
               <div className="header-title">
-                <h4 className="card-title">Listagem de Cursos</h4>
+                <h4 className="card-title">Listagem de Area de Formação</h4>
               </div>
             </Card.Header>
             <Card.Body className="px-0">
@@ -68,7 +70,6 @@ const UserList = memo(() => {
                 >
                   <thead>
                     <tr className="ligth">
-                      <th>Name do Curso</th>
                       <th>Area de Formação</th>
 
                       <th>Status</th>
@@ -77,11 +78,9 @@ const UserList = memo(() => {
                     </tr>
                   </thead>
                   <tbody>
-                    {userlist.map((item, idx) => (
+                    {Area?.map((item, idx) => (
                       <tr key={idx}>
-                        <td>{item.name}</td>
-                        <td>{item.formacao}</td>
-
+                        <td>{item?.nome}</td>
                         <td>
                           <span className={`badge ${item.color}`}>
                             {item.status}
@@ -90,57 +89,9 @@ const UserList = memo(() => {
 
                         <td>
                           <div className="flex align-items-center list-user-action">
+                            {showModalUpdate ? (<ModalUpdate onClose={()=> setShowModalUpadate(false)} setShowModalUpadate={setShowModalUpadate} mutate={handleChange} item={item} />) : null}
                             <Link
-                              className="btn btn-sm btn-icon btn-success"
-                              data-toggle="tooltip"
-                              data-placement="top"
-                              title=""
-                              data-original-title="Add"
-                              to="#"
-                            >
-                              <span className="btn-inner">
-                                <svg
-                                  width="32"
-                                  viewBox="0 0 24 24"
-                                  fill="none"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    clipRule="evenodd"
-                                    d="M9.87651 15.2063C6.03251 15.2063 2.74951 15.7873 2.74951 18.1153C2.74951 20.4433 6.01251 21.0453 9.87651 21.0453C13.7215 21.0453 17.0035 20.4633 17.0035 18.1363C17.0035 15.8093 13.7415 15.2063 9.87651 15.2063Z"
-                                    stroke="currentColor"
-                                    strokeWidth="1.5"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                  ></path>
-                                  <path
-                                    fillRule="evenodd"
-                                    clipRule="evenodd"
-                                    d="M9.8766 11.886C12.3996 11.886 14.4446 9.841 14.4446 7.318C14.4446 4.795 12.3996 2.75 9.8766 2.75C7.3546 2.75 5.3096 4.795 5.3096 7.318C5.3006 9.832 7.3306 11.877 9.8456 11.886H9.8766Z"
-                                    stroke="currentColor"
-                                    strokeWidth="1.5"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                  ></path>
-                                  <path
-                                    d="M19.2036 8.66919V12.6792"
-                                    stroke="currentColor"
-                                    strokeWidth="1.5"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                  ></path>
-                                  <path
-                                    d="M21.2497 10.6741H17.1597"
-                                    stroke="currentColor"
-                                    strokeWidth="1.5"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                  ></path>
-                                </svg>
-                              </span>
-                            </Link>{" "}
-                            <Link
+                              onClick={() => setShowModalUpadate(true)}
                               className="btn btn-sm btn-icon btn-warning"
                               data-toggle="tooltip"
                               data-placement="top"
@@ -181,7 +132,9 @@ const UserList = memo(() => {
                                 </svg>
                               </span>
                             </Link>{" "}
+                            {showModal ? (<ModalDelete onClose={()=> setShowModal(false)} onConfirm={() => handleDelete(item?.id)} item={item} desc="area de" />) : null}
                             <Link
+                              onClick={() => setShowModal(true)}
                               className="btn btn-sm btn-icon btn-danger"
                               data-toggle="tooltip"
                               data-placement="top"
