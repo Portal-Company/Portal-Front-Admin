@@ -27,7 +27,7 @@ const FuncionarioAdd = memo(() => {
           <Card>
             <Card.Header className="d-flex justify-content-between">
               <div className="header-title">
-                <h4 className="card-title">Novo Funciánario</h4>
+                <h4 className="card-title">Novo Funcionário</h4>
               </div>
             </Card.Header>
             <Card.Body>

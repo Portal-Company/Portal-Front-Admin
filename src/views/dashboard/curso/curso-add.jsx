@@ -94,6 +94,11 @@ const Cursos = () => {
                   Nome do Curso
                 </Form.Label>
                 <Form.Control type="text" id="nome" name="nome" value={formik.values.nome} onChange={formik.handleChange} required />
+                {formik?.touched?.nome && formik?.errors?.nome ? (
+                    <label className="mt-1 text-danger">  
+                      {formik?.errors?.nome}
+                    </label>
+                  ): null}
                 <Form.Group className="mb-3 form-group mt-2">
                   <Form.Label className="custom-file-input">Carregar imagem</Form.Label>
                   <Form.Control

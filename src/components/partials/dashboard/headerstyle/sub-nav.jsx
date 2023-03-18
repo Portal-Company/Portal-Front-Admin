@@ -36,7 +36,7 @@ import {
   theme_scheme_direction,
 } from "../../../../store/setting/actions";
 import { api } from "../../../../services";
-import { getUserInfo } from "../../../../views/dashboard/auth/services";
+import { getUserInfo, logout } from "../../../../views/dashboard/auth/services";
 import useFetch from "../../../../hooks";
 
 const SunNav = () => {
@@ -700,7 +700,9 @@ const SunNav = () => {
                 Configurações
               </Dropdown.Item>
               <hr className="dropdown-divider" />
-              <Dropdown.Item to="/auth/sign-in">Sair</Dropdown.Item>
+              <Dropdown.Item onClick={() => logout()}>
+                <Link to="/auth/sign-in">Sair</Link>
+              </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         </ul>

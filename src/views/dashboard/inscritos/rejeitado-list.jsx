@@ -1,92 +1,34 @@
 import { memo, Fragment, useState } from "react";
 
 //react-bootstrap
-import { Row, Col, Image } from "react-bootstrap";
+import { Row, Col, Image, Button } from "react-bootstrap";
 
 //router
 import { Link } from "react-router-dom";
 
 //components
 import Card from "../../../components/bootstrap/card";
+import useFetch from "../../../hooks";
+import { getUserInfo } from "../auth/services";
 
-const userlist = [
-  {
-    name: "Hans Olo",
-    phone: "+91 2586 253 125",
-    email: "hansolo@gmail.com",
-    country: "12",
-    status: "Rejeitado",
-
-    joindate: "2019/12/01",
-    color: "bg-danger",
-  },
-
-  {
-    name: "António Pedro Muteka",
-    phone: "+27 5625 456 589",
-    email: "margearita@gmail.com",
-    country: "17",
-    status: "Apurado",
-
-    joindate: "2019/12/01",
-    color: "bg-danger",
-  },
-
-  {
-    name: "Ernesto Cabingano Salias",
-    phone: "+91 2586 253 125",
-    email: "hansolo@gmail.com",
-    country: "12",
-    status: "Rejeitado",
-    joindate: "2019/12/01",
-    color: "bg-danger",
-  },
-
-  {
-    name: "Luís Carlos Sebastião Baptista",
-    phone: "+91 2586 253 125",
-    email: "hansolo@gmail.com",
-    country: "12",
-    status: "Rejeitado",
-
-    joindate: "2019/12/01",
-    color: "bg-danger",
-  },
-
-  {
-    name: "Domingos Pascol João Matumona",
-    phone: "+27 5625 456 589",
-    email: "margearita@gmail.com",
-    country: "17",
-    status: "Rejeitado",
-
-    joindate: "2019/12/01",
-    color: "bg-danger",
-  },
-
-  {
-    name: "Mauricio Costa",
-    phone: "+27 5625 456 589",
-    email: "margearita@gmail.com",
-    country: "17",
-    status: "Rejeitado",
-
-    joindate: "2019/12/01",
-    color: "bg-danger",
-  },
-];
 
 const UserList = () => {
   const [query, setQuery] = useState("");
 
+  const user = getUserInfo()
+  const { data: userData } = useFetch(`/user/list/${user?.sub}`)
+  const { data: Inscricao } = useFetch(`/school/list/${userData?.Escola?.id}/enrollments`)
+
+
+
   return (
     <Fragment>
       <Row>
-        <Col sm="12">
+      <Col sm="12">
           <Card>
             <Card.Header className="d-flex justify-content-between">
               <div className="header-title">
-                <h4 className="card-title">Inscrições Não Aceite</h4>
+                <h4 className="card-title">Inscrições</h4>
               </div>
               <div class="form-outline">
                 <input
@@ -109,33 +51,36 @@ const UserList = () => {
                 >
                   <thead>
                     <tr className="ligth">
-                      <th>Name</th>
-                      <th>Contact</th>
+                      <th>Nome Completo</th>
+                      <th>Contacto</th>
+                      <th>Sexo</th>
                       <th>Email</th>
-                      <th>Media Final</th>
+                      <th>Curso</th>
                       <th>Status</th>
-
-                      <th>Data da Inscrição</th>
+                      <th>Acções</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {userlist
-                      .filter((user) =>
-                        user.email.toLocaleLowerCase().includes(query)
-                      )
-                      .map((item, idx) => (
+                    {Inscricao?.filter((item) =>
+                          item?.Candidato?.nomeCompleto.toLocaleLowerCase().includes(query)
+                        )
+                        .map((item, idx) => (
                         <tr key={idx}>
-                          <td>{item.name}</td>
-                          <td>{item.phone}</td>
-                          <td>{item.email}</td>
-                          <td>{item.country}</td>
+                          <td>{item?.Candidato?.nomeCompleto}</td>
+                          <td>{item?.Candidato?.Contato?.numeroTelefone}</td>
+                          <td>{item?.Candidato?.sexo}</td>
+                          <td>{item?.Candidato?.Contato?.email}</td>
+                          <td>{item?.CursoPretendido[0]?.Curso?.nome}</td>
+
                           <td>
-                            <span className={`badge ${item.color}`}>
-                              {item.status}
+                            <span className={`badge ${"bg-success"}`}>
+                              {item?.estado}
                             </span>
                           </td>
 
-                          <td>{item.joindate}</td>
+                          <td>
+                            <Button>Ver dados</Button>
+                          </td>
                         </tr>
                       ))}
                   </tbody>

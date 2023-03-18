@@ -1,5 +1,5 @@
 import { useEffect, memo, Fragment, useContext, Suspense, useState } from "react";
-import { useLocation, Outlet } from "react-router-dom";
+import { useLocation, Outlet, useNavigate } from "react-router-dom";
 
 //react-shepherd
 import { ShepherdTour, ShepherdTourContext } from "react-shepherd";
@@ -209,16 +209,19 @@ const Default = memo((props) => {
   }
 
   const [user, setUser] = useState(getUserInfo())
-
-  console.log(user);
-
   const { data } = useFetch(`/user/list/${user?.sub}`)
+  const navigate = useNavigate()
+
+  // if(!data) return Navigate("/auth/sign-in")
+
+
 
   console.log(data, "usuario loggado");
   
   return (
     <Fragment>
-      <ShepherdTour steps={newSteps} tourOptions={tourOptions}>
+      {data ? (
+        <ShepherdTour steps={newSteps} tourOptions={tourOptions}>
         <Loader />
         <Sidebar app_name={appName} />
         <Tour />
@@ -236,6 +239,8 @@ const Default = memo((props) => {
         </main>
         <SettingOffCanvas />
       </ShepherdTour>
+      ) : navigate("/auth/sign-in")}
+      
     </Fragment>
   );
 });

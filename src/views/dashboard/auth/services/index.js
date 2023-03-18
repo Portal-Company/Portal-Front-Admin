@@ -1,5 +1,5 @@
 import jwt_decode from 'jwt-decode';
-import nookies from 'nookies';
+import nookies, { destroyCookie } from 'nookies';
 
 export const logout = () => {
     destroyCookie(null, 'token', { path: '/' });
