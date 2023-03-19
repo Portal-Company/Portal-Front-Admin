@@ -23,6 +23,7 @@ const UserList = memo(() => {
   const user = getUserInfo()
   const { data: userData } = useFetch(`/user/list/${user?.sub}`)
   const { data: Courses} = useFetch(`/school/list/${userData?.Escola?.id}/courses`)
+  const [item, setItem] = useState({})
 
   const [showModal, setShowModal] = useState(false);
   const [showModalUpdate, setShowModalUpadate] = useState(false);
@@ -31,7 +32,7 @@ const UserList = memo(() => {
     mutate(`/school/list/${userData?.Escola?.id}/courses`)
   }
 
-  async function handleDelete(id){
+  async function handleDeleteConfirm(id){
     try{
       const data = await api.delete(`course/delete/${id}`)
       if(data?.data){
@@ -44,8 +45,22 @@ const UserList = memo(() => {
   }
   }
 
+
+  function handleDelete(data){
+    setShowModal(true)
+    setItem(data)
+  }
+
+
+  function handleUpdate(data){
+    setShowModalUpadate(true)
+    setItem(data)
+  }
+
   return (
     <Fragment>
+      {showModalUpdate ? (<ModalUpdate onClose={()=> setShowModalUpadate(false)} setShowModalUpadate={setShowModalUpadate} mutate={handleChange} item={item} />) : null}
+      {showModal ? (<ModalDelete onClose={()=> setShowModal(false)} onConfirm={() => handleDeleteConfirm(item?.id)} item={item} desc="curso de" />) : null}
       <Row>
         <Col sm="12">
           <Card>
@@ -83,12 +98,10 @@ const UserList = memo(() => {
                             {item.status}
                           </span>
                         </td>
-
                         <td>
                           <div className="flex align-items-center list-user-action">
-                            {showModalUpdate ? (<ModalUpdate onClose={()=> setShowModalUpadate(false)} setShowModalUpadate={setShowModalUpadate} mutate={handleChange} item={item} />) : null}
                             <Link
-                              onClick={() => setShowModalUpadate(true)}
+                              onClick={() => handleUpdate(item)}
                               className="btn btn-sm btn-icon btn-warning"
                               data-toggle="tooltip"
                               data-placement="top"
@@ -129,9 +142,8 @@ const UserList = memo(() => {
                                 </svg>
                               </span>
                             </Link>{" "}
-                            {showModal ? (<ModalDelete onClose={()=> setShowModal(false)} onConfirm={() => handleDelete(item?.id)} item={item} desc="curso de" />) : null}
                             <Link
-                              onClick={() => setShowModal(true)}
+                              onClick={() => handleDelete(item)}
                               className="btn btn-sm btn-icon btn-danger"
                               data-toggle="tooltip"
                               data-placement="top"
