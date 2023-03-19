@@ -19,6 +19,8 @@ const Borderedtable = memo(() => {
   const [query, setQuery] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [showModalUpdate, setShowModalUpadate] = useState(false);
+  const [item, setItem] = useState({})
+
   const user = getUserInfo()
   const { data: userData } = useFetch(`/user/list/${user?.sub}`)
   const { data: Org } = useFetch(`/organization/list/${userData?.Escola?.Organigrama?.id}`)
@@ -27,7 +29,7 @@ const Borderedtable = memo(() => {
     mutate(`/organization/list/${userData?.Escola?.Organigrama?.id}`)
   }
 
-  async function handleDelete(id){
+  async function handleDeleteConfirm(id){
     try{
       const data = await api.delete(`/department/delete/${id}`)
       if(data.data){
@@ -40,9 +42,22 @@ const Borderedtable = memo(() => {
       }
   }
 
+  function handleDelete(data){
+    setShowModal(true)
+    setItem(data)
+  }
+
+
+  function handleUpdate(data){
+    setShowModalUpadate(true)
+    setItem(data)
+  }
+
   
   return (
     <Fragment>
+      {showModalUpdate ? (<ModalUpdate onClose={()=> setShowModalUpadate(false)} setShowModalUpadate={setShowModalUpadate} mutate={handleChange} item={item} />) : null}
+      {showModal ? (<ModalDelete onClose={()=> setShowModal(false)} onConfirm={() => handleDeleteConfirm(item?.id)} item={item} desc="" />) : null}
       <Row>
       <Col sm="12">
           <Card>
@@ -87,9 +102,8 @@ const Borderedtable = memo(() => {
 
                           <td>
                           <div className="flex align-items-center list-user-action">
-                            {showModalUpdate ? (<ModalUpdate onClose={()=> setShowModalUpadate(false)} setShowModalUpadate={setShowModalUpadate} mutate={handleChange} item={item} />) : null}
                             <Link
-                              onClick={() => setShowModalUpadate(true)}
+                              onClick={() => handleUpdate(item)}
                               className="btn btn-sm btn-icon btn-warning"
                               data-toggle="tooltip"
                               data-placement="top"
@@ -130,9 +144,8 @@ const Borderedtable = memo(() => {
                                 </svg>
                               </span>
                             </Link>{" "}
-                            {showModal ? (<ModalDelete onClose={()=> setShowModal(false)} onConfirm={() => handleDelete(item?.id)} item={item} desc="" />) : null}
                             <Link
-                              onClick={() => setShowModal(true)}
+                              onClick={() => handleDelete(item)}
                               className="btn btn-sm btn-icon btn-danger"
                               data-toggle="tooltip"
                               data-placement="top"
