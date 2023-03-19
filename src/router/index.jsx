@@ -30,6 +30,10 @@ const InscritosRejeitoList = lazy(() =>
   import("../views/dashboard/inscritos/rejeitado-list")
 );
 
+const CargoAdd = lazy(() => import("../views/dashboard/cargo/cargo-add")) 
+const CargoList = lazy(() => import("../views/dashboard/cargo/cargo-list")) 
+
+
 ///Formação
 const FuncionarioAdd = lazy(() =>
   import("../views/dashboard/funcionarios/funcionario-add")
@@ -229,6 +233,10 @@ const IndexRouters = memo(() => {
         {/* Curso */}
         <Route path="/curso/curso-add" element={<CursoAdd />} />
         <Route path="/curso/curso-list" element={<CursoList />} />
+
+        {/* Cargo */}
+        <Route path="/cargo/cargo-add" element={<CargoAdd />} />
+        <Route path="/cargo/cargo-list" element={<CargoList />} />
 
         {/* Perfil Saída */}
         <Route path="/perfil-saida/perfil-conf" element={<ConfPerfil />} />

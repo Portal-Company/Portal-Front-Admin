@@ -8,6 +8,7 @@ import { Routes, Route } from "react-router-dom";
 // Dashboard
 const Index = lazy(() => import("../views/dashboard/index"));
 
+
 // User
 const UserProfile = lazy(() => import("../views/dashboard/app/user-profile"));
 const UserAdd = lazy(() => import("../views/dashboard/app/user-add"));
@@ -214,6 +215,10 @@ const DefaultRouter = memo(() => {
 
       {/* Curso */}
       <Route path="/curso/curso-add" element={<CursoAdd />} />
+
+      {/* Cargo */}
+      {/* <Route path="/cargo/cargo-add" element={<CargoAdd />} />
+      <Route path="/cargo/cargo-list" element={<CargoList />} /> */}
 
       {/*ui-kit  */}
       <Route path="/uikit/avatars" exact element={<Avatars />} />

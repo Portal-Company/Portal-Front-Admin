@@ -201,6 +201,8 @@ const Default = memo((props) => {
     case "/inscritos/inscritos-list":
     case "/inscritos/aceites-list":
     case "/inscritos/rejeitados-list":
+    case "/cargo/cargo-list":
+    case "/cargo/cargo-add":
       subHeader = <SubHeader />;
       commanclass = "iq-banner default";
       break;
@@ -213,10 +215,6 @@ const Default = memo((props) => {
   const navigate = useNavigate()
 
   // if(!data) return Navigate("/auth/sign-in")
-
-
-
-  console.log(data, "usuario loggado");
   
   return (
     <Fragment>

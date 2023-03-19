@@ -182,9 +182,8 @@ const FuncionarioAdd = memo(() => {
                         className="selectpicker form-control"
                         data-style="py-0"
                       >
-                        <option>Mascolino</option>
-                        <option>Femenino</option>
-                        <option>Outros</option>
+                        <option value={"MASCULINO"}>Masculino</option>
+                        <option value={"FEMENINO"}>Femenino</option>
                       </select>
                     </Form.Group>
                   </div>
