@@ -1,44 +1,103 @@
-import { memo, Fragment, useState } from "react";
+import { memo, Fragment, useContext, useState } from "react";
 
-// React-bootstrap
-import { Row, Col, Image, Button, Table } from "react-bootstrap";
-import useFetch from "../../../../hooks";
-import useSWR from "swr"
-import { api } from "../../../../services";
+//react-bootstrap
+import { Row, Col, Image } from "react-bootstrap";
+
+//router
 import { Link } from "react-router-dom";
+import useSWR, { mutate }  from "swr"
+//components
+import Card from "../../../components/bootstrap/card";
 
-//Components
+// img
 
-//Img
+import {api} from "../../../services"
+import { getUserInfo } from "../auth/services";
+import useFetch from "../../../hooks";
+import { toast } from "react-toastify";
+import { ModalDelete } from "../../../components/ModalConfirm";
+import { ModalUpdate } from "./ModalUpdate";
+
+const DisciplinaList = memo(() => {
+  const user = getUserInfo()
+  const { data: userData } = useFetch(`/user/list/${user?.sub}`)
+  const { data: Courses} = useFetch(`/school/list/${userData?.Escola?.id}/courses`)
+  const [item, setItem] = useState({})
+
+  const [showModal, setShowModal] = useState(false);
+  const [showModalUpdate, setShowModalUpadate] = useState(false);
+
+  function handleChange(){
+    mutate(`/school/list/${userData?.Escola?.id}/courses`)
+  }
+
+  async function handleDeleteConfirm(id){
+    try{
+      const data = await api.delete(`course/delete/${id}`)
+      if(data?.data){
+        toast.success("deletado com sucesso!")
+        handleChange()
+        setShowModal(false)
+      }
+  }catch(err){
+    toast.error("Erro inesperado")
+  }
+  }
 
 
+  function handleDelete(data){
+    setShowModal(true)
+    setItem(data)
+  }
 
-function TableBody ({ item, handleUpdate, handleDelete  }){
 
-    const {data: Foto} = useFetch(`/file/${item?.fotoUrl}`)
+  function handleUpdate(data){
+    setShowModalUpadate(true)
+    setItem(data)
+  }
 
-    return(
-        <>
-            <tr>
-                <td>
-                    <div className="d-flex align-items-center">
-                     <Image
-                        className="rounded img-fluid w-25 me-3"
-                          src={Foto?.link}
-                          alt=""
-                         />
-                        <div className="media-support-info">
-                                <h6 className="mb-0">{item.nome}</h6>
-                              </div>
-                            </div>
-                          </td>
-                          <td className="text-dark">{item?.Contato?.numeroTelefone}</td>
-                          <td className="text-dark">{item?.Contato?.email}</td>
+  return (
+    <Fragment>
+      {showModalUpdate ? (<ModalUpdate onClose={()=> setShowModalUpadate(false)} setShowModalUpadate={setShowModalUpadate} mutate={handleChange} item={item} />) : null}
+      {showModal ? (<ModalDelete onClose={()=> setShowModal(false)} onConfirm={() => handleDeleteConfirm(item?.id)} item={item} desc="curso de" />) : null}
+      <Row>
+        <Col sm="12">
+          <Card>
+            <Card.Header className="d-flex justify-content-between">
+              <div className="header-title">
+                <h4 className="card-title">Listagem de Disciplina</h4>
+              </div>
+            </Card.Header>
+            <Card.Body className="px-0">
+              <div className="table-responsive">
+                <table
+                  id="user-list-table"
+                  className="table table-striped"
+                  role="grid"
+                  data-toggle="data-table"
+                >
+                  <thead>
+                    <tr className="ligth">
+                      <th>Name do Curso</th>
+                      <th>Area de Formação</th>
 
-                          <td className="text-dark">{item?.sexo}</td>
-                          <td className="text-dark">{item?.Cargo?.nome}</td>
-                          <td className="text-dark">{item?.Departamento?.nome ? item?.Departamento?.nome : "sem departamento"}</td>
-                          <td>
+                      <th>Status</th>
+
+                      <th min-width="100px">Acção</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Courses?.map((item, idx) => (
+                      <tr key={idx}>
+                        <td>{item.nome}</td>
+                        <td>{item?.AreaDeFormacao?.nome}</td>
+
+                        <td>
+                          <span className={`badge ${item.color}`}>
+                            {item.status}
+                          </span>
+                        </td>
+                        <td>
                           <div className="flex align-items-center list-user-action">
                             <Link
                               onClick={() => handleUpdate(item)}
@@ -124,10 +183,19 @@ function TableBody ({ item, handleUpdate, handleDelete  }){
                               </span>
                             </Link>{" "}
                           </div>
-                </td>
-            </tr>        
-        </>
-    )
-}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </Fragment>
+  );
+});
 
-export { TableBody }
+DisciplinaList.displayName = "DisciplinaList";
+export default DisciplinaList;

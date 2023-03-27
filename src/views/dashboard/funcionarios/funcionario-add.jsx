@@ -20,8 +20,6 @@ const FuncionarioAdd = memo(() => {
   const { data: userData } = useFetch(`/user/list/${user?.sub}`)
   const { data: Role } = useFetch(`/role/list/`)
 
-  // console.log(userData?.Escola?.Organigrama);
-
   const gender = [
     {
       nome: "Masculino",

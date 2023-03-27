@@ -510,8 +510,141 @@ const VerticalNav = memo(() => {
             </ul>
           </Accordion.Collapse>
         </Accordion.Item>
+        <Accordion.Item
+          as="li"
+          eventKey="utilities-error"
+          bsPrefix={`nav-item ${active === "error" ? "active" : ""} `}
+          onClick={() => setActive("error")}
+        >
+          <CustomToggle
+            eventKey="area-disciplina"
+            active={activeMenu === "utilities-error" ? true : false}
+            onClick={(activeKey) => setActiveMenu(activeKey)}
+          >
+            <OverlayTrigger
+              placement="right"
+              overlay={<Tooltip>Utilities</Tooltip>}
+            >
+              <i className="icon">
+                <svg
+                  className="icon-20"
+                  width="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    opacity="0.4"
+                    d="M11.9912 18.6215L5.49945 21.864C5.00921 22.1302 4.39768 21.9525 4.12348 21.4643C4.0434 21.3108 4.00106 21.1402 4 20.9668V13.7087C4 14.4283 4.40573 14.8725 5.47299 15.37L11.9912 18.6215Z"
+                    fill="currentColor"
+                  ></path>
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M8.89526 2H15.0695C17.7773 2 19.9735 3.06605 20 5.79337V20.9668C19.9989 21.1374 19.9565 21.3051 19.8765 21.4554C19.7479 21.7007 19.5259 21.8827 19.2615 21.9598C18.997 22.0368 18.7128 22.0023 18.4741 21.8641L11.9912 18.6215L5.47299 15.3701C4.40573 14.8726 4 14.4284 4 13.7088V5.79337C4 3.06605 6.19625 2 8.89526 2ZM8.22492 9.62227H15.7486C16.1822 9.62227 16.5336 9.26828 16.5336 8.83162C16.5336 8.39495 16.1822 8.04096 15.7486 8.04096H8.22492C7.79137 8.04096 7.43991 8.39495 7.43991 8.83162C7.43991 9.26828 7.79137 9.62227 8.22492 9.62227Z"
+                    fill="currentColor"
+                  ></path>
+                </svg>
+              </i>
+            </OverlayTrigger>
+            <span className="item-name">Area de Disciplina</span>
+            <i className="right-icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="icon-18"
+                width="18"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </i>
+          </CustomToggle>
 
-       
+          <Accordion.Collapse eventKey="area-disciplina">
+            <ul className="sub-nav">
+              <Nav.Item as="li">
+                <Link
+                  className={`${
+                    location.pathname === "/disciplina/disciplina-add"
+                      ? "active"
+                      : ""
+                  } nav-link`}
+                  to="/disciplina/disciplina-add"
+                >
+                  <i className="icon">
+                    <svg
+                      className="icon-10"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="10"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <g>
+                        <circle
+                          cx="12"
+                          cy="12"
+                          r="8"
+                          fill="currentColor"
+                        ></circle>
+                      </g>
+                    </svg>
+                  </i>
+                  <OverlayTrigger
+                    placement="right"
+                    overlay={<Tooltip>Add User</Tooltip>}
+                  >
+                    <i className="sidenav-mini-icon"> A </i>
+                  </OverlayTrigger>
+                  <span className="item-name">Adicionar Disciplina</span>
+                </Link>
+              </Nav.Item>
+              <Nav.Item as="li">
+                <Link
+                  className={`${
+                    location.pathname === "/disciplina/disciplina-list"
+                      ? "active"
+                      : ""
+                  } nav-link`}
+                  to="/disciplina/disciplina-list"
+                >
+                  <i className="icon">
+                    <svg
+                      className="icon-10"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="10"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <g>
+                        <circle
+                          cx="12"
+                          cy="12"
+                          r="8"
+                          fill="currentColor"
+                        ></circle>
+                      </g>
+                    </svg>
+                  </i>
+                  <OverlayTrigger
+                    placement="right"
+                    overlay={<Tooltip>User List</Tooltip>}
+                  >
+                    <i className="sidenav-mini-icon"> U </i>
+                  </OverlayTrigger>
+                  <span className="item-name">Listar Disciplina</span>
+                </Link>
+              </Nav.Item>
+            </ul>
+          </Accordion.Collapse>
+        </Accordion.Item>
+
         <Accordion.Item
           as="li"
           eventKey="area-inscritos"
@@ -683,12 +816,12 @@ const VerticalNav = memo(() => {
 
         <Accordion.Item
           as="li"
-          eventKey="area-disciplina"
+          eventKey="area-disciplina1"
           bsPrefix={`nav-item ${active === "pulgins" ? "active" : ""} `}
           onClick={() => setActive("pulgins")}
         >
           <CustomToggle
-            eventKey="area-disciplina"
+            eventKey="area-disciplina1"
             active={activeMenu === "plugins" ? true : false}
             onClick={(activeKey) => setActiveMenu(activeKey)}
           >
@@ -736,7 +869,7 @@ const VerticalNav = memo(() => {
             </i>
           </CustomToggle>
 
-          <Accordion.Collapse eventKey="area-disciplina">
+          <Accordion.Collapse eventKey="area-disciplina1">
             <ul className="sub-nav">
               <Nav.Item as="li">
                 <Link

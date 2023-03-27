@@ -203,6 +203,8 @@ const Default = memo((props) => {
     case "/inscritos/rejeitados-list":
     case "/cargo/cargo-list":
     case "/cargo/cargo-add":
+    case "/disciplina/disciplina-list":
+    case "/disciplina/disciplina-add":
       subHeader = <SubHeader />;
       commanclass = "iq-banner default";
       break;

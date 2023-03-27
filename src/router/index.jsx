@@ -42,6 +42,13 @@ const FuncionarioList = lazy(() =>
   import("../views/dashboard/funcionarios/funcionario-list")
 );
 
+const DisciplinaAdd = lazy(() =>
+  import("../views/dashboard/disciplina/disciplina-add")
+);
+const DisciplinaList = lazy(() =>
+  import("../views/dashboard/disciplina/disciplina-list")
+);
+
 //layoutpages
 import Default from "../layouts/dashboard/default";
 import Horizontal from "../layouts/dashboard/horizontal";
@@ -233,6 +240,10 @@ const IndexRouters = memo(() => {
         {/* Curso */}
         <Route path="/curso/curso-add" element={<CursoAdd />} />
         <Route path="/curso/curso-list" element={<CursoList />} />
+
+        {/* Disciplina */}
+        <Route path="/disciplina/disciplina-add" element={<DisciplinaAdd />} />
+        <Route path="/disciplina/disciplina-list" element={<DisciplinaList />} />
 
         {/* Cargo */}
         <Route path="/cargo/cargo-add" element={<CargoAdd />} />

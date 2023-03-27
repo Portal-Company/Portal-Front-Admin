@@ -12,8 +12,6 @@ function ModalUpdate({ onClose, item, mutate, setShowModalUpadate }) {
   const { data: userData } = useFetch(`/user/list/${user?.sub}`)
   const { data: Role } = useFetch(`/role/list/`)
 
-  console.log(item, "itemmmm");
-
   const gender = [
     {
       nome: "Masculino",

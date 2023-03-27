@@ -81,8 +81,8 @@ const FuncionarioList = memo(() => {
                       return (
                         <>
                           <TableBody 
+                            key={index}
                             item={item}
-                            handleDeleteConfirm={handleDeleteConfirm}
                             handleUpdate={handleUpdate}
                             handleDelete={handleDelete}
                           />

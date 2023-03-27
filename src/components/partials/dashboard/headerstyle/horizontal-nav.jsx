@@ -5,10 +5,8 @@ import { Offcanvas, Navbar, Container, Nav, Button } from "react-bootstrap";
 
 //Router
 import { Link, useLocation } from "react-router-dom";
-import { UserContext } from "../../../../context";
 
 const HorizontalNav = memo(() => {
-  const {user} = useContext(UserContext)
 
   //location
   let location = useLocation();
