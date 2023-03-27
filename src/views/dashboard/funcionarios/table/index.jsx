@@ -1,102 +1,47 @@
-import { memo, Fragment, useContext, useState } from "react";
+import { memo, Fragment, useState } from "react";
 
-//react-bootstrap
-import { Row, Col, Image } from "react-bootstrap";
-
-//router
+// React-bootstrap
+import { Row, Col, Image, Button, Table } from "react-bootstrap";
+import useFetch from "../../../../hooks";
+import useSWR from "swr"
+import { api } from "../../../../services";
 import { Link } from "react-router-dom";
-import useSWR, { mutate }  from "swr"
-//components
-import Card from "../../../components/bootstrap/card";
-import { UserContext } from "../../../context";
 
-// img
+//Components
 
-import {api} from "../../../services"
-import { getUserInfo } from "../auth/services";
-import useFetch from "../../../hooks";
-import { toast } from "react-toastify";
-import { ModalDelete } from "../../../components/ModalConfirm";
-import { ModalUpdate } from "./ModalUpdate";
+//Img
 
-const CargoList = memo(() => {
-  const user = getUserInfo()
-  const { data: userData } = useFetch(`/user/list/${user?.sub}`)
-  const { data: Role} = useFetch(`/role/list/`)
-  const [item, setItem] = useState({})
 
-  console.log(userData);
 
-  const [showModal, setShowModal] = useState(false);
-  const [showModalUpdate, setShowModalUpadate] = useState(false);
+function TableBody ({ item, handleDeleteConfirm, handleUpdate, handleDelete  }){
+    console.log(item);
+ 
 
-  function handleChange(){
-    mutate(`/role/list/`)
-  }
 
-  async function handleDeleteConfirm(id){
-    try{
-      const data = await api.delete(`role/delete/${id}`)
-      if(data?.data){
-        toast.success("deletado com sucesso!")
-        handleChange()
-        setShowModal(false)
-      }
-  }catch(err){
-    toast.error("Erro inesperado")
-  }
-  }
+    const {data: Foto} = useFetch(`/file/${item?.fotoUrl}`)
 
-  function handleDelete(data){
-    setShowModal(true)
-    setItem(data)
-  }
+    return(
+        <>
+            <tr key={item.id}>
+                <td>
+                    <div className="d-flex align-items-center">
+                     <Image
+                        className="rounded img-fluid w-25 me-3"
+                          src={Foto?.link}
+                          alt=""
+                         />
+                        <div className="media-support-info">
+                                <h6 className="mb-0">{item.nome}</h6>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="text-dark">{item?.Contato?.numeroTelefone}</td>
+                          <td className="text-dark">{item?.Contato?.email}</td>
 
-  function handleUpdate(data){
-    setShowModalUpadate(true)
-    setItem(data)
-  }
-
-  return (
-    <Fragment>
-        {showModalUpdate ? (<ModalUpdate onClose={()=> setShowModalUpadate(false)} setShowModalUpadate={setShowModalUpadate} mutate={handleChange} item={item} />) : null}
-        {showModal ? (<ModalDelete onClose={()=> setShowModal(false)} onConfirm={() => handleDeleteConfirm(item?.id)} item={item} desc="cargo de" />) : null}
-      <Row>
-        <Col sm="12">
-          <Card>
-            <Card.Header className="d-flex justify-content-between">
-              <div className="header-title">
-                <h4 className="card-title">Listagem de Cargos</h4>
-              </div>
-            </Card.Header>
-            <Card.Body className="px-0">
-              <div className="table-responsive">
-                <table
-                  id="user-list-table"
-                  className="table table-striped"
-                  role="grid"
-                  data-toggle="data-table"
-                >
-                  <thead>
-                    <tr className="ligth">
-                      <th>Name do Cargo</th>
-
-                      <th>Status</th>
-
-                      <th min-width="100px">Acção</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {Role?.map((item, idx) => (
-                      <tr key={idx}>
-                        <td>{item.nome}</td>
-                        <td>
-                          <span className={`badge ${item.color}`}>
-                            {item.status}
-                          </span>
-                        </td>
-
-                        <td>
+                          <td className="text-dark">{item?.sexo}</td>
+                          <td className="text-dark">{item?.Cargo?.nome}</td>
+                          <td className="text-dark">{item?.Departamento?.nome ? item?.Departamento?.nome : "sem departamento"}</td>
+                          <td>
                           <div className="flex align-items-center list-user-action">
                             <Link
                               onClick={() => handleUpdate(item)}
@@ -182,19 +127,10 @@ const CargoList = memo(() => {
                               </span>
                             </Link>{" "}
                           </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-    </Fragment>
-  );
-});
+                </td>
+            </tr>        
+        </>
+    )
+}
 
-CargoList.displayName = "CargoList";
-export default CargoList;
+export { TableBody }

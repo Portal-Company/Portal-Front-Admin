@@ -1,201 +1,219 @@
 import { memo, useState, Fragment } from "react";
+import { useFormik } from "formik";
 
 //react-bootstrap
 import { Row, Col, Image, Form, Button } from "react-bootstrap";
 
 //components
 import Card from "../../../components/bootstrap/card";
+import useFetch from "../../../hooks";
+import { getUserInfo } from "../auth/services";
+import * as yup from "yup"
+import { api } from "../../../services";
+import { toast } from "react-toastify";
 
 //router
 import { Link } from "react-router-dom";
 
-// img
-import avatars1 from "/src/assets/images/avatars/01.png";
-import avatars2 from "/src/assets/images/avatars/avtar_1.png";
-import avatars3 from "/src/assets/images/avatars/avtar_2.png";
-import avatars4 from "/src/assets/images/avatars/avtar_3.png";
-import avatars5 from "/src/assets/images/avatars/avtar_4.png";
-import avatars6 from "/src/assets/images/avatars/avtar_5.png";
-
 const FuncionarioAdd = memo(() => {
-  const [isProf, setProf] = useState(false);
+  const user = getUserInfo()
+  const { data: userData } = useFetch(`/user/list/${user?.sub}`)
+  const { data: Role } = useFetch(`/role/list/`)
 
+  // console.log(userData?.Escola?.Organigrama);
+
+  const gender = [
+    {
+      nome: "Masculino",
+      value: "M",
+    },
+    {
+      nome: "Femenino",
+      value: "F",
+    }
+  ]
+
+  const formik = useFormik({
+    initialValues: {
+      nome: "",
+      fotoUrl: "",
+      telefone: "",
+      email: "",
+      cargoId: "",
+      departamentoId: "",
+      numero_agente: "",
+      sexo: "",
+      contatoId: ""
+    },
+    validationSchema: yup.object({
+      nome: yup.string().required("Este campo é obrigatório"),
+      fotoUrl: yup.string().required("Este campo  é obrigatório"),
+      email: yup.string().email().required("Este campo é obrigatório"),
+      cargoId: yup.string().required("Este campo é obrigatório"),
+      sexo: yup.string().required("Este campo é obrigatório"),
+    }),
+    onSubmit: async (data) =>{
+      try{
+        const contact = {
+          email: data.email,
+          numeroTelefone: data.telefone.toString()
+        }  
+        const contactResponse = await (await api.post("/contact/post", contact)).data
+        const formData = new FormData();
+        formData.append('file', data?.fotoUrl[0]);
+        const fotoUrl = await getFile(formData)
+        if(fotoUrl){
+          data = {...data, fotoUrl: fotoUrl?.id, contatoId: contactResponse?.id, numero_agente: data.numero_agente.toString()};
+          const response = await api.post("/official/post", data)
+          if(response){
+            toast.success("Funcionário cadastrado com sucesso")
+            formik.resetForm()
+          }
+        }
+      }catch(err){
+        toast.error(err?.response?.data?.message)
+      }
+    }
+  }) 
+
+  async function getFile (data) {
+      const dataD = await api.post("/file", data)
+      return dataD.data
+  }
+  
   return (
     <Fragment>
       <Row>
-        <Col xl="3" lg="4" className="">
-          <Card>
-            <Card.Header className="d-flex justify-content-between">
-              <div className="header-title">
-                <h4 className="card-title">Novo Funcionário</h4>
-              </div>
-            </Card.Header>
-            <Card.Body>
-              <Form>
-                <Form.Group className="form-group">
-                  <div className="profile-img-edit position-relative">
-                    <Image
-                      className="theme-color-default-img  profile-pic rounded avatar-100"
-                      src={avatars1}
-                      alt="profile-pic"
-                    />
-                    <Image
-                      className="theme-color-purple-img profile-pic rounded avatar-100"
-                      src={avatars2}
-                      alt="profile-pic"
-                    />
-                    <Image
-                      className="theme-color-blue-img profile-pic rounded avatar-100"
-                      src={avatars3}
-                      alt="profile-pic"
-                    />
-                    <Image
-                      className="theme-color-green-img profile-pic rounded avatar-100"
-                      src={avatars5}
-                      alt="profile-pic"
-                    />
-                    <Image
-                      className="theme-color-yellow-img profile-pic rounded avatar-100"
-                      src={avatars6}
-                      alt="profile-pic"
-                    />
-                    <Image
-                      className="theme-color-pink-img profile-pic rounded avatar-100"
-                      src={avatars4}
-                      alt="profile-pic"
-                    />
-                    <div className="upload-icone bg-primary">
-                      <svg
-                        className="upload-button"
-                        width="14"
-                        height="14"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          fill="#ffffff"
-                          d="M14.06,9L15,9.94L5.92,19H5V18.08L14.06,9M17.66,3C17.41,3 17.15,3.1 16.96,3.29L15.13,5.12L18.88,8.87L20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18.17,3.09 17.92,3 17.66,3M14.06,6.19L3,17.25V21H6.75L17.81,9.94L14.06,6.19Z"
-                        />
-                      </svg>
-                      <Form.Control
-                        className="file-upload"
-                        type="file"
-                        accept="image/*"
-                      />
-                    </div>
-                  </div>
-                  <div className="img-extension mt-3">
-                    <div className="d-inline-block align-items-center">
-                      <Link to="#">.jpg</Link> <Link to="#">.png</Link>{" "}
-                      <Link to="#">.jpeg</Link>{" "}
-                    </div>
-                  </div>
+      <Card>
+        <Card.Header className="d-flex justify-content-between">
+          <div className="header-title">
+            <h4 className="card-title"> Cadastrar Funcionario</h4>
+          </div>
+        </Card.Header>
+        <Card.Body>
+          <Form onSubmit={formik.handleSubmit} encType="multipart/form-data">
+            <Row>
+              <Col md="6" className="mb-3">
+                <Form.Group className="mb-3 form-group mt-2">
+                  <Form.Label md="6" htmlFor="validationDefault01">
+                    Nome do Funcionário
+                  </Form.Label>
+                  <Form.Control type="text" id="nome" name="nome" value={formik.values.nome} onChange={formik.handleChange} required />
+                  {formik?.touched?.nome && formik?.errors?.nome ? (
+                    <label className="mt-1 text-danger">  
+                      {formik?.errors?.nome}
+                    </label>
+                  ): null}
                 </Form.Group>
-
-                <Form.Group className="form-group">
-                  <Form.Label>Cargo</Form.Label>
-                  <select
-                    name="type"
-                    className="selectpicker form-control"
-                    data-style="py-0"
-                  >
-                    <option>Professor</option>
-                    <option>Estagiário</option>
-                    <option value="select" onClick={() => setProf(true)}>
-                      Coordenador
-                    </option>
-                  </select>
+                <Form.Group className="mb-3 form-group mt-2">
+                  <Form.Label md="6" htmlFor="validationDefault01">
+                    Email
+                  </Form.Label>
+                  <Form.Control type="text" id="email" name="email" value={formik.values.email} onChange={formik.handleChange} required />
+                  {formik?.touched?.email && formik?.errors?.email ? (
+                    <label className="mt-1 text-danger">  
+                      {formik?.errors?.email}
+                    </label>
+                  ): null}
                 </Form.Group>
-                {isProf ? (
-                  <Form.Group className="form-group">
-                    <Form.Label>Area de Formação</Form.Label>
-                    <select
-                      name="type"
-                      className="selectpicker form-control"
-                      data-style="py-0"
-                    >
-                      <option>Professor</option>
-                      <option>Estagiário</option>
-                      <option>Coordenador</option>
-                    </select>
-                  </Form.Group>
-                ) : null}
-
-                <Form.Group className="mb-0 form-group">
-                  <Form.Label htmlFor="lurl">Linkedin Url:</Form.Label>
+                <Form.Group className="mb-3 form-group mt-2">
+                  <Form.Label htmlFor="validationDefault04">
+                    Departamento
+                  </Form.Label>
+                  <Form.Select id="departamentoId" name="departamentoId" required value={formik.values.departamentoId}  onChange={formik.handleChange}>
+                  <option defaultChecked>Selecione o departamento</option>
+                    {userData?.Escola?.Organigrama?.Departamento?.map((item) => (
+                      <option key={item?.id} value={item?.id}>{item?.nome}</option>
+                    ))} 
+                  </Form.Select>
+                  {formik?.touched?.departamentoId && formik?.errors?.departamentoId ? (
+                      <label className="mt-1 text-danger">  
+                        {formik?.errors?.departamentoId}
+                      </label>
+                  ): null}
+                </Form.Group>
+                <Form.Group className="mb-3 form-group mt-2">
+                  <Form.Label className="custom-file-input">Carregar imagem</Form.Label>
                   <Form.Control
-                    type="text"
-                    id="lurl"
-                    placeholder="Linkedin Url"
+                      type="file"
+                      id="fotoUrl"
+                      name="fotoUrl"
+                      onChange={(event) =>{
+                        formik.setFieldValue('fotoUrl', event?.currentTarget?.files)
+                      }}  
                   />
+                  {formik?.touched?.fotoUrl && formik?.errors?.fotoUrl ? (
+                    <label className="mt-1 text-danger">  
+                      {formik?.errors?.fotoUrl}
+                    </label>
+                  ): null}
+              </Form.Group>
+                </Col>
+              <Col md="6" className="mb-3">
+                <Form.Group className="mb-3 form-group mt-2">
+                  <Form.Label htmlFor="validationDefault04">
+                    Cargo
+                  </Form.Label>
+                  <Form.Select id="cargoId" name="cargoId" required value={formik.values.cargoId} onChange={formik.handleChange}>
+                  <option defaultChecked>Selecione um Cargo</option>
+                    {Role?.map((item) => (
+                      <option key={item?.id} value={item?.id}>{item?.nome}</option>
+                    ))} 
+                  </Form.Select>
+                  {formik?.touched?.cargoId && formik?.errors?.cargoId ? (
+                      <label className="mt-1 text-danger">  
+                        {formik?.errors?.cargoId}
+                      </label>
+                  ): null}
                 </Form.Group>
-              </Form>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col xl="9" lg="8">
-          <Card>
-            <Card.Header className="d-flex justify-content-between">
-              <div className="header-title">
-                <h4 className="card-title">Informações do novo usuário</h4>
-              </div>
-            </Card.Header>
-            <Card.Body>
-              <div className="new-user-info">
-                <Form>
-                  <div className="row">
-                    <Form.Group className="col-md-6 form-group">
-                      <Form.Label htmlFor="fname">Name:</Form.Label>
-                      <Form.Control
-                        type="text"
-                        id="fname"
-                        placeholder="Primeiro Nome"
-                      />
-                    </Form.Group>
-                    <Form.Group className="col-md-6 form-group">
-                      <Form.Label htmlFor="lname">Sobrenome:</Form.Label>
-                      <Form.Control
-                        type="text"
-                        id="lname"
-                        placeholder="Sobrenome"
-                      />
-                    </Form.Group>
-                    <Form.Group className="col-md-6 form-group">
-                      <Form.Label htmlFor="add1">E-mail:</Form.Label>
-                      <Form.Control
-                        type="email"
-                        id="add1"
-                        placeholder="Email"
-                      />
-                    </Form.Group>
-                    <Form.Group className="col-md-6 form-group">
-                      <Form.Label htmlFor="add2">Telefone</Form.Label>
-                      <Form.Control
-                        type="number"
-                        id="add2"
-                        placeholder="Número de telefone"
-                      />
-                    </Form.Group>
-                    <Form.Group className="form-group">
-                      <Form.Label>Sexo</Form.Label>
-                      <select
-                        name="type"
-                        className="selectpicker form-control"
-                        data-style="py-0"
-                      >
-                        <option value={"MASCULINO"}>Masculino</option>
-                        <option value={"FEMENINO"}>Femenino</option>
-                      </select>
-                    </Form.Group>
-                  </div>
-
-                  <Button type="button" variant="btn btn-primary">
-                    Adicionar
-                  </Button>
-                </Form>
-              </div>
-            </Card.Body>
-          </Card>
-        </Col>
+                <Form.Group className="mb-3 form-group mt-2">
+                  <Form.Label htmlFor="validationDefault04">
+                    Genero
+                  </Form.Label>
+                  <Form.Select id="sexo" name="sexo" required value={formik.values.sexo} onChange={formik.handleChange}>
+                    <option defaultChecked>Selecione o sexo</option>
+                    {gender?.map((item, idx) => (
+                        <option key={idx} value={item?.value}>{item?.nome}</option>
+                    ))}
+                  </Form.Select>
+                  {formik?.touched?.sexo && formik?.errors?.sexo ? (
+                      <label className="mt-1 text-danger">  
+                        {formik?.errors?.sexo}
+                      </label>
+                  ): null}
+                </Form.Group>
+                <Form.Group className="mb-3 form-group mt-2">
+                  <Form.Label md="6" htmlFor="validationDefault01">
+                    Telefone
+                  </Form.Label>
+                  <Form.Control type="number" id="telefone" name="telefone" value={formik.values.telefone} onChange={formik.handleChange} required />
+                  {formik?.touched?.telefone && formik?.errors?.telefone ? (
+                    <label className="mt-1 text-danger">  
+                      {formik?.errors?.telefone}
+                    </label>
+                  ): null}
+                </Form.Group>
+                <Form.Group className="mb-3 form-group mt-2">
+                  <Form.Label md="6" htmlFor="validationDefault01">
+                    Nº Agente
+                  </Form.Label>
+                  <Form.Control type="number" id="numero_agente" name="numero_agente" value={formik.values.numero_agente} onChange={formik.handleChange} required />
+                  {formik?.touched?.numero_agente && formik?.errors?.numero_agente ? (
+                    <label className="mt-1 text-danger">  
+                      {formik?.errors?.numero_agente}
+                    </label>
+                  ): null}
+                </Form.Group>
+              </Col>
+            </Row>
+            <Form.Group>
+              <Button variant="btn btn-primary" type="submit">
+                Cadastrar
+              </Button>
+            </Form.Group>
+          </Form>
+        </Card.Body>
+      </Card>
       </Row>
     </Fragment>
   );
