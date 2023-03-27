@@ -37,11 +37,32 @@ function ModalUpdate({ onClose, item, mutate, setShowModalUpadate }) {
       numero_agente: item?.agenteN,
       contatoId: item?.contatoId
     },
-    validationSchema: yup.object({}),
+    validationSchema: yup.object({
+      nome: yup.string().required("Este campo é obrigatório"),
+      fotoUrl: yup.string().required("Este campo  é obrigatório"),
+      email: yup.string().email().required("Este campo é obrigatório"),
+      cargoId: yup.string().required("Este campo é obrigatório"),
+      sexo: yup.string().required("Este campo é obrigatório"),
+      contatoId: yup.string().required("Este campo é obrigatório"),
+      departamentoId: yup.string().required("Este campo é obrigatório"),
+      numero_agente: yup.string().required("Este campo é obrigatório"),
+      telefone: yup.string().required("Este campo é obrigatório"),
+    }),
     onSubmit: async (data) =>{
       if(item?.fotoUrl === data?.fotoUrl){
         try{
-            const response = await api.put(`/course/put/${item?.id}`, data)
+            const contact = {
+              email: data.email,
+              numeroTelefone: data.telefone.toString()
+            }
+            const res = await (await api.put(`/contact/put/${item?.contatoId}`, contact)).data
+            data = {
+              ...data,
+              contatoId: res?.id,
+              numero_agente: data.numero_agente.toString(),
+              sexo: data.sexo
+            }
+            const response = await api.put(`/official/put/${item?.id}`, data)
             if(response){
               toast.success("Funcionario actualizado com sucesso")
               mutate()
@@ -56,10 +77,21 @@ function ModalUpdate({ onClose, item, mutate, setShowModalUpadate }) {
           formData.append('file', data?.fotoUrl[0]);
           const fotoUrl = await getFile(formData)
           if(fotoUrl){
-            data = {...data, fotoUrl: fotoUrl?.id};
-            const response = await api.put(`/course/put/${item?.id}`, data)
+            const contact = {
+              email: data.email,
+              numeroTelefone: data.telefone.toString()
+            }
+            const res = await (await api.put(`/contact/put/${item?.contatoId}`, contact)).data
+            data = {
+              ...data,
+              contatoId: res?.id,
+              numero_agente: data.numero_agente.toString(),
+              sexo: data.sexo,
+              fotoUrl: fotoUrl?.id
+            }
+            const response = await api.put(`/official/put/${item?.id}`, data)
             if(response){
-              toast.success("Curso actualizado com sucesso")
+              toast.success("Funcionário actualizado com sucesso")
               setShowModalUpadate(false)
             }
           }
