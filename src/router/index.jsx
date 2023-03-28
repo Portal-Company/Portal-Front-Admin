@@ -20,6 +20,14 @@ const FormacaoList = lazy(() =>
 );
 
 ///Formação
+const ActividadeAdd = lazy(() =>
+  import("../views/dashboard/actividade/actividade-add")
+);
+const ActividadeList = lazy(() =>
+  import("../views/dashboard/actividade/actividade-list")
+);
+
+///Formação
 const InscritosList = lazy(() =>
   import("../views/dashboard/inscritos/inscritos-list")
 );
@@ -248,6 +256,10 @@ const IndexRouters = memo(() => {
         {/* Cargo */}
         <Route path="/cargo/cargo-add" element={<CargoAdd />} />
         <Route path="/cargo/cargo-list" element={<CargoList />} />
+
+        {/* Actividades */}
+        <Route path="/actividade/actividade-add" element={<ActividadeAdd />} />
+        <Route path="/actividade/actividade-list" element={<ActividadeList />} />
 
         {/* Perfil Saída */}
         <Route path="/perfil-saida/perfil-conf" element={<ConfPerfil />} />

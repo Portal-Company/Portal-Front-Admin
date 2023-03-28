@@ -518,7 +518,7 @@ const VerticalNav = memo(() => {
           onClick={() => setActive("error")}
         >
           <CustomToggle
-            eventKey="area-formacao"
+            eventKey="area-formacao1"
             active={activeMenu === "utilities-error" ? true : false}
             onClick={(activeKey) => setActiveMenu(activeKey)}
           >
@@ -573,11 +573,11 @@ const VerticalNav = memo(() => {
               <Nav.Item as="li">
                 <Link
                   className={`${
-                    location.pathname === "/formacao/formacao-add"
+                    location.pathname === "/actividade/actividade-add"
                       ? "active"
                       : ""
                   } nav-link`}
-                  to="/formacao/formacao-add"
+                  to="/actividade/actividade-add"
                 >
                   <i className="icon">
                     <svg
@@ -609,11 +609,11 @@ const VerticalNav = memo(() => {
               <Nav.Item as="li">
                 <Link
                   className={`${
-                    location.pathname === "/formacao/formacao-list"
+                    location.pathname === "/actividade/actividade-list"
                       ? "active"
                       : ""
                   } nav-link`}
-                  to="/formacao/formacao-list"
+                  to="/actividade/actividade-list"
                 >
                   <i className="icon">
                     <svg
