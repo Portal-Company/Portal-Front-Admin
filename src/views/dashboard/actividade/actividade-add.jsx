@@ -14,32 +14,33 @@ import { toast } from "react-toastify";
 const Disciplina = () => {
   const user = getUserInfo()
   const { data: userData } = useFetch(`/user/list/${user?.sub}`)
-  const { data: Area } = useFetch(`/school/list/${userData?.Escola?.id}/courses`)
 
   const formik = useFormik({
     initialValues: {
       nome: "",
       fotoUrl: "",
+      organizador: "",
+      data: "",
       descricao: "",
-      cursoId: "",
-      escolaId: "",
     },
     validationSchema: yup.object({
       nome: yup.string().required("Este campo é obrigatório"),
       fotoUrl: yup.string().required("Este campo  é obrigatório"),
       descricao: yup.string().required("Este campo é obrigatório"),
-      cursoId: yup.string().required("Este campo é obrigatório"),
+      data: yup.date().min(new Date(), 'A data deve ser maior ou igual ao dia de hoje').required("Este campo é obrigatório"),
+      organizador: yup.string().required("Este campo é obrigatório"),
     }),
     onSubmit: async (data) =>{
+      console.log(data);
       try{
         const formData = new FormData();
         formData.append('file', data?.fotoUrl[0]);
         const fotoUrl = await getFile(formData)
         if(fotoUrl){
           data = {...data, fotoUrl: fotoUrl?.id, escolaId: userData?.Escola?.id};
-          const response = await api.post("/schoolSubject/post", data)
+          const response = await api.post("/activity/post", data)
           if(response){
-            toast.success("Disciplina cadastrada com sucesso")
+            toast.success("Actividade cadastrada com sucesso")
             formik.resetForm()
           }
         }
@@ -59,25 +60,20 @@ const Disciplina = () => {
       <Card>
         <Card.Header className="d-flex justify-content-between">
           <div className="header-title">
-            <h4 className="card-title"> Cadastrar Disciplina</h4>
+            <h4 className="card-title"> Adicionar Actividade</h4>
           </div>
         </Card.Header>
         <Card.Body>
           <Form onSubmit={formik.handleSubmit} encType="multipart/form-data">
             <Row>
               <Col md="6" className="mb-3">
-                <Form.Label htmlFor="validationDefault04">
-                  Curso
+              <Form.Label md="6" htmlFor="validationDefault01">
+                  Nome da Actividade
                 </Form.Label>
-                <Form.Select id="cursoId" name="cursoId" value={formik.values.cursoId} required  onChange={formik.handleChange}>
-                <option defaultChecked>Selecione um curso</option>
-                  {Area?.map((item) => (
-                    <option key={item?.id} value={item?.id}>{item?.nome}</option>
-                  ))} 
-                </Form.Select>
-                {formik?.touched?.cursoId && formik?.errors?.cursoId ? (
+                <Form.Control type="text" id="nome" name="nome" value={formik.values.nome} onChange={formik.handleChange} required />
+                {formik?.touched?.nome && formik?.errors?.nome ? (
                     <label className="mt-1 text-danger">  
-                      {formik?.errors?.cursoId}
+                      {formik?.errors?.nome}
                     </label>
                   ): null}
                 <Form.Group className="mb-3 form-group mt-2">
@@ -92,12 +88,12 @@ const Disciplina = () => {
               </Col>
               <Col md="6" className="mb-3">
                 <Form.Label md="6" htmlFor="validationDefault01">
-                  Nome da Disciplina
+                  Organizador
                 </Form.Label>
-                <Form.Control type="text" id="nome" name="nome" value={formik.values.nome} onChange={formik.handleChange} required />
-                {formik?.touched?.nome && formik?.errors?.nome ? (
+                <Form.Control type="text" id="organizador" name="organizador" value={formik.values.organizador} onChange={formik.handleChange} required />
+                {formik?.touched?.organizador && formik?.errors?.organizador ? (
                     <label className="mt-1 text-danger">  
-                      {formik?.errors?.nome}
+                      {formik?.errors?.organizador}
                     </label>
                   ): null}
                 <Form.Group className="mb-3 form-group mt-2">
@@ -116,6 +112,15 @@ const Disciplina = () => {
                     </label>
                   ): null}
               </Form.Group>
+              <Form.Label md="6" htmlFor="validationDefault01">
+                  Data
+                </Form.Label>
+                <Form.Control type="date" id="data" name="data" value={formik.values.data} onChange={formik.handleChange} required />
+                {formik?.touched?.data && formik?.errors?.data ? (
+                    <label className="mt-1 text-danger">  
+                      {formik?.errors?.data}
+                    </label>
+                  ): null}
               </Col>
             </Row>
             <Form.Group>
