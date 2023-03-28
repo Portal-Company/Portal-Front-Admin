@@ -11,7 +11,7 @@ import * as yup from "yup"
 import { api } from "../../../services";
 import { toast } from "react-toastify";
 
-const Disciplina = () => {
+const Actividadade = () => {
   const user = getUserInfo()
   const { data: userData } = useFetch(`/user/list/${user?.sub}`)
 
@@ -135,4 +135,4 @@ const Disciplina = () => {
   );
 };
 
-export default Disciplina;
+export default Actividadade;

@@ -18,7 +18,7 @@ import { toast } from "react-toastify";
 import { ModalDelete } from "../../../components/ModalConfirm";
 import { ModalUpdate } from "./ModalUpdate";
 
-const DisciplinaList = memo(() => {
+const ActividadeList = memo(() => {
   const user = getUserInfo()
   const { data: userData } = useFetch(`/user/list/${user?.sub}`)
   const { data: Subject} = useFetch(`/school/list/${userData?.Escola?.id}/subjects`)
@@ -66,7 +66,7 @@ const DisciplinaList = memo(() => {
           <Card>
             <Card.Header className="d-flex justify-content-between">
               <div className="header-title">
-                <h4 className="card-title">Listagem de Disciplina</h4>
+                <h4 className="card-title">Listagem de Actividades</h4>
               </div>
             </Card.Header>
             <Card.Body className="px-0">
@@ -192,5 +192,5 @@ const DisciplinaList = memo(() => {
   );
 });
 
-DisciplinaList.displayName = "DisciplinaList";
-export default DisciplinaList;
+ActividadeList.displayName = "ActividadeList";
+export default ActividadeList;
