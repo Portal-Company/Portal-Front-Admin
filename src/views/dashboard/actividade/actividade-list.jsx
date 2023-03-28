@@ -21,20 +21,20 @@ import { ModalUpdate } from "./ModalUpdate";
 const ActividadeList = memo(() => {
   const user = getUserInfo()
   const { data: userData } = useFetch(`/user/list/${user?.sub}`)
-  const { data: Subject} = useFetch(`/school/list/${userData?.Escola?.id}/subjects`)
   const [item, setItem] = useState({})
 
+  console.log(userData?.Escola);
 
   const [showModal, setShowModal] = useState(false);
   const [showModalUpdate, setShowModalUpadate] = useState(false);
 
   function handleChange(){
-    mutate(`/school/list/${userData?.Escola?.id}/subjects`)
+    mutate(`/user/list/${user?.sub}`)
   }
 
   async function handleDeleteConfirm(id){
     try{
-      const data = await api.delete(`schoolSubject/delete/${id}`)
+      const data = await api.delete(`activity/delete/${id}`)
       if(data?.data){
         toast.success("deletado com sucesso!")
         handleChange()
@@ -80,16 +80,18 @@ const ActividadeList = memo(() => {
                   <thead>
                     <tr className="ligth">
                       <th>Nome </th>
-                      <th>Curso</th>
+                      <th>Organizador</th>
+                      <th>Data</th>
 
                       <th min-width="100px">Acção</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {Subject?.map((item, idx) => (
+                    {userData?.Escola?.actividade?.map((item, idx) => (
                       <tr key={idx}>
                         <td>{item.nome}</td>
-                        <td>{item?.Curso?.nome}</td>
+                        <td>{item?.organizador}</td>
+                        <td>{item?.data}</td>
 
                     
                         <td>
