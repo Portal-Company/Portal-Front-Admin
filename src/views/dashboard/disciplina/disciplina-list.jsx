@@ -21,19 +21,20 @@ import { ModalUpdate } from "./ModalUpdate";
 const DisciplinaList = memo(() => {
   const user = getUserInfo()
   const { data: userData } = useFetch(`/user/list/${user?.sub}`)
-  const { data: Courses} = useFetch(`/school/list/${userData?.Escola?.id}/courses`)
+  const { data: Subject} = useFetch(`/school/list/${userData?.Escola?.id}/subjects`)
   const [item, setItem] = useState({})
+
 
   const [showModal, setShowModal] = useState(false);
   const [showModalUpdate, setShowModalUpadate] = useState(false);
 
   function handleChange(){
-    mutate(`/school/list/${userData?.Escola?.id}/courses`)
+    mutate(`/school/list/${userData?.Escola?.id}/subjects`)
   }
 
   async function handleDeleteConfirm(id){
     try{
-      const data = await api.delete(`course/delete/${id}`)
+      const data = await api.delete(`schoolSubject/delete/${id}`)
       if(data?.data){
         toast.success("deletado com sucesso!")
         handleChange()
@@ -78,25 +79,19 @@ const DisciplinaList = memo(() => {
                 >
                   <thead>
                     <tr className="ligth">
-                      <th>Name do Curso</th>
-                      <th>Area de Formação</th>
-
-                      <th>Status</th>
+                      <th>Nome </th>
+                      <th>Curso</th>
 
                       <th min-width="100px">Acção</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {Courses?.map((item, idx) => (
+                    {Subject?.map((item, idx) => (
                       <tr key={idx}>
                         <td>{item.nome}</td>
-                        <td>{item?.AreaDeFormacao?.nome}</td>
+                        <td>{item?.Curso?.nome}</td>
 
-                        <td>
-                          <span className={`badge ${item.color}`}>
-                            {item.status}
-                          </span>
-                        </td>
+                    
                         <td>
                           <div className="flex align-items-center list-user-action">
                             <Link

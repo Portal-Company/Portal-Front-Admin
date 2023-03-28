@@ -15,9 +15,9 @@ function ModalUpdate({ onClose, item, mutate, setShowModalUpadate }) {
     onSubmit: async (data) =>{
       if(item?.fotoUrl === data?.fotoUrl){
         try{
-            const response = await api.put(`/course/put/${item?.id}`, data)
+            const response = await api.put(`/schoolSubject/put/${item?.id}`, data)
             if(response){
-              toast.success("Curso actualizado com sucesso")
+              toast.success("Disciplina actualizada com sucesso")
               mutate()
               setShowModalUpadate(false)
             }
@@ -31,9 +31,9 @@ function ModalUpdate({ onClose, item, mutate, setShowModalUpadate }) {
           const fotoUrl = await getFile(formData)
           if(fotoUrl){
             data = {...data, fotoUrl: fotoUrl?.id};
-            const response = await api.put(`/course/put/${item?.id}`, data)
+            const response = await api.put(`/schoolSubject/put/${item?.id}`, data)
             if(response){
-              toast.success("Curso actualizado com sucesso")
+              toast.success("Disciplina actualizada com sucesso")
               setShowModalUpadate(false)
             }
           }
@@ -53,7 +53,7 @@ function ModalUpdate({ onClose, item, mutate, setShowModalUpadate }) {
   return (
     <Modal show={true} onHide={onClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Actualizar Curso</Modal.Title>
+        <Modal.Title>Actualizar Disciplina</Modal.Title>
       </Modal.Header>
       <Card.Body 
         style={{

@@ -22,6 +22,7 @@ const Disciplina = () => {
       fotoUrl: "",
       descricao: "",
       cursoId: "",
+      escolaId: "",
     },
     validationSchema: yup.object({
       nome: yup.string().required("Este campo é obrigatório"),
@@ -30,13 +31,12 @@ const Disciplina = () => {
       cursoId: yup.string().required("Este campo é obrigatório"),
     }),
     onSubmit: async (data) =>{
-      console.log("Entrei", data);
       try{
         const formData = new FormData();
         formData.append('file', data?.fotoUrl[0]);
         const fotoUrl = await getFile(formData)
         if(fotoUrl){
-          data = {...data, fotoUrl: fotoUrl?.id};
+          data = {...data, fotoUrl: fotoUrl?.id, escolaId: userData?.Escola?.id};
           const response = await api.post("/schoolSubject/post", data)
           if(response){
             toast.success("Disciplina cadastrada com sucesso")
@@ -69,7 +69,7 @@ const Disciplina = () => {
                 <Form.Label htmlFor="validationDefault04">
                   Curso
                 </Form.Label>
-                <Form.Select id="cursoId" name="cursoId" required  onChange={formik.handleChange}>
+                <Form.Select id="cursoId" name="cursoId" value={formik.values.cursoId} required  onChange={formik.handleChange}>
                 <option defaultChecked>Selecione um curso</option>
                   {Area?.map((item) => (
                     <option key={item?.id} value={item?.id}>{item?.nome}</option>
