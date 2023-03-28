@@ -11,9 +11,15 @@ import { Link } from "react-router-dom";
 
 // img
 import imgsuccess from "/src/assets/images/pages/img-success.png";
+import { getUserInfo } from "../auth/services";
+import useFetch from "../../../hooks";
 
 const FormWizard = () => {
+  const user = getUserInfo()
+  const { data: userData } = useFetch(`/user/list/${user?.sub}`)
   const [show, AccountShow] = useState("A");
+
+  console.log(userData, "cheguei");
   return (
     <Row>
       <Col sm="12" lg="12">
