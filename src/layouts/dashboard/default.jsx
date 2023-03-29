@@ -1,5 +1,5 @@
-import { useEffect, memo, Fragment, useContext, Suspense } from "react";
-import { useLocation, Outlet } from "react-router-dom";
+import { useEffect, memo, Fragment, useContext, Suspense, useState } from "react";
+import { useLocation, Outlet, useNavigate } from "react-router-dom";
 
 //react-shepherd
 import { ShepherdTour, ShepherdTourContext } from "react-shepherd";
@@ -23,9 +23,13 @@ import Loader from "../../components/Loader";
 
 // Import selectors & action from setting store
 import * as SettingSelector from "../../store/setting/selectors";
+import useSWR from "swr"
 
 // Redux Selector / Action
 import { useSelector } from "react-redux";
+import { getUserInfo } from "../../views/dashboard/auth/services";
+import { api } from "../../services";
+import useFetch from "../../hooks";
 
 const Tour = () => {
   const tour = useContext(ShepherdTourContext);
@@ -197,6 +201,12 @@ const Default = memo((props) => {
     case "/inscritos/inscritos-list":
     case "/inscritos/aceites-list":
     case "/inscritos/rejeitados-list":
+    case "/cargo/cargo-list":
+    case "/cargo/cargo-add":
+    case "/disciplina/disciplina-list":
+    case "/disciplina/disciplina-add":
+    case "/actividade/actividade-list":
+    case "/actividade/actividade-add":
       subHeader = <SubHeader />;
       commanclass = "iq-banner default";
       break;
@@ -204,9 +214,16 @@ const Default = memo((props) => {
       break;
   }
 
+  const [user, setUser] = useState(getUserInfo())
+  const { data } = useFetch(`/user/list/${user?.sub}`)
+  const navigate = useNavigate()
+
+  // if(!data) return Navigate("/auth/sign-in")
+  
   return (
     <Fragment>
-      <ShepherdTour steps={newSteps} tourOptions={tourOptions}>
+      {data ? (
+        <ShepherdTour steps={newSteps} tourOptions={tourOptions}>
         <Loader />
         <Sidebar app_name={appName} />
         <Tour />
@@ -224,6 +241,8 @@ const Default = memo((props) => {
         </main>
         <SettingOffCanvas />
       </ShepherdTour>
+      ) : navigate("/auth/sign-in")}
+      
     </Fragment>
   );
 });

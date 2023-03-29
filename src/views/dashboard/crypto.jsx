@@ -1,4 +1,4 @@
-import { useEffect, memo, Fragment } from "react";
+import { useEffect, memo, Fragment, useState } from "react";
 import {
   Row,
   Col,
@@ -23,6 +23,8 @@ import { Link } from "react-router-dom";
 //component
 import CustomToggle from "../../components/dropdowns";
 import ChoicesJs from "../../components/choices";
+import { getUserInfo } from "./auth/services";
+import useFetch from "../../hooks";
 
 //select
 
@@ -595,6 +597,11 @@ const Crypto = memo((props) => {
       },
     ],
   };
+  
+  const user = getUserInfo()
+  const { data: userData } = useFetch(`/user/list/${user?.sub}`)
+  const { data: Statistic } = useFetch(`/statistic/school/${userData?.Escola?.id}`)
+    
   return (
     <Fragment>
       <Row>
@@ -629,14 +636,14 @@ const Crypto = memo((props) => {
                     </svg>
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
-                    <Dropdown.Item to="#">Mascolino</Dropdown.Item>
+                    <Dropdown.Item to="#">Masculino</Dropdown.Item>
                     <Dropdown.Item to="#">Femenino</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
               </div>
               <div className="d-flex align-items-center">
                 <div>
-                  <h3>356</h3>
+                  <h3>{Statistic?.totalInscritos}</h3>
                   <small className="text-success">+ 0.8%</small>
                   <small className="ms-2">Candidatos</small>
                 </div>
@@ -688,7 +695,7 @@ const Crypto = memo((props) => {
               </div>
               <div className="d-flex align-items-center">
                 <div>
-                  <h3>2.850</h3>
+                  <h3>{Statistic?.totalInscritosRejeitados}</h3>
                   <small className="text-success">+ 0.8%</small>
                   <small className="ms-2">Alunos</small>
                 </div>
@@ -726,7 +733,7 @@ const Crypto = memo((props) => {
               </div>
               <div className="d-flex align-items-center">
                 <div>
-                  <h3> 34.850,10</h3>
+                  <h3>{Statistic?.totalInscritosAceites}</h3>
                   <small className="text-danger">- 0.8%</small>
                   <small className="ms-2">Alunos</small>
                 </div>

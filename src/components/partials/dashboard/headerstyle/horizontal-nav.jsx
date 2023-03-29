@@ -1,4 +1,4 @@
-import { memo, Fragment } from "react";
+import { memo, Fragment, useContext } from "react";
 
 //React-bootstrap
 import { Offcanvas, Navbar, Container, Nav, Button } from "react-bootstrap";
@@ -7,6 +7,7 @@ import { Offcanvas, Navbar, Container, Nav, Button } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
 
 const HorizontalNav = memo(() => {
+
   //location
   let location = useLocation();
   return (

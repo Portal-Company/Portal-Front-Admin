@@ -1,24 +1,24 @@
-import {useState,memo,Fragment} from 'react'
+import {useState,memo,Fragment, useEffect} from 'react'
 
 //react-bootstrap
 import {Row,Col,Modal,Form,Button} from 'react-bootstrap'
+import useSWR from "swr"
 
 //router
-import {Link,useNavigate} from 'react-router-dom'
-
+import {Link} from 'react-router-dom'
 //components
 import Card from '../../../components/bootstrap/card'
+import { isAuthenticated } from '../auth/services'
+import { api } from '../../../services'
 
 const Admin = memo(() =>{
     const [show, setShow] = useState(false);
-
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const [show1, setShow1] = useState(false);
-
     const handleClose1 = () => setShow1(false);
     const handleShow1 = () => setShow1(true);
-    let history =useNavigate()
+
     return(
         <Fragment>
             <Row>

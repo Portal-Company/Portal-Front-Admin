@@ -1,4 +1,4 @@
-import { useEffect, memo, Fragment } from "react";
+import { useEffect, memo, Fragment, useContext } from "react";
 
 //React-bootstrap
 import { Navbar, Container, Nav, Dropdown } from "react-bootstrap";
@@ -28,8 +28,10 @@ import avatars3 from "/src/assets/images/avatars/avtar_2.png";
 import avatars4 from "/src/assets/images/avatars/avtar_3.png";
 import avatars5 from "/src/assets/images/avatars/avtar_4.png";
 import avatars6 from "/src/assets/images/avatars/avtar_5.png";
+import { UserContext } from "../../../../context";
 
 const Header = memo((props) => {
+  const {user} = useContext(UserContext)
   useEffect(() => {
     // navbarstylemode
     const navbarstyleMode1 = sessionStorage.getItem("Navbarstyle-mode");
@@ -535,9 +537,11 @@ const Header = memo((props) => {
                   />
                   <div className="caption ms-3 d-none d-md-block ">
                     <h6 className="mb-0 caption-title">
-                      Insituto Politécnico Industrial
+                      {user?.Escola?.nome}
                     </h6>
-                    <p className="mb-0 caption-sub-title">Ensino Médio</p>
+                    <p className="mb-0 caption-sub-title">
+                      {user?.Escola?.Categoria?.nome}
+                    </p>
                   </div>
                 </Dropdown.Toggle>
                 <Dropdown.Menu

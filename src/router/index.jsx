@@ -1,8 +1,6 @@
 import { memo, lazy } from "react";
-
 //router
-import { Routes, Route } from "react-router-dom";
-
+import { Routes, Route} from "react-router-dom";
 const CursoAdd = lazy(() => import("../views/dashboard/curso/curso-add"));
 const CursoList = lazy(() => import("../views/dashboard/curso/curso-list"));
 
@@ -22,6 +20,14 @@ const FormacaoList = lazy(() =>
 );
 
 ///Formação
+const ActividadeAdd = lazy(() =>
+  import("../views/dashboard/actividade/actividade-add")
+);
+const ActividadeList = lazy(() =>
+  import("../views/dashboard/actividade/actividade-list")
+);
+
+///Formação
 const InscritosList = lazy(() =>
   import("../views/dashboard/inscritos/inscritos-list")
 );
@@ -32,12 +38,23 @@ const InscritosRejeitoList = lazy(() =>
   import("../views/dashboard/inscritos/rejeitado-list")
 );
 
+const CargoAdd = lazy(() => import("../views/dashboard/cargo/cargo-add")) 
+const CargoList = lazy(() => import("../views/dashboard/cargo/cargo-list")) 
+
+
 ///Formação
 const FuncionarioAdd = lazy(() =>
   import("../views/dashboard/funcionarios/funcionario-add")
 );
 const FuncionarioList = lazy(() =>
   import("../views/dashboard/funcionarios/funcionario-list")
+);
+
+const DisciplinaAdd = lazy(() =>
+  import("../views/dashboard/disciplina/disciplina-add")
+);
+const DisciplinaList = lazy(() =>
+  import("../views/dashboard/disciplina/disciplina-list")
 );
 
 //layoutpages
@@ -49,7 +66,6 @@ import Simple from "../layouts/dashboard/simple";
 
 import AccountDeactive from "../views/dashboard/auth/account-deactivate";
 import TwoFactor from "../views/dashboard/auth/two-factor";
-
 // auth
 const ConfirmMail = lazy(() => import("../views/dashboard/auth/confirm-mail"));
 const LockScreen = lazy(() => import("../views/dashboard/auth/lock-screen"));
@@ -200,7 +216,9 @@ const Analytics = lazy(() => import("../views/dashboard/analytics"));
 const Crypto = lazy(() => import("../views/dashboard/crypto"));
 
 const IndexRouters = memo(() => {
+
   return (
+    <>
     <Routes>
       <Route path="/errors" element={<Simple />}>
         {/* error */}
@@ -208,6 +226,7 @@ const IndexRouters = memo(() => {
         <Route path="error-500" element={<Error500 />} />
         <Route path="maintenance" element={<Maintenance />} />
       </Route>
+      <Route path="*" element={<Error404 />} />
       {/* auth */}
       <Route path="/auth" element={<Simple />}>
         <Route path="confirm-mail" element={<ConfirmMail />} />
@@ -229,6 +248,18 @@ const IndexRouters = memo(() => {
         {/* Curso */}
         <Route path="/curso/curso-add" element={<CursoAdd />} />
         <Route path="/curso/curso-list" element={<CursoList />} />
+
+        {/* Disciplina */}
+        <Route path="/disciplina/disciplina-add" element={<DisciplinaAdd />} />
+        <Route path="/disciplina/disciplina-list" element={<DisciplinaList />} />
+
+        {/* Cargo */}
+        <Route path="/cargo/cargo-add" element={<CargoAdd />} />
+        <Route path="/cargo/cargo-list" element={<CargoList />} />
+
+        {/* Actividades */}
+        <Route path="/actividade/actividade-add" element={<ActividadeAdd />} />
+        <Route path="/actividade/actividade-list" element={<ActividadeList />} />
 
         {/* Perfil Saída */}
         <Route path="/perfil-saida/perfil-conf" element={<ConfPerfil />} />
@@ -370,11 +401,11 @@ const IndexRouters = memo(() => {
         <Route path="/plugins/todo" element={<Todo />}></Route>
         <Route path="/plugins/image-copper" element={<Imagecopper />}></Route>
         <Route path="/plugins/quill-editor" element={<Quilleditor />}></Route>
-
         {/*admin*/}
-        <Route path="/admin/admin" element={<Admin />} />
+        <Route path="/admin/admin" element={<Admin/>} />
       </Route>
     </Routes>
+    </>
   );
 });
 

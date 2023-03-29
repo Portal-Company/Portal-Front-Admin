@@ -1,31 +1,63 @@
 import { useState } from "react";
+import { useFormik } from "formik";
 
 //react-bootstrap
 import { Row, Col, Form, Button } from "react-bootstrap";
 
 //components
 import Card from "../../../components/bootstrap/card";
+import { api } from "../../../services";
+import { getUserInfo } from "../auth/services";
+import useFetch from "../../../hooks";
+import { toast } from "react-toastify";
+import * as yup from "yup"
 
 const FormValidation = () => {
-  //form validation
-  const [validated, setValidated] = useState(false);
-  const handleSubmit = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
+  const user = getUserInfo()
+  const { data: userData } = useFetch(`/user/list/${user?.sub}`)
+
+
+  const formik = useFormik({
+    initialValues: {
+      nome: "",
+      fotoUrl: "",
+      descricao: "",
+      escolaId: userData?.Escola?.id,
+      categoriaId: userData?.Escola?.Categoria?.id,
+    },
+    validationSchema: yup.object({
+      nome: yup.string().required("Este campo é obrigatório"),
+      fotoUrl: yup.string().required("Este campo  é obrigatório"),
+      descricao: yup.string().required("Este campo é obrigatório"),
+      escolaId: yup.string().required("Este campo é obrigatório"),
+      categoriaId: yup.string().required("Este campo é obrigatório"),
+    }),
+    onSubmit: async (data) =>{
+      try{
+        const formData = new FormData();
+        formData.append('file', data?.fotoUrl[0]);
+        const fotoUrl = await getFile(formData)
+        if(fotoUrl){
+          data = {...data, fotoUrl: fotoUrl?.id};
+          const response = await api.post("/trainingArea/post", data)
+          if(response){
+            toast.success("Area de Formação cadastrada com sucesso")
+            formik.resetForm( )
+          }
+        }
+      }catch(err){
+        toast.error(err?.response?.data?.message)
+      }
     }
-    setValidated(true);
-  };
-  const [validated1, setValidated1] = useState(false);
-  const handleSubmit1 = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-    setValidated1(true);
-  };
+  }) 
+
+  async function getFile (data) {
+      const dataD = await api.post("/file", data)
+
+      return dataD.data
+  }
+
+  
   return (
     <Row>
       <Card>
@@ -35,25 +67,57 @@ const FormValidation = () => {
           </div>
         </Card.Header>
         <Card.Body>
-          <Form validated={validated} onClick={handleSubmit}>
+          <Form onSubmit={formik?.handleSubmit} encType="multipart/form-data">
             <Row className="mb-3">
               <Col md="6" className="mb-3">
                 <Form.Label htmlFor="validationCustom05">
-                  Nome da Area de Formação
+                  Nome
                 </Form.Label>
                 <Form.Control
-                  defaultValue=""
+                  onChange={formik.handleChange}
+                  name="nome"
+                  value={formik.values.nome}
                   type="text"
-                  id="validationCustom05"
+                  id="nome"
                   required
                 />
-                <Form.Control.Feedback type="invalid">
-                  Por favor, insira o nome.
-                </Form.Control.Feedback>
+                {formik?.touched?.nome && formik?.errors?.nome ? (
+                  <label className="mt-1 text-danger">  
+                    {formik?.errors?.nome}
+                  </label>
+                ): null}
+                <Form.Group className="mb-3 form-group mt-2">
+                                <Form.Label htmlFor="exampleFormControlTextarea1">Descrição</Form.Label>
+                                <Form.Control as="textarea" id="descricao" value={formik.values.descricao} name="descricao" onChange={formik.handleChange} rows="5" />
+                {formik?.touched?.descricao && formik?.errors?.descricao ? (
+                  <label className="mt-1 text-danger">  
+                    {formik?.errors?.descricao}
+                  </label>
+                ): null}
+                </Form.Group>
+              
+              </Col>
+              <Col md="6" className="mb-3">
+                <Form.Group className="mb-3 form-group mt-2">
+                  <Form.Label className="custom-file-input">Carregar imagem</Form.Label>
+                  <Form.Control
+                      type="file"
+                      id="fotoUrl"
+                      name="fotoUrl"
+                      onChange={(event) =>{
+                        formik.setFieldValue('fotoUrl', event?.currentTarget?.files)
+                      }}  
+                  />
+                  {formik?.touched?.fotoUrl && formik?.errors?.fotoUrl ? (
+                    <label className="mt-1 text-danger">  
+                      {formik?.errors?.fotoUrl}
+                    </label>
+                  ): null}
+              </Form.Group>
               </Col>
 
               <div className="col-12">
-                <Button type="button">Cadastrar</Button>
+                <Button type="submit">Cadastrar</Button>
               </div>
             </Row>
           </Form>
