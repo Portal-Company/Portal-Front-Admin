@@ -188,7 +188,7 @@ const FormWizard = () => {
                     <div className="col-md-6">
                       <div className="form-group">
                         <label className="form-label">
-                          Endereço da Escola: *
+                          NIF
                         </label>
                         <input
                           type="text"
@@ -201,6 +201,39 @@ const FormWizard = () => {
                     <div className="col-md-6">
                       <div className="form-group">
                         <label className="form-label">Telefone: *</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="cpwd"
+                          placeholder="Tel"
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label className="form-label">Província</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="cpwd"
+                          placeholder="Tel"
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label className="form-label">Endereço</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="cpwd"
+                          placeholder="Tel"
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label className="form-label">Município</label>
                         <input
                           type="text"
                           className="form-control"
@@ -245,12 +278,11 @@ const FormWizard = () => {
                     <div className="col-md-6">
                       <Form.Group className="form-group">
                         <Form.Label htmlFor="exampleInputdatetime">
-                          Data e hora da Fundação
+                          Data da Fundação
                         </Form.Label>
                         <Form.Control
-                          type="datetime-local"
+                          type="text"
                           id="exampleInputdatetime"
-                          defaultValue="2019-12-19T13:45:00"
                         />
                       </Form.Group>
                     </div>
