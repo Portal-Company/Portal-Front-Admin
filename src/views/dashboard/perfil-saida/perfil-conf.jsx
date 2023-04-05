@@ -91,7 +91,7 @@ const FormWizard = () => {
             <div className="form-card text-start">
               <div className="row">
                 <div className="col-7">
-                  <h3 className="mb-4">Informações da Conta: </h3>
+                  <h3 className="mb-4">Informações da Escola: </h3>
                 </div>
               </div>
               <div className="row">
