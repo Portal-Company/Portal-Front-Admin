@@ -17,9 +17,7 @@ const UserList = () => {
 
   const user = getUserInfo()
   const { data: userData } = useFetch(`/user/list/${user?.sub}`)
-  const { data: Inscricao } = useFetch(`/school/list/${userData?.Escola?.id}/enrollments`)
-
-
+  const { data: Inscricao } = useFetch(`/enrollment/list/rejected/${userData?.Escola?.id}`)
 
   return (
     <Fragment>
@@ -61,6 +59,7 @@ const UserList = () => {
                     </tr>
                   </thead>
                   <tbody>
+                    {!Inscricao?.length && <div className="text-center text-blue pt-4">Sem candidatos rejeitados no momento</div>}
                     {Inscricao?.filter((item) =>
                           item?.Candidato?.nomeCompleto.toLocaleLowerCase().includes(query)
                         )

@@ -15,6 +15,8 @@ import imgsuccess from "/src/assets/images/pages/img-success.png";
 import { getUserInfo } from "../auth/services";
 import useFetch from "../../../hooks";
 import * as yup from "yup"
+import { api } from "../../../services";
+import { toast } from "react-toastify";
 
 const FormWizard = () => {
   const user = getUserInfo()
@@ -22,10 +24,10 @@ const FormWizard = () => {
   const [escola, setEscola] = useState(userData?.Escola)
   const [show, AccountShow] = useState("A");
   const { data: provincia } = useFetch(`/province/list`)
-  const { data: municipio } = useFetch(`/municipio/list`)
+  const { data: municipio } = useFetch(`/county/list`)
 
 
-  // console.log(escola);
+
 
   
   const formik = useFormik({
@@ -41,8 +43,10 @@ const FormWizard = () => {
       provinciaId: escola?.Localizacao?.provinciaId,
       municipioId: escola?.Localizacao?.municipioId,
       escolaId: escola?.id,
+      localizacaoId: escola?.Localizacao?.id,
       descricao: escola?.historial?.descricao,
       data: escola?.historial?.data,
+      historialId: escola?.historial?.id,
       fotoUrl1: escola?.historial?.fotoUrl,
       fotoUrl2: escola?.historial?.fotoUrl2,
       fotoUrl3: escola?.historial?.fotoUrl3,
@@ -69,13 +73,149 @@ const FormWizard = () => {
       data: yup.string().required("Este campo é obrigatório"),
     }),
     onSubmit: async (data) => {
+      let newContato = data?.contatoId
+      try{
+        if(!escola?.historial){
+          const formData1 = new FormData()
+          const formData2 = new FormData()
+          const formData3 = new FormData()
+          const formData4 = new FormData()
 
-      console.log(data);
+          formData1.append('file', data?.fotoUrl1[0])
+          formData2.append('file', data?.fotoUrl2[0])
+          formData3.append('file', data?.fotoUrl3[0])
+          formData4.append('file', data?.fotoUrl4[0])
 
+          const fotoUrl1 = await getFile(formData1)
+          const fotoUrl2 = await getFile(formData2)
+          const fotoUrl3 = await getFile(formData3)
+          const fotoUrl4 = await getFile(formData4)
+
+          if(fotoUrl1 && fotoUrl2 && fotoUrl3 && fotoUrl4){
+            const history = {
+              fundador: data?.fundador,
+              descricao: data?.descricao,
+              data: data?.data,
+              escolaId: escola?.id,
+              fotoUrl: fotoUrl1?.id,
+              fotoUrl2: fotoUrl2?.id,
+              fotoUrl3: fotoUrl3?.id,
+              fotoUrl4: fotoUrl4?.id,
+            }
+          const response = await api.post('/history/post', history)
+        }
+
+        }else{
+          if(!(escola?.historial?.fotoUrl === data.fotoUrl && escola?.historial?.fotoUrl2 === data.fotoUrl2 && escola?.historial?.fotoUrl3 === data.fotoUrl3  && escola?.historial?.fotoUrl4 === data.fotoUrl4)){
+          const formData1 = new FormData()
+          const formData2 = new FormData()
+          const formData3 = new FormData()
+          const formData4 = new FormData()
+
+          formData1.append('file', data?.fotoUrl1[0])
+          formData2.append('file', data?.fotoUrl2[0])
+          formData3.append('file', data?.fotoUrl3[0])
+          formData4.append('file', data?.fotoUrl4[0])
+          setTimeout(async () => {
+            const fotoUrl1 = await getFile(formData1)
+            const fotoUrl2 = await getFile(formData2)
+            const fotoUrl3 = await getFile(formData3)
+            const fotoUrl4 = await getFile(formData4)
+          }, 2000)
+        
+          if(fotoUrl1 && fotoUrl2 && fotoUrl3 && fotoUrl4){
+            const history = {
+              fundador: data?.fundador,
+              descricao: data?.descricao,
+              escolaId: escola?.id,
+              fotoUrl: fotoUrl1?.id,
+              fotoUrl2: fotoUrl2?.id,
+              fotoUrl3: fotoUrl3?.id,
+              fotoUrl4: fotoUrl4?.id
+            }
+            const response = await api.put(`/history/put/${data?.historialId}`, history)
+          }
+        }else{
+          const history = {
+            fundador: data?.fundador,
+            descricao: data?.descricao,
+            escolaId: escola?.id
+          }
+          const response = await api.put(`/history/put/${data?.historialId}`, history) 
+        }
+        
+        }
+
+        if(escola?.Localizacao === null) {
+          const location = {
+            endereco1: data?.endereco1,
+            provinciaId: data?.provinciaId,
+            municipioId: data?.municipioId,
+            escolaId: escola?.id
+          }
+          const response = await api.post("/location/post", location)
+        }else{
+          const location = {
+            endereco1: data?.endereco1,
+            provinciaId: data?.provinciaId,
+            municipioId: data?.municipioId,
+            escolaId: escola?.id
+          }
+          const response = await api.put(`/location/put/${data?.localizacaoId}`, location)
+        }
+
+
+        if(!escola?.Contato) {
+          const contact = {
+            email: data?.email,
+            telefone: data?.numeroTelefone,
+          }
+          const response = await api.post(`/contact/post`, contact)
+        }else {
+          const contact = {
+            email: data?.email,
+            telefone: data?.numeroTelefone,
+          }
+          const response = (await api.put(`/contact/put/${data?.contatoId}`, contact)).data
+          newContato = response?.id
+        }
+
+        const formData = new FormData()
+        const formData1 = new FormData()
+
+        formData.append("file", data?.logo[0])
+        formData1.append("file", data?.fotoUrl[0])
+
+        const logo = await getFile(formData)
+        const fotoUrl = await getFile(formData1)
+
+
+        const school = {
+          fotoUrl: fotoUrl?.id,
+          logo: logo?.id,
+          nome: data?.nome,
+          nif: data?.nif,
+          contatoId: newContato
+        }
+
+        const response = await api.put(`/school/put/${escola?.id}`, school)
+        if(response){
+          toast.success("Dados actualizados com sucesso!")
+        }
+      }catch(err) {
+        toast.error(err?.response?.data?.message)
+      }
     }
   })
 
-  console.log(formik.values);
+  async function getFile (data) {
+    const dataD = await api.post("/file", data)
+    return dataD.data
+  }
+
+
+
+  console.log(formik.errors);
 
   return (
     <Row>
@@ -87,7 +227,7 @@ const FormWizard = () => {
             </div>
           </Card.Header>
           <Card.Body>
-            <Form id="form-wizard1" className="text-center mt-3" onSubmit={formik.handleSubmit}>
+            <Form id="form-wizard1" className="text-center mt-3" onSubmit={formik.handleSubmit} encType="multipart/form-data">
             <div className="form-card text-start">
               <div className="row">
                 <div className="col-7">
@@ -156,7 +296,7 @@ const FormWizard = () => {
                 <div className="col-md-6">
                   <div className="form-group">
                     <label className="form-label">Província</label>
-                    <Form.Select name="provinciaId" id="provinciaId" value={formik.values.provinciaId}>
+                    <Form.Select name="provinciaId" id="provinciaId" onChange={formik.handleChange} value={formik.values.provinciaId}>
                       <option defaultChecked>Selecione uma provicíncia</option>
                       {provincia?.map((item)=>(
                         <option key={item?.id} value={item?.id}>{item?.nome}</option>
@@ -181,7 +321,7 @@ const FormWizard = () => {
                 <div className="col-md-6">
                   <div className="form-group">
                     <label className="form-label">Município</label>
-                    <Form.Select name="municipioId" id="municipioId" value={formik.values.municipioId}>
+                    <Form.Select name="municipioId" id="municipioId" onChange={formik.handleChange} value={formik.values.municipioId}>
                       <option defaultChecked>Selecione um município</option>
                       {municipio?.map((item)=>(
                         <option key={item?.id} value={item?.id}>{item?.nome}</option>
@@ -233,7 +373,11 @@ const FormWizard = () => {
                 </Form.Label>
                 <Form.Control
                   type="file"
-                  id="exampleInputdatetime"
+                  name="fotoUrl1"
+                  id="fotoUrl1"
+                  onChange={(event) =>{
+                    formik.setFieldValue('fotoUrl1', event?.currentTarget?.files)
+                  }} 
                 />
               </Form.Group>
             </div>
@@ -244,7 +388,11 @@ const FormWizard = () => {
                 </Form.Label>
                 <Form.Control
                   type="file"
-                  id="exampleInputdatetime"
+                  name="fotoUrl2"
+                  id="fotoUrl2"
+                  onChange={(event) =>{
+                    formik.setFieldValue('fotoUrl2', event?.currentTarget?.files)
+                  }} 
                 />
               </Form.Group>
             </div>
@@ -255,7 +403,11 @@ const FormWizard = () => {
                 </Form.Label>
                 <Form.Control
                   type="file"
-                  id="exampleInputdatetime"
+                  name="fotoUrl3"
+                  id="fotoUrl3"
+                  onChange={(event) =>{
+                    formik.setFieldValue('fotoUrl3', event?.currentTarget?.files)
+                  }} 
                 />
               </Form.Group>
             </div>
@@ -266,7 +418,11 @@ const FormWizard = () => {
                 </Form.Label>
                 <Form.Control
                   type="file"
-                  id="exampleInputdatetime"
+                  id="fotoUrl4"
+                  name="fotoUrl4"
+                  onChange={(event) =>{
+                    formik.setFieldValue('fotoUrl4', event?.currentTarget?.files)
+                  }} 
                 />
               </Form.Group>
             </div>
@@ -276,7 +432,9 @@ const FormWizard = () => {
               </Form.Label>
               <Form.Control
                 as="textarea"
-                id="exampleFormControlTextarea1"
+                name="descricao"
+                onChange={formik.handleChange}
+                id="descricao"
                 rows="5"
               />
             </Form.Group>
@@ -289,29 +447,31 @@ const FormWizard = () => {
           </div>
         </div>
         <div className="form-group">
-          <label className="form-label">Imagem de Cada:</label>
-          <input
+          <label className="form-label">Logo:</label>
+          <Form.Control
             type="file"
-            className="form-control"
-            name="pic"
-            accept="image/*"
+            name="logo"
+            id="logo"
+            onChange={(event) =>{
+              formik.setFieldValue('logo', event?.currentTarget?.files)
+            }} 
           />
         </div>
         <div className="form-group">
           <label className="form-label">Imagem de Perfil:</label>
-          <input
+          <Form.Control
             type="file"
-            className="form-control"
-            name="pic-2"
-            accept="image/*"
+            name="fotoUrl"
+            id="fotoUrl"
+            onChange={(event) =>{
+              formik.setFieldValue('fotoUrl', event?.currentTarget?.files)
+            }} 
           />
         </div>
       </div>
       <button
           type="submit"
-          name="next"
           className="btn btn-primary next action-button float-end"
-          value="Submit"
       >Salvar
       </button> 
       
