@@ -10,94 +10,24 @@ import { Link } from "react-router-dom";
 import Card from "../../../components/bootstrap/card";
 import useFetch from "../../../hooks";
 import { getUserInfo } from "../auth/services";
+import { ViewDataCandidate } from "./components";
 
-const userlist = [
-  {
-    name: "Hans Olo",
-    phone: "+91 2586 253 125",
-    email: "hansolo@gmail.com",
-    country: "12",
-    status: "Rejeitado",
-
-    joindate: "2019/12/01",
-    color: "bg-danger",
-  },
-
-  {
-    name: "Marge Arita",
-    phone: "+27 5625 456 589",
-    email: "margearita@gmail.com",
-    country: "17",
-    status: "Apurado",
-
-    joindate: "2019/12/01",
-    color: "bg-success",
-  },
-
-  {
-    name: "António Pedro Muteka",
-    phone: "+27 5625 456 589",
-    email: "margearita@gmail.com",
-    country: "17",
-    status: "Apurado",
-
-    joindate: "2019/12/01",
-    color: "bg-success",
-  },
-
-  {
-    name: "Ernesto Cabingano Salias",
-    phone: "+91 2586 253 125",
-    email: "hansolo@gmail.com",
-    country: "12",
-    status: "Rejeitado",
-
-    joindate: "2019/12/01",
-    color: "bg-danger",
-  },
-
-  {
-    name: "Luís Carlos Sebastião Baptista",
-    phone: "+91 2586 253 125",
-    email: "hansolo@gmail.com",
-    country: "12",
-    status: "Rejeitado",
-
-    joindate: "2019/12/01",
-    color: "bg-danger",
-  },
-
-  {
-    name: "Domingos Pascol João Matumona",
-    phone: "+27 5625 456 589",
-    email: "margearita@gmail.com",
-    country: "17",
-    status: "Apurado",
-
-    joindate: "2019/12/01",
-    color: "bg-success",
-  },
-
-  {
-    name: "Mauricio Costa",
-    phone: "+27 5625 456 589",
-    email: "margearita@gmail.com",
-    country: "17",
-    status: "Apurado",
-    joindate: "2019/12/01",
-    color: "bg-success",
-  },
-];
 
 const UserList = () => {
   const [query, setQuery] = useState("");
+  const [openModal, setOpenModal] = useState(false)
   const user = getUserInfo()
   const { data: userData } = useFetch(`/user/list/${user?.sub}`)
   const { data: Inscricao } = useFetch(`/enrollment/list/pending/${userData?.Escola?.id}`)
 
+  function handleClose () {
+    setOpenModal(false)
+  }
+
 
   return (
     <Fragment>
+      {openModal ? <ViewDataCandidate handleClose={handleClose} isShow={openModal}/> : null}
       <Row>
         <Col sm="12">
           <Card>
@@ -155,7 +85,7 @@ const UserList = () => {
                           </td>
 
                           <td>
-                            <Button>Ver dados</Button>
+                            <Button onClick={()=> setOpenModal(true)}>Ver dados</Button>
                           </td>
                         </tr>
                       ))}
