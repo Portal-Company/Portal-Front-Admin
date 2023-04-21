@@ -15,6 +15,8 @@ const Disciplina = () => {
   const user = getUserInfo()
   const { data: userData } = useFetch(`/user/list/${user?.sub}`)
   const { data: Area } = useFetch(`/school/list/${userData?.Escola?.id}/courses`)
+  const [isSubmiting, setIsSubmiting] = useState(false)
+
 
   const formik = useFormik({
     initialValues: {
@@ -32,6 +34,7 @@ const Disciplina = () => {
     }),
     onSubmit: async (data) =>{
       try{
+        setIsSubmiting(true);
         const formData = new FormData();
         formData.append('file', data?.fotoUrl[0]);
         const fotoUrl = await getFile(formData)
@@ -45,6 +48,10 @@ const Disciplina = () => {
         }
       }catch(err){
         toast.error(err?.response?.data?.message)
+      }finally{
+        setTimeout(() => {
+          setIsSubmiting(false)
+        }, 4000)
       }
     }
   }) 
@@ -119,7 +126,7 @@ const Disciplina = () => {
               </Col>
             </Row>
             <Form.Group>
-              <Button variant="btn btn-primary" type="submit">
+              <Button variant="btn btn-primary" type="submit" disabled={isSubmiting}>
                 Cadastrar
               </Button>
             </Form.Group>
