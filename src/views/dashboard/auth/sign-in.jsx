@@ -32,6 +32,8 @@ import { getUserInfo } from "./services";
 
 const SignIn = memo(() => {
   const appName = useSelector(SettingSelector.app_name);
+  const [isSubmiting, setIsSubmiting] = useState(false)
+
   let history = useNavigate();
 
 
@@ -52,13 +54,18 @@ const SignIn = memo(() => {
     }),
     onSubmit: async (data)=>{
       try{
+          setIsSubmiting(true);
           const response = await api.post("/auth/login", data)
           const { token } = response.data 
           setCookie(null, 'token', token, { path: '/' });
           if(response.data) history("/")
       }catch(err){
         toast.error(err?.response?.data?.message)
-      } 
+      }finally{
+        setTimeout(() => {
+          setIsSubmiting(false)
+        }, 4000)
+      }
     }
   })
   const user = getUserInfo() 
@@ -165,6 +172,7 @@ const SignIn = memo(() => {
                           // onClick={() => history("/")}
                           type="submit"
                           variant="btn btn-primary"
+                          disabled={isSubmiting}
                         >
                           Sign In
                         </Button>
