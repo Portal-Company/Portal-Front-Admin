@@ -124,7 +124,7 @@ const Cursos = () => {
               </Col>
             </Row>
             <Form.Group>
-              <Button variant="btn btn-primary" type="submit">
+              <Button variant="btn btn-primary" type="submit" disabled={isSubmiting}>
                 Cadastrar
               </Button>
             </Form.Group>
