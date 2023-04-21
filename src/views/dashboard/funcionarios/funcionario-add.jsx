@@ -17,6 +17,7 @@ import { Link } from "react-router-dom";
 
 const FuncionarioAdd = memo(() => {
   const user = getUserInfo()
+  const [isSubmiting, setIsSubmiting] = useState(false)
   const { data: userData } = useFetch(`/user/list/${user?.sub}`)
   const { data: Role } = useFetch(`/role/list/`)
 
@@ -52,6 +53,7 @@ const FuncionarioAdd = memo(() => {
     }),
     onSubmit: async (data) =>{
       try{
+        setIsSubmiting(true);
         const contact = {
           email: data.email,
           numeroTelefone: data.telefone.toString()
@@ -70,6 +72,10 @@ const FuncionarioAdd = memo(() => {
         }
       }catch(err){
         toast.error(err?.response?.data?.message)
+      }finally{
+        setTimeout(() => {
+          setIsSubmiting(false)
+        }, 4000)
       }
     }
   }) 
@@ -205,7 +211,7 @@ const FuncionarioAdd = memo(() => {
               </Col>
             </Row>
             <Form.Group>
-              <Button variant="btn btn-primary" type="submit">
+              <Button variant="btn btn-primary" type="submit" disabled={isSubmiting}>
                 Cadastrar
               </Button>
             </Form.Group>

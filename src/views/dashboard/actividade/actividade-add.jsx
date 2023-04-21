@@ -14,6 +14,8 @@ import { toast } from "react-toastify";
 const Actividadade = () => {
   const user = getUserInfo()
   const { data: userData } = useFetch(`/user/list/${user?.sub}`)
+  const [isSubmiting, setIsSubmiting] = useState(false)
+
 
   const formik = useFormik({
     initialValues: {
@@ -31,8 +33,8 @@ const Actividadade = () => {
       organizador: yup.string().required("Este campo é obrigatório"),
     }),
     onSubmit: async (data) =>{
-      console.log(data);
       try{
+        setIsSubmiting(true);
         const formData = new FormData();
         formData.append('file', data?.fotoUrl[0]);
         const fotoUrl = await getFile(formData)
@@ -46,6 +48,10 @@ const Actividadade = () => {
         }
       }catch(err){
         toast.error(err?.response?.data?.message)
+      }finally{
+        setTimeout(() => {
+          setIsSubmiting(false)
+        }, 4000)
       }
     }
   }) 
