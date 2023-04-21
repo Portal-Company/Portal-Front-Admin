@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 
 const Cursos = () => {
   const user = getUserInfo()
+  const [isSubmiting, setIsSubmiting] = useState(false)
   const { data: userData } = useFetch(`/user/list/${user?.sub}`)
   const { data: Area } = useFetch(`/school/list/${userData?.Escola?.id}/trainingAreas`)
 
@@ -31,6 +32,7 @@ const Cursos = () => {
     }),
     onSubmit: async (data) =>{
       try{
+        setIsSubmiting(true)
         const formData = new FormData();
         formData.append('file', data?.fotoUrl[0]);
         const fotoUrl = await getFile(formData)
@@ -44,6 +46,10 @@ const Cursos = () => {
         }
       }catch(err){
         toast.error(err?.response?.data?.message)
+      }finally{
+        setTimeout(() => {
+          setIsSubmiting(false)
+        }, 4000)
       }
     }
   }) 

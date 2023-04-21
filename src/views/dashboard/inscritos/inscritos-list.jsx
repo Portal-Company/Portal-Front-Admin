@@ -11,23 +11,34 @@ import Card from "../../../components/bootstrap/card";
 import useFetch from "../../../hooks";
 import { getUserInfo } from "../auth/services";
 import { ViewDataCandidate } from "./components";
+import { mutate } from "swr";
 
 
 const UserList = () => {
   const [query, setQuery] = useState("");
   const [openModal, setOpenModal] = useState(false)
+  const [item, setItem] = useState({})
   const user = getUserInfo()
   const { data: userData } = useFetch(`/user/list/${user?.sub}`)
   const { data: Inscricao } = useFetch(`/enrollment/list/pending/${userData?.Escola?.id}`)
+
+  function handleMutate(){
+      mutate(`/enrollment/list/pending/${userData?.Escola?.id}`)
+  }
 
   function handleClose () {
     setOpenModal(false)
   }
 
+  function handleView(item){
+    setItem(item)
+    setOpenModal(true)
+  }
+
 
   return (
     <Fragment>
-      {openModal ? <ViewDataCandidate handleClose={handleClose} isShow={openModal}/> : null}
+      {openModal ? <ViewDataCandidate item={item} handleClose={handleClose} isShow={openModal} mutate={handleMutate}/> : null}
       <Row>
         <Col sm="12">
           <Card>
@@ -85,7 +96,7 @@ const UserList = () => {
                           </td>
 
                           <td>
-                            <Button onClick={()=> setOpenModal(true)}>Ver dados</Button>
+                            <Button onClick={() => handleView(item)}>Ver dados</Button>
                           </td>
                         </tr>
                       ))}
