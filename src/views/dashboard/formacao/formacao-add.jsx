@@ -14,6 +14,7 @@ import * as yup from "yup"
 
 const FormValidation = () => {
   const user = getUserInfo()
+  const [isSubmiting, setIsSubmiting] = useState(false)
   const { data: userData } = useFetch(`/user/list/${user?.sub}`)
 
 
@@ -34,6 +35,7 @@ const FormValidation = () => {
     }),
     onSubmit: async (data) =>{
       try{
+        setIsSubmiting(true);
         const formData = new FormData();
         formData.append('file', data?.fotoUrl[0]);
         const fotoUrl = await getFile(formData)
@@ -47,6 +49,10 @@ const FormValidation = () => {
         }
       }catch(err){
         toast.error(err?.response?.data?.message)
+      }finally{
+        setTimeout(() => {
+          setIsSubmiting(false)
+        }, 4000)
       }
     }
   }) 
@@ -117,7 +123,7 @@ const FormValidation = () => {
               </Col>
 
               <div className="col-12">
-                <Button type="submit">Cadastrar</Button>
+                <Button type="submit" disabled={isSubmiting}>Cadastrar</Button>
               </div>
             </Row>
           </Form>
