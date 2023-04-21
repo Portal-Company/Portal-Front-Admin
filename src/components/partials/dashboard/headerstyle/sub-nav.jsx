@@ -89,12 +89,11 @@ const SunNav = () => {
   };
 
   const user = getUserInfo()
-  // console.log(user);
   const { data: userData } = useFetch(`/user/list/${user?.sub}`)
   const { data: FileData } = useFetch(`/file/${userData?.Escola?.logo}`)
 
+  console.log(userData?.Escola?.fotoUrl);
 
-  console.log(userData, "usuario loggado");
   
 
   return (
@@ -676,15 +675,12 @@ const SunNav = () => {
               as={CustomToggle}
               variant="py-0  d-flex align-items-center nav-link"
             >
-              {FileData ? (
-                  <img
+              <img
                   src={FileData?.link}
-                  alt="User-Profile"
+                  alt="photo"
                   className="theme-color-img img-fluid avatar avatar-50 avatar-rounded"
                   loading="lazy"
-                />
-              ) : null}
-            
+              />            
               <div className="caption ms-3 d-none d-md-block ">
                 <h6 className="mb-0 caption-title">
                   {userData?.Escola?.nome}

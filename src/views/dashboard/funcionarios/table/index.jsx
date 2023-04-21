@@ -25,10 +25,11 @@ function TableBody ({ item, handleUpdate, handleDelete  }){
                      <Image
                         className="rounded img-fluid w-25 me-3"
                           src={Foto?.link}
+                          loading="lazy"
                           alt=""
                          />
                         <div className="media-support-info">
-                                <h6 className="mb-0">{item.nome}</h6>
+                                <h6 className="mb-0">{item?.nome}</h6>
                               </div>
                             </div>
                           </td>

@@ -1,4 +1,4 @@
-import { memo, Fragment } from 'react'
+import { memo, Fragment, useState } from 'react'
 
 //react-bootstrap
 import { Row, Col, Image, Form, Button } from 'react-bootstrap'
@@ -23,6 +23,7 @@ import { api } from '../../../services'
 import { mutate } from 'swr'
 
 const UserAdd = memo(() => {
+  const [isSubmiting, setIsSubmiting] = useState(false)
   const user = getUserInfo()
   const { data: userData } = useFetch(`/user/list/${user?.sub}`)
   const { data: Org } = useFetch(`/organization/list/${userData?.Escola?.Organigrama?.id}`)
@@ -38,6 +39,7 @@ const UserAdd = memo(() => {
     }),
     onSubmit: async (data) =>{
       try{
+          setIsSubmiting(true)
           data = {...data, organigramaId: Org?.id}
           const response = await api.post("/department/post", data)
           if(response){
@@ -46,6 +48,10 @@ const UserAdd = memo(() => {
           }
       }catch(err){
         toast.error(err?.response?.data?.message)
+      }finally{
+        setTimeout(()=>{
+          setIsSubmiting(false)
+        }, 4000)
       }
     }
   }) 
@@ -76,7 +82,7 @@ const UserAdd = memo(() => {
               </Col>
             </Row>
             <Form.Group>
-              <Button variant="btn btn-primary" type="submit">
+              <Button variant="btn btn-primary" type="submit" disabled={isSubmiting}>
                 Cadastrar
               </Button>
             </Form.Group>
