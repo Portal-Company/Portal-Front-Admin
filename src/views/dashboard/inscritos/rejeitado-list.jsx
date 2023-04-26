@@ -9,20 +9,41 @@ import { Link } from "react-router-dom";
 //components
 import Card from "../../../components/bootstrap/card";
 import useFetch from "../../../hooks";
+import { ViewDataCandidate } from "./components";
 import { getUserInfo } from "../auth/services";
-
 
 const UserList = () => {
   const [query, setQuery] = useState("");
+  const [openModal, setOpenModal] = useState(false);
+  const [item, setItem] = useState({});
 
-  const user = getUserInfo()
-  const { data: userData } = useFetch(`/user/list/${user?.sub}`)
-  const { data: Inscricao } = useFetch(`/enrollment/list/rejected/${userData?.Escola?.id}`)
+  const user = getUserInfo();
+  const { data: userData } = useFetch(`/user/list/${user?.sub}`);
+  const { data: Inscricao } = useFetch(
+    `/enrollment/list/rejected/${userData?.Escola?.id}`
+  );
+
+  function handleClose() {
+    setOpenModal(false);
+  }
+
+  function handleView(item) {
+    setItem(item);
+    setOpenModal(true);
+  }
 
   return (
     <Fragment>
+      {openModal ? (
+        <ViewDataCandidate
+          item={item}
+          handleClose={handleClose}
+          isShow={openModal}
+          mutate={handleMutate}
+        />
+      ) : null}
       <Row>
-      <Col sm="12">
+        <Col sm="12">
           <Card>
             <Card.Header className="d-flex justify-content-between">
               <div className="header-title">
@@ -59,29 +80,36 @@ const UserList = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {!Inscricao?.length && <div className="text-center text-blue pt-4">Sem candidatos rejeitados no momento</div>}
+                    {!Inscricao?.length && (
+                      <div className="text-center text-blue pt-4">
+                        Sem candidatos rejeitados no momento
+                      </div>
+                    )}
                     {Inscricao?.filter((item) =>
-                          item?.Candidato?.nomeCompleto.toLocaleLowerCase().includes(query)
-                        )
-                        .map((item, idx) => (
-                        <tr key={idx}>
-                          <td>{item?.Candidato?.nomeCompleto}</td>
-                          <td>{item?.Candidato?.Contato?.numeroTelefone}</td>
-                          <td>{item?.Candidato?.sexo}</td>
-                          <td>{item?.Candidato?.Contato?.email}</td>
-                          <td>{item?.CursoPretendido[0]?.Curso?.nome}</td>
+                      item?.Candidato?.nomeCompleto
+                        .toLocaleLowerCase()
+                        .includes(query)
+                    ).map((item, idx) => (
+                      <tr key={idx}>
+                        <td>{item?.Candidato?.nomeCompleto}</td>
+                        <td>{item?.Candidato?.Contato?.numeroTelefone}</td>
+                        <td>{item?.Candidato?.sexo}</td>
+                        <td>{item?.Candidato?.Contato?.email}</td>
+                        <td>{item?.CursoPretendido[0]?.Curso?.nome}</td>
 
-                          <td>
-                            <span className={`badge ${"bg-success"}`}>
-                              {item?.estado}
-                            </span>
-                          </td>
+                        <td>
+                          <span className={`badge ${"bg-success"}`}>
+                            {item?.estado}
+                          </span>
+                        </td>
 
-                          <td>
-                            <Button>Ver dados</Button>
-                          </td>
-                        </tr>
-                      ))}
+                        <td>
+                          <Button onClick={() => handleView(item)}>
+                            Ver dados
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
