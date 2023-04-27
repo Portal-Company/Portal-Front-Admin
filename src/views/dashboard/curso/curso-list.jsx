@@ -5,14 +5,14 @@ import { Row, Col, Image } from "react-bootstrap";
 
 //router
 import { Link } from "react-router-dom";
-import useSWR, { mutate }  from "swr"
+import useSWR, { mutate } from "swr";
 //components
 import Card from "../../../components/bootstrap/card";
 import { UserContext } from "../../../context";
 
 // img
 
-import {api} from "../../../services"
+import { api } from "../../../services";
 import { getUserInfo } from "../auth/services";
 import useFetch from "../../../hooks";
 import { toast } from "react-toastify";
@@ -20,47 +20,61 @@ import { ModalDelete } from "../../../components/ModalConfirm";
 import { ModalUpdate } from "./ModalUpdate";
 
 const UserList = memo(() => {
-  const user = getUserInfo()
-  const { data: userData } = useFetch(`/user/list/${user?.sub}`)
-  const { data: Courses} = useFetch(`/school/list/${userData?.Escola?.id}/courses`)
-  const [item, setItem] = useState({})
+  const user = getUserInfo();
+  const { data: userData } = useFetch(`/user/list/${user?.sub}`);
+  const { data: Courses } = useFetch(
+    `/school/list/${userData?.Escola?.id}/courses`
+  );
+  const [item, setItem] = useState({});
 
   const [showModal, setShowModal] = useState(false);
   const [showModalUpdate, setShowModalUpadate] = useState(false);
 
-  function handleChange(){
-    mutate(`/school/list/${userData?.Escola?.id}/courses`)
+  function handleChange() {
+    mutate(`/school/list/${userData?.Escola?.id}/courses`);
   }
 
-  async function handleDeleteConfirm(id){
-    try{
-      const data = await api.delete(`course/delete/${id}`)
-      if(data?.data){
-        toast.success("deletado com sucesso!")
-        handleChange()
-        setShowModal(false)
+  async function handleDeleteConfirm(id) {
+    try {
+      const data = await api.delete(`course/delete/${id}`);
+      if (data?.data) {
+        toast.success("deletado com sucesso!");
+        handleChange();
+        setShowModal(false);
       }
-  }catch(err){
-    toast.error("Erro inesperado")
-  }
-  }
-
-
-  function handleDelete(data){
-    setShowModal(true)
-    setItem(data)
+    } catch (err) {
+      toast.error("Erro inesperado");
+    }
   }
 
+  function handleDelete(data) {
+    setShowModal(true);
+    setItem(data);
+  }
 
-  function handleUpdate(data){
-    setShowModalUpadate(true)
-    setItem(data)
+  function handleUpdate(data) {
+    setShowModalUpadate(true);
+    setItem(data);
   }
 
   return (
     <Fragment>
-      {showModalUpdate ? (<ModalUpdate onClose={()=> setShowModalUpadate(false)} setShowModalUpadate={setShowModalUpadate} mutate={handleChange} item={item} />) : null}
-      {showModal ? (<ModalDelete onClose={()=> setShowModal(false)} onConfirm={() => handleDeleteConfirm(item?.id)} item={item} desc="curso de" />) : null}
+      {showModalUpdate ? (
+        <ModalUpdate
+          onClose={() => setShowModalUpadate(false)}
+          setShowModalUpadate={setShowModalUpadate}
+          mutate={handleChange}
+          item={item}
+        />
+      ) : null}
+      {showModal ? (
+        <ModalDelete
+          onClose={() => setShowModal(false)}
+          onConfirm={() => handleDeleteConfirm(item?.id)}
+          item={item}
+          desc="curso de"
+        />
+      ) : null}
       <Row>
         <Col sm="12">
           <Card>
