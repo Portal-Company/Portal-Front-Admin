@@ -23,12 +23,14 @@ const UserList = () => {
   const { data: Inscricao } = useFetch(
     `/enrollment/list/rejected/${userData?.Escola?.id}`
   );
+  const [state, setState] = useState("");
 
   function handleClose() {
     setOpenModal(false);
   }
 
   function handleView(item) {
+    setState(item?.estado);
     setItem(item);
     setOpenModal(true);
   }
@@ -40,6 +42,7 @@ const UserList = () => {
           item={item}
           handleClose={handleClose}
           isShow={openModal}
+          state={state}
           mutate={handleMutate}
         />
       ) : null}

@@ -18,6 +18,7 @@ const UserList = () => {
   const [query, setQuery] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [item, setItem] = useState({});
+  const [state, setState] = useState("");
   const user = getUserInfo();
   const { data: userData } = useFetch(`/user/list/${user?.sub}`);
   const { data: Inscricao } = useFetch(`/enrollment/list`);
@@ -36,6 +37,7 @@ const UserList = () => {
   }
 
   function handleView(item) {
+    setState(item?.estado);
     setItem(item);
     setOpenModal(true);
   }
@@ -48,6 +50,7 @@ const UserList = () => {
           handleClose={handleClose}
           isShow={openModal}
           mutate={handleMutate}
+          state={state}
         />
       ) : null}
       <Row>
