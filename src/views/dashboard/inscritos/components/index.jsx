@@ -207,7 +207,7 @@ export const ViewDataCandidate = ({
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          {state !== "ACEITE" || state !== "REJEITADO" ? (
+          {state === "PENDENTE" ? (
             <>
               <Button variant="primary" onClick={() => handleOpen("aprovar")}>
                 Aprovar

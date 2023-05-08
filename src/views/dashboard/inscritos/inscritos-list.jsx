@@ -21,12 +21,9 @@ const UserList = () => {
   const [state, setState] = useState("");
   const user = getUserInfo();
   const { data: userData } = useFetch(`/user/list/${user?.sub}`);
-  const { data: Inscricao } = useFetch(`/enrollment/list`);
-  const erollement = Inscricao?.length
-    ? Inscricao?.filter((item) => item?.escolaId === userData?.Escola?.id)
-    : [];
-
-  console.log(erollement);
+  const { data: Inscricao } = useFetch(
+    `/enrollment/list/pending/${userData?.Escola?.id}`
+  );
 
   function handleMutate() {
     mutate(`/enrollment/list/pending/${userData?.Escola?.id}`);
@@ -91,44 +88,42 @@ const UserList = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {!erollement?.length && (
+                    {!Inscricao?.length && (
                       <div className="text-center text-blue pt-4">
-                        Sem candidatos no momento
+                        Sem candidatos pendentes no momento
                       </div>
                     )}
-                    {erollement
-                      ?.filter((item) =>
-                        item?.Candidato?.nomeCompleto
-                          .toLocaleLowerCase()
-                          .includes(query)
-                      )
-                      .map((item, idx) => (
-                        <tr key={idx}>
-                          <td>
-                            <ImageView
-                              item={item?.Candidato}
-                              type={"Candidato"}
-                            />
-                            {item?.Candidato?.nomeCompleto}
-                          </td>
-                          <td>{item?.Candidato?.Contato?.numeroTelefone}</td>
-                          <td>{item?.Candidato?.sexo}</td>
-                          <td>{item?.Candidato?.Contato?.email}</td>
-                          <td>{item?.CursoPretendido[0]?.Curso?.nome}</td>
+                    {Inscricao?.filter((item) =>
+                      item?.Candidato?.nomeCompleto
+                        .toLocaleLowerCase()
+                        .includes(query)
+                    ).map((item, idx) => (
+                      <tr key={idx}>
+                        <td>
+                          <ImageView
+                            item={item?.Candidato}
+                            type={"Candidato"}
+                          />
+                          {item?.Candidato?.nomeCompleto}
+                        </td>
+                        <td>{item?.Candidato?.Contato?.numeroTelefone}</td>
+                        <td>{item?.Candidato?.sexo}</td>
+                        <td>{item?.Candidato?.Contato?.email}</td>
+                        <td>{item?.CursoPretendido[0]?.Curso?.nome}</td>
 
-                          <td>
-                            <span className={`badge ${"bg-success"}`}>
-                              {item?.estado}
-                            </span>
-                          </td>
+                        <td>
+                          <span className={`badge ${"bg-success"}`}>
+                            {item?.estado}
+                          </span>
+                        </td>
 
-                          <td>
-                            <Button onClick={() => handleView(item)}>
-                              Ver dados
-                            </Button>
-                          </td>
-                        </tr>
-                      ))}
+                        <td>
+                          <Button onClick={() => handleView(item)}>
+                            Ver dados
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
