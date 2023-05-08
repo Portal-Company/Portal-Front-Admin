@@ -12,6 +12,7 @@ import useFetch from "../../../hooks";
 import { getUserInfo } from "../auth/services";
 import { ViewDataCandidate } from "./components";
 import { mutate } from "swr";
+import { ImageView } from "../../../components/ImageView";
 
 const UserList = () => {
   const [query, setQuery] = useState("");
@@ -100,7 +101,13 @@ const UserList = () => {
                       )
                       .map((item, idx) => (
                         <tr key={idx}>
-                          <td>{item?.Candidato?.nomeCompleto}</td>
+                          <td>
+                            <ImageView
+                              item={item?.Candidato}
+                              type={"Candidato"}
+                            />
+                            {item?.Candidato?.nomeCompleto}
+                          </td>
                           <td>{item?.Candidato?.Contato?.numeroTelefone}</td>
                           <td>{item?.Candidato?.sexo}</td>
                           <td>{item?.Candidato?.Contato?.email}</td>

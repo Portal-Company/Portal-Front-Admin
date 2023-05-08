@@ -11,6 +11,7 @@ import Card from "../../../components/bootstrap/card";
 import useFetch from "../../../hooks";
 import { ViewDataCandidate } from "./components";
 import { getUserInfo } from "../auth/services";
+import { ImageView } from "../../../components/ImageView";
 
 const UserList = () => {
   const [query, setQuery] = useState("");
@@ -91,7 +92,13 @@ const UserList = () => {
                         .includes(query)
                     ).map((item, idx) => (
                       <tr key={idx}>
-                        <td>{item?.Candidato?.nomeCompleto}</td>
+                        <td>
+                          <ImageView
+                            item={item?.Candidato}
+                            type={"Candidato"}
+                          />
+                          {item?.Candidato?.nomeCompleto}
+                        </td>
                         <td>{item?.Candidato?.Contato?.numeroTelefone}</td>
                         <td>{item?.Candidato?.sexo}</td>
                         <td>{item?.Candidato?.Contato?.email}</td>
