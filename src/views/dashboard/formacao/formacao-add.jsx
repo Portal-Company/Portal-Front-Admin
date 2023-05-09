@@ -10,13 +10,12 @@ import { api } from "../../../services";
 import { getUserInfo } from "../auth/services";
 import useFetch from "../../../hooks";
 import { toast } from "react-toastify";
-import * as yup from "yup"
+import * as yup from "yup";
 
 const FormValidation = () => {
-  const user = getUserInfo()
-  const [isSubmiting, setIsSubmiting] = useState(false)
-  const { data: userData } = useFetch(`/user/list/${user?.sub}`)
-
+  const user = getUserInfo();
+  const [isSubmiting, setIsSubmiting] = useState(false);
+  const { data: userData } = useFetch(`/user/list/${user?.sub}`);
 
   const formik = useFormik({
     initialValues: {
@@ -28,42 +27,53 @@ const FormValidation = () => {
     },
     validationSchema: yup.object({
       nome: yup.string().required("Este campo é obrigatório"),
-      fotoUrl: yup.string().required("Este campo  é obrigatório"),
+      fotoUrl: Yup.mixed().test(
+        "isImage",
+        "Por favor selecione um arquivo de imagem válido!",
+        (value) => {
+          if (!value) return true; // permite que o campo seja vazio
+          return (
+            value &&
+            ["image/png", "image/jpg", "image/jpeg", "image/gif"].includes(
+              value.type
+            )
+          );
+        }
+      ),
       descricao: yup.string().required("Este campo é obrigatório"),
       escolaId: yup.string().required("Este campo é obrigatório"),
       categoriaId: yup.string().required("Este campo é obrigatório"),
     }),
-    onSubmit: async (data) =>{
-      try{
+    onSubmit: async (data) => {
+      try {
         setIsSubmiting(true);
         const formData = new FormData();
-        formData.append('file', data?.fotoUrl[0]);
-        const fotoUrl = await getFile(formData)
-        if(fotoUrl){
-          data = {...data, fotoUrl: fotoUrl?.id};
-          const response = await api.post("/trainingArea/post", data)
-          if(response){
-            toast.success("Area de Formação cadastrada com sucesso")
-            formik.resetForm( )
+        formData.append("file", data?.fotoUrl[0]);
+        const fotoUrl = await getFile(formData);
+        if (fotoUrl) {
+          data = { ...data, fotoUrl: fotoUrl?.id };
+          const response = await api.post("/trainingArea/post", data);
+          if (response) {
+            toast.success("Area de Formação cadastrada com sucesso");
+            formik.resetForm();
           }
         }
-      }catch(err){
-        toast.error(err?.response?.data?.message)
-      }finally{
+      } catch (err) {
+        toast.error(err?.response?.data?.message);
+      } finally {
         setTimeout(() => {
-          setIsSubmiting(false)
-        }, 4000)
+          setIsSubmiting(false);
+        }, 4000);
       }
-    }
-  }) 
+    },
+  });
 
-  async function getFile (data) {
-      const dataD = await api.post("/file", data)
+  async function getFile(data) {
+    const dataD = await api.post("/file", data);
 
-      return dataD.data
+    return dataD.data;
   }
 
-  
   return (
     <Row>
       <Card>
@@ -76,9 +86,7 @@ const FormValidation = () => {
           <Form onSubmit={formik?.handleSubmit} encType="multipart/form-data">
             <Row className="mb-3">
               <Col md="6" className="mb-3">
-                <Form.Label htmlFor="validationCustom05">
-                  Nome
-                </Form.Label>
+                <Form.Label htmlFor="validationCustom05">Nome</Form.Label>
                 <Form.Control
                   onChange={formik.handleChange}
                   name="nome"
@@ -88,42 +96,57 @@ const FormValidation = () => {
                   required
                 />
                 {formik?.touched?.nome && formik?.errors?.nome ? (
-                  <label className="mt-1 text-danger">  
+                  <label className="mt-1 text-danger">
                     {formik?.errors?.nome}
                   </label>
-                ): null}
+                ) : null}
                 <Form.Group className="mb-3 form-group mt-2">
-                                <Form.Label htmlFor="exampleFormControlTextarea1">Descrição</Form.Label>
-                                <Form.Control as="textarea" id="descricao" value={formik.values.descricao} name="descricao" onChange={formik.handleChange} rows="5" />
-                {formik?.touched?.descricao && formik?.errors?.descricao ? (
-                  <label className="mt-1 text-danger">  
-                    {formik?.errors?.descricao}
-                  </label>
-                ): null}
+                  <Form.Label htmlFor="exampleFormControlTextarea1">
+                    Descrição
+                  </Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    id="descricao"
+                    value={formik.values.descricao}
+                    name="descricao"
+                    onChange={formik.handleChange}
+                    rows="5"
+                  />
+                  {formik?.touched?.descricao && formik?.errors?.descricao ? (
+                    <label className="mt-1 text-danger">
+                      {formik?.errors?.descricao}
+                    </label>
+                  ) : null}
                 </Form.Group>
-              
               </Col>
               <Col md="6" className="mb-3">
                 <Form.Group className="mb-3 form-group mt-2">
-                  <Form.Label className="custom-file-input">Carregar imagem</Form.Label>
+                  <Form.Label className="custom-file-input">
+                    Carregar imagem
+                  </Form.Label>
                   <Form.Control
-                      type="file"
-                      id="fotoUrl"
-                      name="fotoUrl"
-                      onChange={(event) =>{
-                        formik.setFieldValue('fotoUrl', event?.currentTarget?.files)
-                      }}  
+                    type="file"
+                    id="fotoUrl"
+                    name="fotoUrl"
+                    onChange={(event) => {
+                      formik.setFieldValue(
+                        "fotoUrl",
+                        event?.currentTarget?.files
+                      );
+                    }}
                   />
                   {formik?.touched?.fotoUrl && formik?.errors?.fotoUrl ? (
-                    <label className="mt-1 text-danger">  
+                    <label className="mt-1 text-danger">
                       {formik?.errors?.fotoUrl}
                     </label>
-                  ): null}
-              </Form.Group>
+                  ) : null}
+                </Form.Group>
               </Col>
 
               <div className="col-12">
-                <Button type="submit" disabled={isSubmiting}>Cadastrar</Button>
+                <Button type="submit" disabled={isSubmiting}>
+                  Cadastrar
+                </Button>
               </div>
             </Row>
           </Form>
