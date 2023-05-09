@@ -1,6 +1,5 @@
-import { memo, Fragment, useContext } from "react";
-import { toast } from 'react-toastify';
-
+import { memo, Fragment, useContext, useState } from "react";
+import { toast } from "react-toastify";
 
 //react-bootstrap
 import { Row, Col, Image, Form, Button, ListGroup } from "react-bootstrap";
@@ -23,8 +22,8 @@ import { setCookie } from "nookies";
 // Import selectors & action from setting store
 import * as SettingSelector from "../../../store/setting/selectors";
 import { useFormik } from "formik";
-import * as yup from "yup"
-import useSWR from "swr"
+import * as yup from "yup";
+import useSWR from "swr";
 import { useSelector } from "react-redux";
 import { api } from "../../../services";
 import { UserContext } from "../../../context";
@@ -32,43 +31,45 @@ import { getUserInfo } from "./services";
 
 const SignIn = memo(() => {
   const appName = useSelector(SettingSelector.app_name);
-  const [isSubmiting, setIsSubmiting] = useState(false)
+  const [isSubmiting, setIsSubmiting] = useState(false);
 
   let history = useNavigate();
 
-
   const formik = useFormik({
-    initialValues:{
-      email: '',
-      senha: '',
+    initialValues: {
+      email: "",
+      senha: "",
     },
     validationSchema: yup.object({
       email: yup
-      .string()
-      .email('Email inválido')
-      .required("Este campo é obrigatório"),
-      
-      senha: yup
-      .string()
-      .required("Este campo é obrigatório"),
+        .string()
+        .email("Email inválido")
+        .required("Este campo é obrigatório"),
+
+      senha: yup.string().required("Este campo é obrigatório"),
     }),
-    onSubmit: async (data)=>{
-      try{
-          setIsSubmiting(true);
-          const response = await api.post("/auth/login", data)
-          const { token } = response.data 
-          setCookie(null, 'token', token, { path: '/' });
-          if(response.data) history("/")
-      }catch(err){
-        toast.error(err?.response?.data?.message)
-      }finally{
+    onSubmit: async (data) => {
+      try {
+        setIsSubmiting(true);
+        const response = await api.post("/auth/login", data);
+        const { token, user } = response.data;
+        setCookie(null, "token", token, { path: "/" });
+        if (response.data && user?.tipoUsuario === "ADMINISTRADOR_ESCOLA") {
+          history("/");
+        } else {
+          toast.error("email ou senha incorrecta");
+        }
+      } catch (err) {
+        toast.error(err?.response?.data?.message);
+      } finally {
         setTimeout(() => {
-          setIsSubmiting(false)
-        }, 4000)
+          setIsSubmiting(false);
+        }, 4000);
       }
-    }
-  })
-  const user = getUserInfo() 
+    },
+  });
+
+  const user = getUserInfo();
 
   return (
     <Fragment>
@@ -80,24 +81,21 @@ const SignIn = memo(() => {
               className="navbar-brand d-flex align-items-center  justify-content-center text-primary"
             >
               <div
-                style={
-                  {
-                    width: '100%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginTop: '2rem'
-                  }
-                } 
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginTop: "2rem",
+                }}
                 className="logo-normal"
               >
-                <img 
-                  style={
-                    {
-                      width: '50%',
-                    }
-                  }
-                  src={Logo} />
+                <img
+                  style={{
+                    width: "50%",
+                  }}
+                  src={Logo}
+                />
               </div>
             </Link>
             <Row className="justify-content-center pt-5">
@@ -127,7 +125,7 @@ const SignIn = memo(() => {
                               <span className="text-danger">
                                 {formik.errors.email}
                               </span>
-                            ): null}
+                            ) : null}
                           </Form.Group>
                         </Col>
                         <Col lg="12" className="">
@@ -149,7 +147,7 @@ const SignIn = memo(() => {
                               <span className="text-danger">
                                 {formik.errors.senha}
                               </span>
-                            ): null}
+                            ) : null}
                           </Form.Group>
                         </Col>
                         <Col lg="12" className="d-flex justify-content-between">

@@ -597,11 +597,16 @@ const Crypto = memo((props) => {
       },
     ],
   };
-  
-  const user = getUserInfo()
-  const { data: userData } = useFetch(`/user/list/${user?.sub}`)
-  const { data: Statistic } = useFetch(`/statistic/school/${userData?.Escola?.id}`)
-    
+
+  const user = getUserInfo();
+  const { data: userData } = useFetch(`/user/list/${user?.sub}`);
+  const { data: Statistic } = useFetch(
+    `/statistic/school/${userData?.Escola?.id}`
+  );
+  const { data: Official } = useFetch(
+    `/school/list/${userData?.Escola?.id}/official`
+  );
+
   return (
     <Fragment>
       <Row>
@@ -785,9 +790,9 @@ const Crypto = memo((props) => {
               </div>
               <div className="d-flex align-items-center">
                 <div>
-                  <h3> 34.850</h3>
+                  <h3>{Official?.length ? Official?.length : 0}</h3>
                   <small className="text-danger">- 0.8%</small>
-                  <small className="ms-2">Candidatos</small>
+                  <small className="ms-2">Funcionarios</small>
                 </div>
                 <Chart
                   options={chart4.options}

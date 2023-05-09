@@ -4,12 +4,12 @@ import { memo, Fragment, useContext, useState } from "react";
 import { Row, Col, Image } from "react-bootstrap";
 import { api } from "../../../services";
 //router
-import { Link, useNavigate  } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 //components
 import Card from "../../../components/bootstrap/card";
 import { UserContext } from "../../../context";
-import useSWR, { mutate } from "swr"
+import useSWR, { mutate } from "swr";
 
 // img
 import shap1 from "/src/assets/images/shapes/01.png";
@@ -23,49 +23,65 @@ import { getUserInfo } from "../auth/services";
 import useFetch from "../../../hooks";
 import { ModalDelete } from "../../../components/ModalConfirm";
 import { ModalUpdate } from "./components/ModalUpdate";
+import { ImageView } from "../../../components/ImageView";
 
 const UserList = memo(() => {
-  const user = getUserInfo()
+  const user = getUserInfo();
 
-  const { data: userData } = useFetch(`/user/list/${user?.sub}`)
-  const { data: Area } = useFetch(`/school/list/${userData?.Escola?.id}/trainingAreas`)
-  const [item, setItem] = useState({})
+  const { data: userData } = useFetch(`/user/list/${user?.sub}`);
+  const { data: Area } = useFetch(
+    `/school/list/${userData?.Escola?.id}/trainingAreas`
+  );
+  const [item, setItem] = useState({});
 
   const [showModal, setShowModal] = useState(false);
   const [showModalUpdate, setShowModalUpadate] = useState(false);
 
-  function handleChange(){
-    mutate(`/school/list/${userData?.Escola?.id}/trainingAreas`)
+  function handleChange() {
+    mutate(`/school/list/${userData?.Escola?.id}/trainingAreas`);
   }
 
-  async function handleDeleteConfirm(id){
-    try{
-      const data = await api.delete(`trainingArea/delete/${id}`)
-      if(data?.data){
-        toast.success("deletado com sucesso!")
-        handleChange()
-        setShowModal(false)
+  async function handleDeleteConfirm(id) {
+    try {
+      const data = await api.delete(`trainingArea/delete/${id}`);
+      if (data?.data) {
+        toast.success("deletado com sucesso!");
+        handleChange();
+        setShowModal(false);
       }
-  }catch(err){
-    toast.error("Erro inesperado")
-  }
-  }
-
-  function handleDelete(data){
-    setShowModal(true)
-    setItem(data)
+    } catch (err) {
+      toast.error("Erro inesperado");
+    }
   }
 
+  function handleDelete(data) {
+    setShowModal(true);
+    setItem(data);
+  }
 
-  function handleUpdate(data){
-    setShowModalUpadate(true)
-    setItem(data)
+  function handleUpdate(data) {
+    setShowModalUpadate(true);
+    setItem(data);
   }
 
   return (
     <Fragment>
-      {showModalUpdate ? (<ModalUpdate onClose={()=> setShowModalUpadate(false)} setShowModalUpadate={setShowModalUpadate} mutate={handleChange} item={item} />) : null}
-      {showModal ? (<ModalDelete onClose={()=> setShowModal(false)} onConfirm={() => handleDeleteConfirm(item?.id)} item={item} desc="area de" />) : null}
+      {showModalUpdate ? (
+        <ModalUpdate
+          onClose={() => setShowModalUpadate(false)}
+          setShowModalUpadate={setShowModalUpadate}
+          mutate={handleChange}
+          item={item}
+        />
+      ) : null}
+      {showModal ? (
+        <ModalDelete
+          onClose={() => setShowModal(false)}
+          onConfirm={() => handleDeleteConfirm(item?.id)}
+          item={item}
+          desc="area de"
+        />
+      ) : null}
       <Row>
         <Col sm="12">
           <Card>
@@ -94,7 +110,10 @@ const UserList = memo(() => {
                   <tbody>
                     {Area?.map((item, idx) => (
                       <tr key={idx}>
-                        <td>{item?.nome}</td>
+                        <td>
+                          <ImageView item={item} type={"fotoUrl"} />
+                          {item?.nome}
+                        </td>
                         <td>
                           <span className={`badge ${item.color}`}>
                             {item.status}

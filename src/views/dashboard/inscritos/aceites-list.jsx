@@ -11,32 +11,40 @@ import Card from "../../../components/bootstrap/card";
 import useFetch from "../../../hooks";
 import { getUserInfo } from "../auth/services";
 import { ViewDataCandidate } from "./components";
+import { ImageView } from "../../../components/ImageView";
 
 const UserList = () => {
   const [query, setQuery] = useState("");
-  const [openModal, setOpenModal] = useState(false)
-  const [item, setItem] = useState({})
+  const [openModal, setOpenModal] = useState(false);
+  const [item, setItem] = useState({});
 
+  const user = getUserInfo();
+  const { data: userData } = useFetch(`/user/list/${user?.sub}`);
+  const { data: Inscricao } = useFetch(
+    `/enrollment/list/accepted/${userData?.Escola?.id}`
+  );
 
-  const user = getUserInfo()
-  const { data: userData } = useFetch(`/user/list/${user?.sub}`)
-  const { data: Inscricao } = useFetch(`/enrollment/list/accepted/${userData?.Escola?.id}`)
-
-  function handleView(item){
-    setItem(item)
-    setOpenModal(true)
+  function handleView(item) {
+    setItem(item);
+    setOpenModal(true);
   }
 
-  function handleClose () {
-    setOpenModal(false)
+  function handleClose() {
+    setOpenModal(false);
   }
-
 
   return (
     <Fragment>
-      {openModal ? <ViewDataCandidate item={item} state={"ACEITE"} handleClose={handleClose} isShow={openModal}/> : null}
+      {openModal ? (
+        <ViewDataCandidate
+          item={item}
+          state={"ACEITE"}
+          handleClose={handleClose}
+          isShow={openModal}
+        />
+      ) : null}
       <Row>
-      <Col sm="12">
+        <Col sm="12">
           <Card>
             <Card.Header className="d-flex justify-content-between">
               <div className="header-title">
@@ -73,29 +81,42 @@ const UserList = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {!Inscricao?.length && <div className="text-center text-blue pt-4">Sem candidatos aceites no momento</div>}
+                    {!Inscricao?.length && (
+                      <div className="text-center text-blue pt-4">
+                        Sem candidatos aceites no momento
+                      </div>
+                    )}
                     {Inscricao?.filter((item) =>
-                          item?.Candidato?.nomeCompleto.toLocaleLowerCase().includes(query)
-                        )
-                        .map((item, idx) => (
-                        <tr key={idx}>
-                          <td>{item?.Candidato?.nomeCompleto}</td>
-                          <td>{item?.Candidato?.Contato?.numeroTelefone}</td>
-                          <td>{item?.Candidato?.sexo}</td>
-                          <td>{item?.Candidato?.Contato?.email}</td>
-                          <td>{item?.CursoPretendido[0]?.Curso?.nome}</td>
+                      item?.Candidato?.nomeCompleto
+                        .toLocaleLowerCase()
+                        .includes(query)
+                    ).map((item, idx) => (
+                      <tr key={idx}>
+                        <td>
+                          <ImageView
+                            item={item?.Candidato}
+                            type={"Candidato"}
+                          />
+                          {item?.Candidato?.nomeCompleto}
+                        </td>
+                        <td>{item?.Candidato?.Contato?.numeroTelefone}</td>
+                        <td>{item?.Candidato?.sexo}</td>
+                        <td>{item?.Candidato?.Contato?.email}</td>
+                        <td>{item?.CursoPretendido[0]?.Curso?.nome}</td>
 
-                          <td>
-                            <span className={`badge ${"bg-success"}`}>
-                              {item?.estado}
-                            </span>
-                          </td>
+                        <td>
+                          <span className={`badge ${"bg-success"}`}>
+                            {item?.estado}
+                          </span>
+                        </td>
 
-                          <td>
-                            <Button onClick={() => handleView(item)}>Ver dados</Button>
-                          </td>
-                        </tr>
-                      ))}
+                        <td>
+                          <Button onClick={() => handleView(item)}>
+                            Ver dados
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
