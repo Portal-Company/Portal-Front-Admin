@@ -23,7 +23,21 @@ const Disciplina = () => {
   const formik = useFormik({
     initialValues: {
       nome: "",
-      fotoUrl: "",
+      fotoUrl: yup
+        .mixed()
+        .test(
+          "isImage",
+          "Por favor selecione um arquivo de imagem válido!",
+          (value) => {
+            if (!value) return true; // permite que o campo seja vazio
+            return (
+              value &&
+              ["image/png", "image/jpg", "image/jpeg", "image/gif"].includes(
+                value.type
+              )
+            );
+          }
+        ),
       descricao: "",
       cursoId: "",
       escolaId: "",
