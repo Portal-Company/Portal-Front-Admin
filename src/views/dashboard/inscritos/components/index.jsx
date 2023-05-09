@@ -5,6 +5,7 @@ import { api } from "../../../../services";
 import useFetch from "../../../../hooks";
 import { useNavigate } from "react-router-dom";
 import { ModalConfirm } from "./ModalConfirm";
+import { getUserInfo } from "../../auth/services";
 
 export const ViewDataCandidate = ({
   item,
@@ -16,6 +17,8 @@ export const ViewDataCandidate = ({
   const [show, setShow] = useState(false);
   const [estado, setEstado] = useState("");
   const navigate = useNavigate();
+  const user = getUserInfo();
+  const { data: userData } = useFetch(`/user/list/${user?.sub}`);
 
   function showGender(data) {
     const gender = [
@@ -50,6 +53,13 @@ export const ViewDataCandidate = ({
     try {
       const data = await api.put(`/enrollment/put/${item?.id}`, aprove);
       if (data) {
+        const body = {
+          to: [item?.Candidato?.Contato?.email],
+          from: "portaldasescolas1000@gmail.com",
+          subject: `A sua Candidatura foi aprovada com sucesso na Escola ${userData?.Escola?.nome}`,
+          body: `Sr ${item?.Candidato?.nomeCompleto} aguarde o nosso sinal para marcação do dia do teste. Obrigado`,
+        };
+        await api.post(`/mail/send`, body);
         toast.success("Candidato aprovado com sucesso");
         mutate();
       }
