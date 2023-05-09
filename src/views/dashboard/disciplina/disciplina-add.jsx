@@ -23,6 +23,13 @@ const Disciplina = () => {
   const formik = useFormik({
     initialValues: {
       nome: "",
+      fotoUrl: "",
+      descricao: "",
+      cursoId: "",
+      escolaId: "",
+    },
+    validationSchema: yup.object({
+      nome: yup.string().required("Este campo é obrigatório"),
       fotoUrl: yup
         .mixed()
         .test(
@@ -38,15 +45,7 @@ const Disciplina = () => {
             );
           }
         ),
-      descricao: "",
-      cursoId: "",
-      escolaId: "",
-    },
-    validationSchema: yup.object({
-      nome: yup.string().required("Este campo é obrigatório"),
-      fotoUrl: yup.string().required("Este campo  é obrigatório"),
       descricao: yup.string().required("Este campo é obrigatório"),
-      cursoId: yup.string().required("Este campo é obrigatório"),
     }),
     onSubmit: async (data) => {
       try {
