@@ -1,4 +1,4 @@
-import { useEffect, memo, Fragment } from "react";
+import { useEffect, memo, Fragment, useState } from "react";
 import "./style.css";
 //router
 import { Link } from "react-router-dom";
@@ -20,6 +20,7 @@ const Sidebar = memo((props) => {
   const sidebarColor = useSelector(SettingSelector.sidebar_color);
   const sidebarType = useSelector(SettingSelector.sidebar_type); // array
   const sidebarMenuStyle = useSelector(SettingSelector.sidebar_menu_style);
+  const [bar, setBar] = useState(true);
 
   const minisidebar = () => {
     document.getElementsByTagName("ASIDE")[0].classList.toggle("sidebar-mini");
@@ -72,6 +73,11 @@ const Sidebar = memo((props) => {
     });
   });
 
+  function handleResp() {
+    setBar((current) => !current);
+    minisidebar();
+  }
+
   return (
     <Fragment>
       <aside
@@ -81,12 +87,16 @@ const Sidebar = memo((props) => {
         data-sidebar="responsive"
       >
         <div className="sidebar-header d-flex align-items-center justify-content-start">
-          <img src={LogoApp} className="IMGLogo" />
+          {bar ? (
+            <img src={LogoApp} className="IMGLogo" />
+          ) : (
+            <img src={LogoApp} className="IMGLogo" />
+          )}
           <div
             className="sidebar-toggle"
             data-toggle="sidebar"
             data-active="true"
-            onClick={minisidebar}
+            onClick={handleResp}
           >
             <i className="icon">
               <svg
