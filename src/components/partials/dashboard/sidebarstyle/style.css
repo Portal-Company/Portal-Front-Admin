@@ -1,4 +1,10 @@
 .IMGLogo {
-  width: 15rem;
+  width: 80%;
   mix-blend-mode: multiply;
+}
+
+@media screen and (max-width: 768px) {
+  .IMGLogo {
+    width: 60%;
+  }
 }

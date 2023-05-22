@@ -131,7 +131,7 @@ const VerticalNav = memo(() => {
           >
             <OverlayTrigger
               placement="right"
-              overlay={<Tooltip>Users</Tooltip>}
+              overlay={<Tooltip>Area de Curso</Tooltip>}
             >
               <i className="icon">
                 <svg
@@ -153,7 +153,7 @@ const VerticalNav = memo(() => {
                 </svg>
               </i>
             </OverlayTrigger>
-            <span className="item-name">Area de Curso</span>
+            <span className="item-name">Area de Cargo</span>
             <i className="right-icon">
               <svg
                 className="icon-18"
@@ -246,7 +246,7 @@ const VerticalNav = memo(() => {
             </ul>
           </Accordion.Collapse>
         </Accordion.Item>
-        
+
         <Accordion.Item
           as="li"
           eventKey="sidebar-auth"
@@ -259,7 +259,7 @@ const VerticalNav = memo(() => {
           >
             <OverlayTrigger
               placement="right"
-              overlay={<Tooltip>Users</Tooltip>}
+              overlay={<Tooltip>Area de Cargo</Tooltip>}
             >
               <i className="icon">
                 <svg
@@ -375,7 +375,6 @@ const VerticalNav = memo(() => {
           </Accordion.Collapse>
         </Accordion.Item>
 
-
         <Accordion.Item
           as="li"
           eventKey="utilities-error"
@@ -389,7 +388,7 @@ const VerticalNav = memo(() => {
           >
             <OverlayTrigger
               placement="right"
-              overlay={<Tooltip>Utilities</Tooltip>}
+              overlay={<Tooltip>Area de formacao</Tooltip>}
             >
               <i className="icon">
                 <svg
@@ -510,7 +509,7 @@ const VerticalNav = memo(() => {
             </ul>
           </Accordion.Collapse>
         </Accordion.Item>
-        
+
         <Accordion.Item
           as="li"
           eventKey="utilities-error"
@@ -524,7 +523,7 @@ const VerticalNav = memo(() => {
           >
             <OverlayTrigger
               placement="right"
-              overlay={<Tooltip>Utilities</Tooltip>}
+              overlay={<Tooltip>Actividades Anuais</Tooltip>}
             >
               <i className="icon">
                 <svg
@@ -659,7 +658,7 @@ const VerticalNav = memo(() => {
           >
             <OverlayTrigger
               placement="right"
-              overlay={<Tooltip>Utilities</Tooltip>}
+              overlay={<Tooltip>Area de disciplina</Tooltip>}
             >
               <i className="icon">
                 <svg
@@ -794,7 +793,7 @@ const VerticalNav = memo(() => {
           >
             <OverlayTrigger
               placement="right"
-              overlay={<Tooltip>Plugins</Tooltip>}
+              overlay={<Tooltip>Area de Inscritos</Tooltip>}
             >
               <i className="icon">
                 <svg
@@ -963,7 +962,7 @@ const VerticalNav = memo(() => {
           >
             <OverlayTrigger
               placement="right"
-              overlay={<Tooltip>Plugins</Tooltip>}
+              overlay={<Tooltip>Area de funcionarios</Tooltip>}
             >
               <i className="icon">
                 <svg
@@ -1095,7 +1094,7 @@ const VerticalNav = memo(() => {
           >
             <OverlayTrigger
               placement="right"
-              overlay={<Tooltip>Plugins</Tooltip>}
+              overlay={<Tooltip>Area de Departamentos</Tooltip>}
             >
               <i className="icon">
                 <svg
@@ -1222,7 +1221,7 @@ const VerticalNav = memo(() => {
           >
             <OverlayTrigger
               placement="right"
-              overlay={<Tooltip>Users</Tooltip>}
+              overlay={<Tooltip>Area de Perfil</Tooltip>}
             >
               <i className="icon">
                 <svg
@@ -1358,7 +1357,6 @@ const VerticalNav = memo(() => {
             </ul>
           </Accordion.Collapse>
         </Accordion.Item>
-
       </Accordion>
     </Fragment>
   );
