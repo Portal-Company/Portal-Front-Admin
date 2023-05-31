@@ -208,7 +208,7 @@ const FuncionarioAdd = memo(() => {
                   </Form.Group>
                   <Form.Group className="mb-3 form-group mt-2">
                     <Form.Label htmlFor="exampleFormControlTextarea1">
-                      Confirmar Senha
+                      Nova Senha
                     </Form.Label>
                     <Form.Control
                       type="password"
