@@ -24,7 +24,7 @@ import avatar_2 from "/src/assets/images/avatars/avtar_2.png";
 import avatar_3 from "/src/assets/images/avatars/avtar_3.png";
 import avatar_4 from "/src/assets/images/avatars/avtar_4.png";
 import avatar_5 from "/src/assets/images/avatars/avtar_5.png";
-import useSWR from "swr"
+import useSWR from "swr";
 
 // Redux Selector / Action
 import { useDispatch } from "react-redux";
@@ -88,13 +88,11 @@ const SunNav = () => {
     }
   };
 
-  const user = getUserInfo()
-  const { data: userData } = useFetch(`/user/list/${user?.sub}`)
-  const { data: FileData } = useFetch(`/file/${userData?.Escola?.logo}`)
+  const user = getUserInfo();
+  const { data: userData } = useFetch(`/user/list/${user?.sub}`);
+  const { data: FileData } = useFetch(`/file/${userData?.Escola?.logo}`);
 
   console.log(userData?.Escola?.fotoUrl);
-
-  
 
   return (
     <Fragment>
@@ -676,25 +674,25 @@ const SunNav = () => {
               variant="py-0  d-flex align-items-center nav-link"
             >
               <img
-                  src={FileData?.link}
-                  alt="photo"
-                  className="theme-color-img img-fluid avatar avatar-50 avatar-rounded"
-                  loading="lazy"
-              />            
+                src={FileData?.link}
+                alt="photo"
+                className="theme-color-img img-fluid avatar avatar-50 avatar-rounded"
+                loading="lazy"
+              />
               <div className="caption ms-3 d-none d-md-block ">
-                <h6 className="mb-0 caption-title">
-                  {userData?.Escola?.nome}
-                </h6>
-                <p className="mb-0 caption-sub-title">{userData?.Escola?.Categoria?.nome}</p>
+                <h6 className="mb-0 caption-title">{userData?.Escola?.nome}</h6>
+                <p className="mb-0 caption-sub-title">
+                  {userData?.Escola?.Categoria?.nome}
+                </p>
               </div>
             </Dropdown.Toggle>
             <Dropdown.Menu variant="end">
-              <Dropdown.Item to="/dashboard/app/user-profile">
-                Perfil
+              <Dropdown.Item to="/perfil-saida/perfil-conf">
+                <Link to={"/perfil-saida/perfil-conf"}>Perfil</Link>
               </Dropdown.Item>
-              <Dropdown.Item to="/dashboard/app/user-privacy-setting">
+              {/* <Dropdown.Item to="/dashboard/app/user-privacy-setting">
                 Configurações
-              </Dropdown.Item>
+              </Dropdown.Item> */}
               <hr className="dropdown-divider" />
               <Dropdown.Item onClick={() => logout()}>
                 <Link to="/auth/sign-in">Sair</Link>
