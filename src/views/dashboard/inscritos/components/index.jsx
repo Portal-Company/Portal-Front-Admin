@@ -47,24 +47,46 @@ export const ViewDataCandidate = ({
   }
 
   async function handleConfirm() {
-    const aprove = {
-      estado: "ACEITE",
-    };
-    try {
-      const data = await api.put(`/enrollment/put/${item?.id}`, aprove);
-      if (data) {
-        const body = {
-          to: [item?.Candidato?.Contato?.email],
-          from: "portaldasescolas1000@gmail.com",
-          subject: `A sua Candidatura foi aprovada com sucesso na Escola ${userData?.Escola?.nome}`,
-          body: `Sr ${item?.Candidato?.nomeCompleto} aguarde o nosso sinal para marcação do dia do teste. Obrigado`,
-        };
-        await api.post(`/mail/send`, body);
-        toast.success("Candidato aprovado com sucesso");
-        mutate();
+    if (estado === "aprovar") {
+      const aprove = {
+        estado: "ACEITE",
+      };
+      try {
+        const data = await api.put(`/enrollment/put/${item?.id}`, aprove);
+        if (data) {
+          const body = {
+            to: item?.Candidato?.Contato?.email,
+            from: "portaldasescolas1000@gmail.com",
+            subject: `A sua Candidatura foi aprovada com sucesso na Escola ${userData?.Escola?.nome}`,
+            body: `Sr ${item?.Candidato?.nomeCompleto} aguarde o nosso sinal para marcação do dia do teste. Obrigado`,
+          };
+          await api.post(`/mail/send`, body);
+          toast.success("Candidato aprovado com sucesso");
+          mutate();
+        }
+      } catch (e) {
+        toast.error(e?.response?.data?.error);
       }
-    } catch (e) {
-      toast.error(e?.response?.data?.error);
+    } else if (estado === "rejeitar") {
+      const aprove = {
+        estado: "REJEITADO",
+      };
+      try {
+        const data = await api.put(`/enrollment/put/${item?.id}`, aprove);
+        if (data) {
+          const body = {
+            to: item?.Candidato?.Contato?.email,
+            from: "portaldasescolas1000@gmail.com",
+            subject: `Infelizmente sua Candidatura foi reprovada na Escola ${userData?.Escola?.nome}`,
+            body: `Sr ${item?.Candidato?.nomeCompleto}, Obrigado`,
+          };
+          await api.post(`/mail/send`, body);
+          toast.success("Candidato aprovado com sucesso");
+          mutate();
+        }
+      } catch (e) {
+        toast.error(e?.response?.data?.error);
+      }
     }
   }
 
@@ -222,7 +244,9 @@ export const ViewDataCandidate = ({
               <Button variant="primary" onClick={() => handleOpen("aprovar")}>
                 Aprovar
               </Button>
-              <Button variant="danger">Rejeitar</Button>
+              <Button variant="danger" onClick={() => handleOpen("rejeitar")}>
+                Rejeitar
+              </Button>
             </>
           ) : null}
         </Modal.Footer>
