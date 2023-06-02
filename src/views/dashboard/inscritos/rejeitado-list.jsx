@@ -43,7 +43,6 @@ const UserList = () => {
           handleClose={handleClose}
           isShow={openModal}
           state={state}
-          mutate={handleMutate}
         />
       ) : null}
       <Row>
