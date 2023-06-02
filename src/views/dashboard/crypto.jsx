@@ -169,7 +169,7 @@ const Crypto = memo((props) => {
     },
     series: [
       {
-        name: "Bitcoin",
+        name: "Inscritos",
         data: [10, 21, 15, 31, 29, 42, 39, 61, 41, 51, 32, 51, 51, 55, 60],
       },
     ],
@@ -214,7 +214,7 @@ const Crypto = memo((props) => {
     },
     series: [
       {
-        name: "Bitcoin",
+        name: "Inscritos",
         data: [10, 21, 15, 31, 29, 42, 39, 61, 41, 51, 32, 51, 51, 55, 60],
       },
     ],
@@ -259,7 +259,7 @@ const Crypto = memo((props) => {
     },
     series: [
       {
-        name: "Bitcoin",
+        name: "Inscritos",
         data: [10, 21, 15, 31, 29, 42, 39, 61, 41, 51, 32, 51, 51, 55, 60],
       },
     ],
