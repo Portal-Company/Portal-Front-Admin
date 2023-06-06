@@ -17,31 +17,19 @@ const FormValidation = () => {
   const [isSubmiting, setIsSubmiting] = useState(false);
   const { data: userData } = useFetch(`/user/list/${user?.sub}`);
 
+  console.log(userData?.Escola);
+
   const formik = useFormik({
     initialValues: {
       nome: "",
       fotoUrl: "",
       descricao: "",
       escolaId: userData?.Escola?.id,
-      categoriaId: userData?.Escola?.Categoria?.id,
+      categoriaId: userData?.Escola?.categoriaId,
     },
     validationSchema: yup.object({
       nome: yup.string().required("Este campo é obrigatório"),
-      fotoUrl: yup
-        .mixed()
-        .test(
-          "isImage",
-          "Por favor selecione um arquivo de imagem válido!",
-          (value) => {
-            if (!value) return true; // permite que o campo seja vazio
-            return (
-              value &&
-              ["image/png", "image/jpg", "image/jpeg", "image/gif"].includes(
-                value.type
-              )
-            );
-          }
-        ),
+      fotoUrl: yup.string().required("Este campo é obrigatorio"),
       descricao: yup.string().required("Este campo é obrigatório"),
       escolaId: yup.string().required("Este campo é obrigatório"),
       categoriaId: yup.string().required("Este campo é obrigatório"),
@@ -54,7 +42,7 @@ const FormValidation = () => {
         const fotoUrl = await getFile(formData);
         if (fotoUrl) {
           data = { ...data, fotoUrl: fotoUrl?.id };
-          const response = await api.post("/trainingArea/post", data);
+          const response = (await api.post("/trainingArea/post", data)).data;
           if (response) {
             toast.success("Area de Formação cadastrada com sucesso");
             formik.resetForm();
@@ -129,6 +117,7 @@ const FormValidation = () => {
                   <Form.Control
                     type="file"
                     id="fotoUrl"
+                    accept="image/png, image/jpg, image/jpeg, image/gif"
                     name="fotoUrl"
                     onChange={(event) => {
                       formik.setFieldValue(
