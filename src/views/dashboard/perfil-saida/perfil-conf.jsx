@@ -177,19 +177,20 @@ const FormWizard = () => {
           );
         }
 
-        if (!escola?.Contato) {
+        if (!data?.contatoId) {
           const contact = {
             email: data?.email,
-            telefone: data?.numeroTelefone,
+            numeroTelefone: data?.numeroTelefone,
           };
-          const response = await api.post(`/contact/post`, contact);
+          const response = (await api.post(`/contact/post`, contact)).data;
+          newContato = response?.id;
         } else {
           const contact = {
             email: data?.email,
-            telefone: data?.numeroTelefone,
+            numeroTelefone: data?.numeroTelefone,
           };
           const response = (
-            await api.put(`/contact/put/${escola?.Contato?.id}`, contact)
+            await api.put(`/contact/put/${escola?.ContatoId}`, contact)
           ).data;
           newContato = response?.id;
         }

@@ -153,7 +153,7 @@ const VerticalNav = memo(() => {
                 </svg>
               </i>
             </OverlayTrigger>
-            <span className="item-name">Area de Cargo</span>
+            <span className="item-name">Area de Curso</span>
             <i className="right-icon">
               <svg
                 className="icon-18"

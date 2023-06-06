@@ -1,6 +1,6 @@
 import { memo, lazy } from "react";
 //router
-import { Routes, Route} from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 const CursoAdd = lazy(() => import("../views/dashboard/curso/curso-add"));
 const CursoList = lazy(() => import("../views/dashboard/curso/curso-list"));
 
@@ -38,9 +38,8 @@ const InscritosRejeitoList = lazy(() =>
   import("../views/dashboard/inscritos/rejeitado-list")
 );
 
-const CargoAdd = lazy(() => import("../views/dashboard/cargo/cargo-add")) 
-const CargoList = lazy(() => import("../views/dashboard/cargo/cargo-list")) 
-
+const CargoAdd = lazy(() => import("../views/dashboard/cargo/cargo-add"));
+const CargoList = lazy(() => import("../views/dashboard/cargo/cargo-list"));
 
 ///Formação
 const FuncionarioAdd = lazy(() =>
@@ -66,6 +65,8 @@ import Simple from "../layouts/dashboard/simple";
 
 import AccountDeactive from "../views/dashboard/auth/account-deactivate";
 import TwoFactor from "../views/dashboard/auth/two-factor";
+import { PublicRoute } from "./PublicRoute";
+import { PrivateRoute } from "./PrivateRoute";
 // auth
 const ConfirmMail = lazy(() => import("../views/dashboard/auth/confirm-mail"));
 const LockScreen = lazy(() => import("../views/dashboard/auth/lock-screen"));
@@ -216,195 +217,229 @@ const Analytics = lazy(() => import("../views/dashboard/analytics"));
 const Crypto = lazy(() => import("../views/dashboard/crypto"));
 
 const IndexRouters = memo(() => {
-
   return (
     <>
-    <Routes>
-      <Route path="/errors" element={<Simple />}>
-        {/* error */}
-        <Route path="error-404" element={<Error404 />} />
-        <Route path="error-500" element={<Error500 />} />
-        <Route path="maintenance" element={<Maintenance />} />
-      </Route>
-      <Route path="*" element={<Error404 />} />
-      {/* auth */}
-      <Route path="/auth" element={<Simple />}>
-        <Route path="confirm-mail" element={<ConfirmMail />} />
-        <Route path="lock-screen" element={<LockScreen />} />
-        <Route path="recoverpw" element={<Recoverpw />} />
-        <Route path="sign-in" element={<SignIn />} />
-        <Route path="sign-up" element={<SignUp />} />
-        <Route path="account-deactivate" element={<AccountDeactive />} />
-        <Route path="two-factor" element={<TwoFactor />} />
-      </Route>
-      <Route path="/index-dual-compact" element={<DualCompact />}></Route>
-      <Route path="/index-horizontal" element={<Horizontal />}></Route>
-      <Route path="/index-boxed" element={<Boxed />}></Route>
-      <Route path="/" element={<Default />}>
-        <Route path="/" element={<Crypto />} />
-        <Route path="/analytics" element={<Analytics />} />
-        <Route path="/crypto" element={<Crypto />} />
-
-        {/* Curso */}
-        <Route path="/curso/curso-add" element={<CursoAdd />} />
-        <Route path="/curso/curso-list" element={<CursoList />} />
-
-        {/* Disciplina */}
-        <Route path="/disciplina/disciplina-add" element={<DisciplinaAdd />} />
-        <Route path="/disciplina/disciplina-list" element={<DisciplinaList />} />
-
-        {/* Cargo */}
-        <Route path="/cargo/cargo-add" element={<CargoAdd />} />
-        <Route path="/cargo/cargo-list" element={<CargoList />} />
-
-        {/* Actividades */}
-        <Route path="/actividade/actividade-add" element={<ActividadeAdd />} />
-        <Route path="/actividade/actividade-list" element={<ActividadeList />} />
-
-        {/* Perfil Saída */}
-        <Route path="/perfil-saida/perfil-conf" element={<ConfPerfil />} />
-        <Route path="/perfil-saida/perfil-ver" element={<VerPerfil />} />
-
-        {/* Formação */}
-        <Route path="/formacao/formacao-add" element={<FormacaoAdd />} />
-        <Route path="/formacao/formacao-list" element={<FormacaoList />} />
-
-        {/* Inscritos */}
-        <Route path="/inscritos/inscritos-list" element={<InscritosList />} />
+      <Routes>
+        <Route path="/errors" element={<Simple />}>
+          {/* error */}
+          <Route path="error-404" element={<Error404 />} />
+          <Route path="error-500" element={<Error500 />} />
+          <Route path="maintenance" element={<Maintenance />} />
+        </Route>
+        <Route path="*" element={<Error404 />} />
+        {/* auth */}
         <Route
-          path="/inscritos/aceites-list"
-          element={<InscritosAceitesList />}
-        />
+          path="/auth"
+          element={
+            <PublicRoute>
+              <Simple />
+            </PublicRoute>
+          }
+        >
+          <Route path="confirm-mail" element={<ConfirmMail />} />
+          <Route path="lock-screen" element={<LockScreen />} />
+          <Route path="recoverpw" element={<Recoverpw />} />
+          <Route path="sign-in" element={<SignIn />} />
+          <Route path="sign-up" element={<SignUp />} />
+          <Route path="account-deactivate" element={<AccountDeactive />} />
+          <Route path="two-factor" element={<TwoFactor />} />
+        </Route>
+        <Route path="/index-dual-compact" element={<DualCompact />}></Route>
+        <Route path="/index-horizontal" element={<Horizontal />}></Route>
+        <Route path="/index-boxed" element={<Boxed />}></Route>
         <Route
-          path="/inscritos/rejeitados-list"
-          element={<InscritosRejeitoList />}
-        />
+          path="/"
+          element={
+            <PrivateRoute>
+              <Default />
+            </PrivateRoute>
+          }
+        >
+          <Route path="/" element={<Crypto />} />
+          <Route path="/analytics" element={<Analytics />} />
+          <Route path="/crypto" element={<Crypto />} />
 
-        {/* Formação */}
-        <Route
-          path="/funcionario/funcionario-add"
-          element={<FuncionarioAdd />}
-        />
-        <Route
-          path="/funcionario/funcionario-list"
-          element={<FuncionarioList />}
-        />
+          {/* Curso */}
+          <Route path="/curso/curso-add" element={<CursoAdd />} />
+          <Route path="/curso/curso-list" element={<CursoList />} />
 
-        {/* user */}
-        <Route path="/app/user-profile" element={<UserProfile />} />
+          {/* Disciplina */}
+          <Route
+            path="/disciplina/disciplina-add"
+            element={<DisciplinaAdd />}
+          />
+          <Route
+            path="/disciplina/disciplina-list"
+            element={<DisciplinaList />}
+          />
 
-        <Route path="/app/user-add" element={<UserAdd />} />
-        <Route path="/app/user-list" element={<UserList />} />
-        <Route path="/app/user-privacy-setting" element={<userProfileEdit />} />
+          {/* Cargo */}
+          <Route path="/cargo/cargo-add" element={<CargoAdd />} />
+          <Route path="/cargo/cargo-list" element={<CargoList />} />
 
-        {/* widget */}
-        <Route path="/widget/widgetbasic" element={<Widgetbasic />} />
-        <Route path="/widget/widgetcard" element={<Widgetcard />} />
-        <Route path="/widget/widgetchart" element={<Widgetchart />} />
+          {/* Actividades */}
+          <Route
+            path="/actividade/actividade-add"
+            element={<ActividadeAdd />}
+          />
+          <Route
+            path="/actividade/actividade-list"
+            element={<ActividadeList />}
+          />
 
-        {/* icon */}
-        <Route path="/icon/solid" element={<Solid />} />
-        <Route path="/icon/outline" element={<Outline />} />
-        <Route path="/icon/dual-tone" element={<DualTone />} />
+          {/* Perfil Saída */}
+          <Route path="/perfil-saida/perfil-conf" element={<ConfPerfil />} />
+          <Route path="/perfil-saida/perfil-ver" element={<VerPerfil />} />
 
-        {/* From */}
-        <Route path="/form/form-element" element={<FormElement />} />
-        <Route path="/form/form-validation" element={<FormValidation />} />
-        <Route path="/form/form-wizard" element={<FormWizard />} />
+          {/* Formação */}
+          <Route path="/formacao/formacao-add" element={<FormacaoAdd />} />
+          <Route path="/formacao/formacao-list" element={<FormacaoList />} />
 
-        {/* table */}
-        <Route path="/table/bootstrap-table" element={<BootstrapTable />} />
-        <Route path="/table/border-table" element={<Borderedtable />} />
-        <Route path="/table/fancy-table" element={<Fancytable />} />
+          {/* Inscritos */}
+          <Route path="/inscritos/inscritos-list" element={<InscritosList />} />
+          <Route
+            path="/inscritos/aceites-list"
+            element={<InscritosAceitesList />}
+          />
+          <Route
+            path="/inscritos/rejeitados-list"
+            element={<InscritosRejeitoList />}
+          />
 
-        {/*special pages */}
-        <Route path="/special-pages/billing" element={<Billing />} />
-        <Route path="/special-pages/kanban" element={<Kanban />} />
-        <Route path="/special-pages/pricing" element={<Pricing />} />
-        <Route path="/special-pages/timeline" element={<Timeline />} />
-        <Route path="/special-pages/calender" element={<Calender />} />
+          {/* Formação */}
+          <Route
+            path="/funcionario/funcionario-add"
+            element={<FuncionarioAdd />}
+          />
+          <Route
+            path="/funcionario/funcionario-list"
+            element={<FuncionarioList />}
+          />
 
-        {/* map */}
-        <Route path="/map/google" element={<Google />} />
+          {/* user */}
+          <Route path="/app/user-profile" element={<UserProfile />} />
 
-        {/* extra */}
-        <Route path="/extra/privacy-policy" element={<PrivacyPolicy />} />
-        <Route path="/extra/terms-of-service" element={<TermsofService />} />
-        <Route path="/extra/blank-page" element={<BlankPages />} />
+          <Route path="/app/user-add" element={<UserAdd />} />
+          <Route path="/app/user-list" element={<UserList />} />
+          <Route
+            path="/app/user-privacy-setting"
+            element={<userProfileEdit />}
+          />
 
-        {/*ui-kit  */}
-        <Route path="/ui-elements/avatars" element={<Avatars />} />
-        <Route path="/ui-elements/alerts" element={<Alerts />} />
-        <Route path="/ui-elements/color" element={<Color />} />
-        <Route path="/ui-elements/accordion" element={<Accordian />} />
-        <Route
-          path="/ui-elements/alternate-floating-table"
-          element={<AlternateFloatingTable />}
-        />
-        <Route
-          path="/ui-elements/alternate-fotm-control"
-          element={<AlternateFormControl />}
-        />
-        <Route path="/ui-elements/badges" element={<Badge />} />
-        <Route path="/ui-elements/breadcrumb" element={<Breadcrumb />} />
-        <Route path="/ui-elements/buttons" element={<Button />} />
-        <Route path="/ui-elements/button-group" element={<ButtonGroup />} />
-        <Route path="/ui-elements/calendar" element={<Calendar />} />
-        <Route path="/ui-elements/carousel" element={<Carousel />} />
-        <Route path="/ui-elements/grid" element={<Grid />} />
-        <Route path="/ui-elements/cards" element={<Card />} />
-        <Route path="/ui-elements/disable-form" element={<DisableForm />} />
-        <Route path="/ui-elements/dropdown" element={<Dropdown />} />
-        <Route path="/ui-elements/figure" element={<Figure />} />
-        <Route path="/ui-elements/floating-lable" element={<FloatingLable />} />
-        <Route path="/ui-elements/form-overview" element={<FormOverview />} />
-        <Route path="/ui-elements/images" element={<Image />} />
-        <Route path="/ui-elements/input-groups" element={<InputGroup />} />
-        <Route path="/ui-elements/list-groups" element={<ListGroup />} />
-        <Route path="/ui-elements/modal" element={<Modal />} />
-        <Route path="/ui-elements/notifications" element={<Notification />} />
-        <Route path="/ui-elements/nav" element={<Nav />} />
-        <Route path="/ui-elements/navbar" element={<Navbar />} />
-        <Route path="/ui-elements/offcanvas" element={<OffCanvas />} />
-        <Route path="/ui-elements/pagination" element={<Pagination />} />
-        <Route path="/ui-elements/popovers" element={<Popovers />} />
-        <Route path="/ui-elements/progressbars" element={<Progress />} />
-        <Route path="/ui-elements/ribborn" element={<Ribborn />} />
-        <Route path="/ui-elements/scrollspy" element={<Scrollspy />} />
-        <Route
-          path="/ui-elements/sidebar-offcanvas"
-          element={<SidebarOffcanvas />}
-        />
-        <Route path="/ui-elements/sizing" element={<Sizing />} />
-        <Route path="/ui-elements/spinners" element={<Spinners />} />
-        <Route path="/ui-elements/table" element={<Table />} />
-        <Route path="/ui-elements/tabs" element={<Tabs />} />
-        <Route path="/ui-elements/toast" element={Toast} />
-        <Route path="/ui-elements/typography" element={<Typography />} />
-        <Route path="/ui-elements/toggle-btn" element={<ToggleBtn />} />
-        <Route path="/ui-elements/tooltips" element={<UiTooltip />} />
-        <Route path="/ui-elements/embed-video" element={<EmbedVideo />} />
-        <Route path="/ui-elements/validation" element={<Validation />} />
-        {/*  pulgin pro */}
-        <Route path="/plugins/apexcharts" element={<Apexcharts />}></Route>
-        <Route path="/plugins/button-hover" element={<Buttonhover />}></Route>
-        <Route path="/plugins/choise-js" element={<Choisejs />}></Route>
-        <Route path="/plugins/flatpickr" element={<Flatpickerr />}></Route>
-        <Route path="/plugins/fslightbox" element={<Fslightbox />}></Route>
-        <Route path="/plugins/select2" element={<Select2 />}></Route>
-        <Route path="/plugins/rating" element={<Rating />}></Route>
-        <Route path="/plugins/sweet-alert" element={<Sweetalert />}></Route>
-        <Route path="/plugins/uppy" element={<Uppyplugin />}></Route>
-        <Route path="/plugins/ui-color" element={<Uicolor />}></Route>
-        <Route path="/plugins/gallery-hover" element={<Galleryhover />}></Route>
-        <Route path="/plugins/loader" element={<Loader />}></Route>
-        <Route path="/plugins/todo" element={<Todo />}></Route>
-        <Route path="/plugins/image-copper" element={<Imagecopper />}></Route>
-        <Route path="/plugins/quill-editor" element={<Quilleditor />}></Route>
-        {/*admin*/}
-        <Route path="/admin/admin" element={<Admin/>} />
-      </Route>
-    </Routes>
+          {/* widget */}
+          <Route path="/widget/widgetbasic" element={<Widgetbasic />} />
+          <Route path="/widget/widgetcard" element={<Widgetcard />} />
+          <Route path="/widget/widgetchart" element={<Widgetchart />} />
+
+          {/* icon */}
+          <Route path="/icon/solid" element={<Solid />} />
+          <Route path="/icon/outline" element={<Outline />} />
+          <Route path="/icon/dual-tone" element={<DualTone />} />
+
+          {/* From */}
+          <Route path="/form/form-element" element={<FormElement />} />
+          <Route path="/form/form-validation" element={<FormValidation />} />
+          <Route path="/form/form-wizard" element={<FormWizard />} />
+
+          {/* table */}
+          <Route path="/table/bootstrap-table" element={<BootstrapTable />} />
+          <Route path="/table/border-table" element={<Borderedtable />} />
+          <Route path="/table/fancy-table" element={<Fancytable />} />
+
+          {/*special pages */}
+          <Route path="/special-pages/billing" element={<Billing />} />
+          <Route path="/special-pages/kanban" element={<Kanban />} />
+          <Route path="/special-pages/pricing" element={<Pricing />} />
+          <Route path="/special-pages/timeline" element={<Timeline />} />
+          <Route path="/special-pages/calender" element={<Calender />} />
+
+          {/* map */}
+          <Route path="/map/google" element={<Google />} />
+
+          {/* extra */}
+          <Route path="/extra/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/extra/terms-of-service" element={<TermsofService />} />
+          <Route path="/extra/blank-page" element={<BlankPages />} />
+
+          {/*ui-kit  */}
+          <Route path="/ui-elements/avatars" element={<Avatars />} />
+          <Route path="/ui-elements/alerts" element={<Alerts />} />
+          <Route path="/ui-elements/color" element={<Color />} />
+          <Route path="/ui-elements/accordion" element={<Accordian />} />
+          <Route
+            path="/ui-elements/alternate-floating-table"
+            element={<AlternateFloatingTable />}
+          />
+          <Route
+            path="/ui-elements/alternate-fotm-control"
+            element={<AlternateFormControl />}
+          />
+          <Route path="/ui-elements/badges" element={<Badge />} />
+          <Route path="/ui-elements/breadcrumb" element={<Breadcrumb />} />
+          <Route path="/ui-elements/buttons" element={<Button />} />
+          <Route path="/ui-elements/button-group" element={<ButtonGroup />} />
+          <Route path="/ui-elements/calendar" element={<Calendar />} />
+          <Route path="/ui-elements/carousel" element={<Carousel />} />
+          <Route path="/ui-elements/grid" element={<Grid />} />
+          <Route path="/ui-elements/cards" element={<Card />} />
+          <Route path="/ui-elements/disable-form" element={<DisableForm />} />
+          <Route path="/ui-elements/dropdown" element={<Dropdown />} />
+          <Route path="/ui-elements/figure" element={<Figure />} />
+          <Route
+            path="/ui-elements/floating-lable"
+            element={<FloatingLable />}
+          />
+          <Route path="/ui-elements/form-overview" element={<FormOverview />} />
+          <Route path="/ui-elements/images" element={<Image />} />
+          <Route path="/ui-elements/input-groups" element={<InputGroup />} />
+          <Route path="/ui-elements/list-groups" element={<ListGroup />} />
+          <Route path="/ui-elements/modal" element={<Modal />} />
+          <Route path="/ui-elements/notifications" element={<Notification />} />
+          <Route path="/ui-elements/nav" element={<Nav />} />
+          <Route path="/ui-elements/navbar" element={<Navbar />} />
+          <Route path="/ui-elements/offcanvas" element={<OffCanvas />} />
+          <Route path="/ui-elements/pagination" element={<Pagination />} />
+          <Route path="/ui-elements/popovers" element={<Popovers />} />
+          <Route path="/ui-elements/progressbars" element={<Progress />} />
+          <Route path="/ui-elements/ribborn" element={<Ribborn />} />
+          <Route path="/ui-elements/scrollspy" element={<Scrollspy />} />
+          <Route
+            path="/ui-elements/sidebar-offcanvas"
+            element={<SidebarOffcanvas />}
+          />
+          <Route path="/ui-elements/sizing" element={<Sizing />} />
+          <Route path="/ui-elements/spinners" element={<Spinners />} />
+          <Route path="/ui-elements/table" element={<Table />} />
+          <Route path="/ui-elements/tabs" element={<Tabs />} />
+          <Route path="/ui-elements/toast" element={Toast} />
+          <Route path="/ui-elements/typography" element={<Typography />} />
+          <Route path="/ui-elements/toggle-btn" element={<ToggleBtn />} />
+          <Route path="/ui-elements/tooltips" element={<UiTooltip />} />
+          <Route path="/ui-elements/embed-video" element={<EmbedVideo />} />
+          <Route path="/ui-elements/validation" element={<Validation />} />
+          {/*  pulgin pro */}
+          <Route path="/plugins/apexcharts" element={<Apexcharts />}></Route>
+          <Route path="/plugins/button-hover" element={<Buttonhover />}></Route>
+          <Route path="/plugins/choise-js" element={<Choisejs />}></Route>
+          <Route path="/plugins/flatpickr" element={<Flatpickerr />}></Route>
+          <Route path="/plugins/fslightbox" element={<Fslightbox />}></Route>
+          <Route path="/plugins/select2" element={<Select2 />}></Route>
+          <Route path="/plugins/rating" element={<Rating />}></Route>
+          <Route path="/plugins/sweet-alert" element={<Sweetalert />}></Route>
+          <Route path="/plugins/uppy" element={<Uppyplugin />}></Route>
+          <Route path="/plugins/ui-color" element={<Uicolor />}></Route>
+          <Route
+            path="/plugins/gallery-hover"
+            element={<Galleryhover />}
+          ></Route>
+          <Route path="/plugins/loader" element={<Loader />}></Route>
+          <Route path="/plugins/todo" element={<Todo />}></Route>
+          <Route path="/plugins/image-copper" element={<Imagecopper />}></Route>
+          <Route path="/plugins/quill-editor" element={<Quilleditor />}></Route>
+          {/*admin*/}
+          <Route path="/admin/admin" element={<Admin />} />
+        </Route>
+      </Routes>
     </>
   );
 });

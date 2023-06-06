@@ -36,7 +36,7 @@ const Disciplina = () => {
           "isImage",
           "Por favor selecione um arquivo de imagem válido!",
           (value) => {
-            if (!value) return true; // permite que o campo seja vazio
+            if (value) return true; // permite que o campo seja vazio
             return (
               value &&
               ["image/png", "image/jpg", "image/jpeg", "image/gif"].includes(
@@ -155,6 +155,7 @@ const Disciplina = () => {
                   <Form.Control
                     type="file"
                     id="fotoUrl"
+                    accept="image/png, image/jpg, image/jpeg, image/gif"
                     name="fotoUrl"
                     onChange={(event) => {
                       formik.setFieldValue(
