@@ -153,7 +153,7 @@ const SignIn = memo(() => {
                             ) : null}
                           </Form.Group>
                         </Col>
-                        {/* <Col lg="12" className="d-flex justify-content-between">
+                        <Col lg="12" className="d-flex justify-content-between">
                           <Form.Check className="form-check mb-3">
                             <Form.Check.Input
                               type="checkbox"
@@ -166,7 +166,7 @@ const SignIn = memo(() => {
                           <Link to="/auth/recoverpw">
                             Esqueceu a sua senha?
                           </Link>
-                        </Col> */}
+                        </Col>
                       </Row>
                       <div className="d-flex justify-content-center">
                         <Button

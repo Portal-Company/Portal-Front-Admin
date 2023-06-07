@@ -49,7 +49,7 @@ export const ViewDataCandidate = ({
   async function handleConfirm() {
     if (estado === "aprovar") {
       const aprove = {
-        estado: "ACEITE",
+        estado: "ADMITIDO",
       };
       try {
         const data = await api.put(`/enrollment/put/${item?.id}`, aprove);
@@ -69,7 +69,7 @@ export const ViewDataCandidate = ({
       }
     } else if (estado === "rejeitar") {
       const aprove = {
-        estado: "REJEITADO",
+        estado: "NAO_ADMITIDO",
       };
       try {
         const data = await api.put(`/enrollment/put/${item?.id}`, aprove);
