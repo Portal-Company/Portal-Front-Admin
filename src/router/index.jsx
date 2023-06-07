@@ -69,6 +69,9 @@ import { PublicRoute } from "./PublicRoute";
 import { PrivateRoute } from "./PrivateRoute";
 // auth
 const ConfirmMail = lazy(() => import("../views/dashboard/auth/confirm-mail"));
+const ResetPassword = lazy(() =>
+  import("../views/dashboard/auth/resetPassword/[token]")
+);
 const LockScreen = lazy(() => import("../views/dashboard/auth/lock-screen"));
 const Recoverpw = lazy(() => import("../views/dashboard/auth/recoverpw"));
 const SignIn = lazy(() => import("../views/dashboard/auth/sign-in"));
@@ -239,6 +242,7 @@ const IndexRouters = memo(() => {
           <Route path="confirm-mail" element={<ConfirmMail />} />
           <Route path="lock-screen" element={<LockScreen />} />
           <Route path="recoverpw" element={<Recoverpw />} />
+          <Route path="resetPassword/:token" element={<ResetPassword />} />
           <Route path="sign-in" element={<SignIn />} />
           <Route path="sign-up" element={<SignUp />} />
           <Route path="account-deactivate" element={<AccountDeactive />} />
