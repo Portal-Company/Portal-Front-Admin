@@ -23,30 +23,30 @@ const Cursos = () => {
   const formik = useFormik({
     initialValues: {
       nome: "",
-      fotoUrl: "",
+      // fotoUrl: "",
       descricao: "",
       areaDeFormacaoId: "",
     },
     validationSchema: yup.object({
       nome: yup.string().required("Este campo é obrigatório"),
-      fotoUrl: yup.string().required("Este campo é obrigatório"),
+      // fotoUrl: yup.string().required("Este campo é obrigatório"),
       descricao: yup.string().required("Este campo é obrigatório"),
       areaDeFormacaoId: yup.string().required("Este campo é obrigatório"),
     }),
     onSubmit: async (data) => {
       try {
         setIsSubmiting(true);
-        const formData = new FormData();
+        /* const formData = new FormData();
         formData.append("file", data?.fotoUrl[0]);
         const fotoUrl = await getFile(formData);
-        if (fotoUrl) {
-          data = { ...data, fotoUrl: fotoUrl?.id };
+        if (fotoUrl) { */
+
           const response = await api.post("/course/post", data);
           if (response) {
             toast.success("Curso cadastrado com sucesso");
             formik.resetForm();
           }
-        }
+        // }
       } catch (err) {
         toast.error(err?.response?.data?.message);
       } finally {

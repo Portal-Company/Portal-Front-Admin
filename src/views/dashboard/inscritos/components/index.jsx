@@ -49,7 +49,7 @@ export const ViewDataCandidate = ({
   async function handleConfirm() {
     if (estado === "aprovar") {
       const aprove = {
-        estado: "ACEITE",
+        estadoDeAdmissao: "ADMITIDO",
       };
       try {
         const data = await api.put(`/enrollment/put/${item?.id}`, aprove);
@@ -69,9 +69,9 @@ export const ViewDataCandidate = ({
       }
     } else if (estado === "rejeitar") {
       const aprove = {
-        estado: "REJEITADO",
+        estadoDeAdmissao: "NAO_ADMITIDO",
       };
-      try {
+      try { 
         const data = await api.put(`/enrollment/put/${item?.id}`, aprove);
         if (data) {
           const body = {
@@ -81,7 +81,7 @@ export const ViewDataCandidate = ({
             body: `Sr ${item?.Candidato?.nomeCompleto}, Obrigado`,
           };
           await api.post(`/mail/send`, body);
-          toast.success("Candidato aprovado com sucesso");
+          toast.success("Candidato não admitido");
           mutate();
         }
       } catch (e) {
@@ -188,7 +188,7 @@ export const ViewDataCandidate = ({
                 <p className="mb-0">Estado da Candidatura:</p>
               </div>
               <div className="">
-                <p className="text-muted mb-0">{item?.estado}</p>
+                <p className="text-muted mb-0">{item?.estadoDeAdmissao}</p>
               </div>
             </div>
             <div>

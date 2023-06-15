@@ -906,7 +906,7 @@ const VerticalNav = memo(() => {
                   >
                     <i className="sidenav-mini-icon"> U </i>
                   </OverlayTrigger>
-                  <span className="item-name">Inscritos Aceites</span>
+                  <span className="item-name">Admitidos</span>
                 </Link>
               </Nav.Item>
               <Nav.Item as="li">
@@ -942,7 +942,7 @@ const VerticalNav = memo(() => {
                   >
                     <i className="sidenav-mini-icon"> U </i>
                   </OverlayTrigger>
-                  <span className="item-name">Inscritos Rejeitados</span>
+                  <span className="item-name">Não Admitidos</span>
                 </Link>
               </Nav.Item>
             </ul>

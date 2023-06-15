@@ -34,7 +34,7 @@ const UserList = () => {
   }
 
   function handleView(item) {
-    setState(item?.estado);
+    setState(item?.estadoDeAdmissao);
     setItem(item);
     setOpenModal(true);
   }
@@ -113,7 +113,7 @@ const UserList = () => {
 
                         <td>
                           <span className={`badge ${"bg-success"}`}>
-                            {item?.estado}
+                            {item?.estadoDeAdmissao}
                           </span>
                         </td>
 

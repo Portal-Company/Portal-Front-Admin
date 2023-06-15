@@ -28,8 +28,6 @@ const FormWizard = () => {
     initialValues: {
       nome: escola?.nome,
       nif: escola?.nif,
-      logo: escola?.logo,
-      fotoUrl: escola?.fotoUrl,
       contatoId: escola?.contatoId,
       email: escola?.Contato?.email,
       numeroTelefone: escola?.Contato?.numeroTelefone,
@@ -40,43 +38,12 @@ const FormWizard = () => {
       localizacaoId: escola?.Localizacao?.id,
       descricao: escola?.historial?.descricao,
       data: escola?.historial?.data,
-      historialId: escola?.historial?.id,
-      fotoUrl1: escola?.historial?.fotoUrl,
+      historialId: escola?.historialId,
       fundador: escola?.historial?.fundador,
     },
     validationSchema: yup.object({
       nome: yup.string().required("Este campo é obrigatório"),
       nif: yup.string().required("Este campo é obrigatório"),
-      logo: yup
-        .mixed()
-        .test(
-          "isImage",
-          "Por favor selecione um arquivo de imagem válido!",
-          (value) => {
-            if (value) return true; // permite que o campo seja vazio
-            return (
-              value &&
-              ["image/png", "image/jpg", "image/jpeg", "image/gif"].includes(
-                value.type
-              )
-            );
-          }
-        ),
-      fotoUrl: yup
-        .mixed()
-        .test(
-          "isImage",
-          "Por favor selecione um arquivo de imagem válido!",
-          (value) => {
-            if (value) return true; // permite que o campo seja vazio
-            return (
-              value &&
-              ["image/png", "image/jpg", "image/jpeg", "image/gif"].includes(
-                value.type
-              )
-            );
-          }
-        ),
       // contatoId: yup.string().required("Este campo é obrigatório"),
       email: yup.string().required("Este campo é obrigatório"),
       numeroTelefone: yup.string().required("Este campo é obrigatório"),
@@ -84,22 +51,7 @@ const FormWizard = () => {
       provinciaId: yup.string().required("Este campo é obrigatório"),
       escolaId: yup.string().required("Este campo é obrigatório"),
       descricao: yup.string().required("Este campo é obrigatório"),
-      fotoUrl1: yup
-        .mixed()
-        .test(
-          "isImage",
-          "Por favor selecione um arquivo de imagem válido!",
-          (value) => {
-            if (value) return true; // permite que o campo seja vazio
-            return (
-              value &&
-              ["image/png", "image/jpg", "image/jpeg", "image/gif"].includes(
-                value.type
-              )
-            );
-          }
-        ),
-
+    
       fundador: yup.string().required("Este campo é obrigatório"),
       data: yup.string().required("Este campo é obrigatório"),
     }),
@@ -107,13 +59,6 @@ const FormWizard = () => {
       let newContato = data?.contatoId;
       try {
         if (!data.historialId) {
-          const formData1 = new FormData();
-
-          formData1.append("file", data?.fotoUrl1[0]);
-
-          const fotoUrl1 = await getFile(formData1);
-
-          if (fotoUrl1) {
             const history = {
               fundador: data?.fundador,
               descricao: data?.descricao,
@@ -122,28 +67,8 @@ const FormWizard = () => {
               fotoUrl: fotoUrl1?.id,
             };
             const response = await api.post("/history/post", history);
-          }
         } else {
-          if (!(escola?.historial?.fotoUrl === data.fotoUrl1)) {
-            const formData1 = new FormData();
-
-            formData1.append("file", data?.fotoUrl1[0]);
-
-            const fotoUrl1 = await getFile(formData1);
-
-            if (fotoUrl1) {
-              const history = {
-                fundador: data?.fundador,
-                descricao: data?.descricao,
-                escolaId: escola?.id,
-                fotoUrl: fotoUrl1?.id,
-              };
-              const response = await api.put(
-                `/history/put/${data?.historialId}`,
-                history
-              );
-            }
-          } else {
+         
             const history = {
               fundador: data?.fundador,
               descricao: data?.descricao,
@@ -154,8 +79,6 @@ const FormWizard = () => {
               history
             );
           }
-        }
-
         if (!data.localizacaoId) {
           const location = {
             endereco1: data?.endereco1,
@@ -194,32 +117,7 @@ const FormWizard = () => {
           ).data;
           newContato = response?.id;
         }
-
-        if (!(data.fotoUrl === escola?.fotoUrl || data.logo === escola?.logo)) {
-          const formData = new FormData();
-          const formData1 = new FormData();
-
-          let school;
-
-          formData.append("file", data?.logo[0]);
-          formData1.append("file", data?.fotoUrl[0]);
-
-          const logo = await getFile(formData);
-          const fotoUrl = await getFile(formData1);
-
-          school = {
-            fotoUrl: fotoUrl?.id,
-            logo: logo?.id,
-            nome: data?.nome,
-            nif: data?.nif,
-            contatoId: newContato,
-          };
-
-          const response = await api.put(`/school/put/${escola?.id}`, school);
-          if (response) {
-            toast.success("Dados actualizados com sucesso!");
-          }
-        } else {
+        
           const school = {
             nome: data?.nome,
             nif: data?.nif,
@@ -230,7 +128,6 @@ const FormWizard = () => {
           if (response) {
             toast.success("Dados actualizados com sucesso!");
           }
-        }
       } catch (err) {
         toast.error(err?.response?.data?.message);
       }

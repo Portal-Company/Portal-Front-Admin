@@ -22,14 +22,14 @@ const FormValidation = () => {
   const formik = useFormik({
     initialValues: {
       nome: "",
-      fotoUrl: "",
+      // fotoUrl: "",
       descricao: "",
       escolaId: userData?.Escola?.id,
       categoriaId: userData?.Escola?.categoriaId,
     },
     validationSchema: yup.object({
       nome: yup.string().required("Este campo é obrigatório"),
-      fotoUrl: yup.string().required("Este campo é obrigatorio"),
+      // fotoUrl: yup.string().required("Este campo é obrigatorio"),
       descricao: yup.string().required("Este campo é obrigatório"),
       escolaId: yup.string().required("Este campo é obrigatório"),
       categoriaId: yup.string().required("Este campo é obrigatório"),
@@ -37,17 +37,17 @@ const FormValidation = () => {
     onSubmit: async (data) => {
       try {
         setIsSubmiting(true);
-        const formData = new FormData();
+        /* const formData = new FormData();
         formData.append("file", data?.fotoUrl[0]);
         const fotoUrl = await getFile(formData);
-        if (fotoUrl) {
-          data = { ...data, fotoUrl: fotoUrl?.id };
+        if (fotoUrl) { */
+          // data = { ...data };
           const response = (await api.post("/trainingArea/post", data)).data;
           if (response) {
             toast.success("Area de Formação cadastrada com sucesso");
             formik.resetForm();
           }
-        }
+        // }
       } catch (err) {
         toast.error(err?.response?.data?.message);
       } finally {
