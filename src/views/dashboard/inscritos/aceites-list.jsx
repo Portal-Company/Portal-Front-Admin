@@ -106,7 +106,7 @@ const UserList = () => {
 
                         <td>
                           <span className={`badge ${"bg-success"}`}>
-                            {item?.estado}
+                            {item?.estadoDeAdmissao}
                           </span>
                         </td>
 

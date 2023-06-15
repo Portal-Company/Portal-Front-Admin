@@ -37,53 +37,23 @@ const FuncionarioAdd = memo(() => {
       email: userData?.email,
       senha: "",
       senhaNova: "",
-      fotoUrl: userData?.fotoUrl,
       tipoUsuario: "ADMINISTRADOR_ESCOLA",
     },
     validationSchema: yup.object({
       nome: yup.string().required("Este campo é obrigatório"),
-      fotoUrl: yup
-        .mixed()
-        .test(
-          "isImage",
-          "Por favor selecione um arquivo de imagem válido!",
-          (value) => {
-            if (value) return true; // permite que o campo seja vazio
-            return (
-              value &&
-              ["image/png", "image/jpg", "image/jpeg", "image/gif"].includes(
-                value.type
-              )
-            );
-          }
-        ),
       email: yup.string().required("Este campo  é obrigatório"),
       tipoUsuario: yup.string().required("Este campo  é obrigatório"),
     }),
     onSubmit: async (data) => {
       try {
         setIsSubmiting(true);
-        if (data?.fotoUrl === userData?.fotoUrl) {
-          const response = await api.put(`/user/put/${userData?.id}`, data);
-          if (response) {
-            formik.resetForm();
-            mutate(`/user/list/${user?.sub}`);
-            toast.success("Administrador actualizado com sucesso");
-          }
-        } else {
-          const formData = new FormData();
-          formData.append("file", data?.fotoUrl[0]);
-          const fotoUrl = await getFile(formData);
-          if (fotoUrl) {
-            data = { ...data, fotoUrl: fotoUrl?.id };
+       
             const response = await api.post(`/user/put/${userData?.id}`, data);
             if (response) {
               formik.resetForm();
               mutate(`/user/list/${user?.sub}`);
               toast.success("Administrador actualizado com sucesso");
             }
-          }
-        }
       } catch (err) {
         toast.error(err?.response?.data?.message);
       } finally {

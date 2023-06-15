@@ -23,40 +23,22 @@ const Disciplina = () => {
   const formik = useFormik({
     initialValues: {
       nome: "",
-      fotoUrl: "",
+      // fotoUrl: "",
       descricao: "",
       cursoId: "",
       escolaId: "",
     },
     validationSchema: yup.object({
       nome: yup.string().required("Este campo é obrigatório"),
-      fotoUrl: yup
-        .mixed()
-        .test(
-          "isImage",
-          "Por favor selecione um arquivo de imagem válido!",
-          (value) => {
-            if (value) return true; // permite que o campo seja vazio
-            return (
-              value &&
-              ["image/png", "image/jpg", "image/jpeg", "image/gif"].includes(
-                value.type
-              )
-            );
-          }
-        ),
       descricao: yup.string().required("Este campo é obrigatório"),
     }),
     onSubmit: async (data) => {
       try {
         setIsSubmiting(true);
-        const formData = new FormData();
-        formData.append("file", data?.fotoUrl[0]);
-        const fotoUrl = await getFile(formData);
-        if (fotoUrl) {
+        // if (fotoUrl) {
           data = {
             ...data,
-            fotoUrl: fotoUrl?.id,
+            // fotoUrl: fotoUrl?.id,
             escolaId: userData?.Escola?.id,
           };
           const response = await api.post("/schoolSubject/post", data);
@@ -64,7 +46,7 @@ const Disciplina = () => {
             toast.success("Disciplina cadastrada com sucesso");
             formik.resetForm();
           }
-        }
+        // }
       } catch (err) {
         toast.error(err?.response?.data?.message);
       } finally {
